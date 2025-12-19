@@ -1,0 +1,177 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-purple: #8B7EC8;
+  --primary-teal: #4ECDC4;
+  --accent-orange: #FF6B35;
+  --accent-yellow: #FFD23F;
+  --dark-gray: #1A1A1A;
+  --light-gray: #666666;
+  --white: #FFFFFF;
+  --bg-light: #FAFAFA;
+  --bg-gradient-start: #F5F5F5;
+  --bg-gradient-end: #FFFFFF;
+  --border-thick: 3px;
+  --border-color: #1A1A1A;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --shadow-game: 4px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--dark-gray);
+  background: var(--bg-light);
+  min-height: 100vh;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section {
+  padding: 5rem 0;
+}
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.section-subtitle {
+  font-weight: 500;
+}
+
+/* Button styles - Game UI */
+.btn {
+  padding: 1rem 2.5rem;
+  border-radius: 1rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: var(--border-thick) solid var(--border-color);
+  display: inline-block;
+  text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+  box-shadow: var(--shadow-game);
+  position: relative;
+}
+
+.btn-primary {
+  background: var(--accent-orange);
+  color: var(--white);
+  border-color: var(--border-color);
+}
+
+.btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+  transform: translate(0, 0);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--dark-gray);
+  border: var(--border-thick) solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-yellow);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary:active {
+  transform: translate(0, 0);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.15);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .section {
+    padding: 3rem 0;
+  }
+
+  .btn {
+    padding: 0.875rem 2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .section {
+    padding: 2rem 0;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
