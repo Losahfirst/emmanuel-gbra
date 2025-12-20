@@ -612,20 +612,91 @@ onUnmounted(() => {
     padding: 1rem;
   }
   
+  .dashboard-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
   .dashboard-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+  
+  .dashboard-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
   .kpi-section {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
   
   .dashboard-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .user-progress-card {
     display: none;
+  }
+  
+  .period-selector-wrapper {
+    justify-content: flex-start;
+  }
+  
+  .period-selector {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .chart-section {
+    min-height: 300px;
+  }
+  
+  .summary-stats {
+    gap: 0.75rem;
+  }
+  
+  .summary-stat-item {
+    padding: 0.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .stat-value {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .energy-dashboard {
+    padding: 0.75rem;
+  }
+  
+  .dashboard-title {
+    font-size: 1.25rem;
+  }
+  
+  .kpi-section {
+    gap: 0.5rem;
+  }
+  
+  .chart-section {
+    min-height: 250px;
+  }
+  
+  .energy-summary-card,
+  .quick-stats-panel,
+  .filters-panel {
+    padding: 1rem;
+  }
+  
+  .panel-title {
+    font-size: 1rem;
   }
 }
 </style>

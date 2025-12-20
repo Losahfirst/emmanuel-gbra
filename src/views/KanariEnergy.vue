@@ -41,4 +41,26 @@ import CalendarPage from '../components/modules/energy/Calendar/CalendarPage.vue
   min-height: calc(100vh - 80px);
   padding: 2rem 0;
 }
+
+@media (max-width: 768px) {
+  .kanari-main {
+    padding-top: 70px;
+  }
+  
+  .page-section {
+    min-height: calc(100vh - 70px);
+    padding: 1rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .kanari-main {
+    padding-top: 60px;
+  }
+  
+  .page-section {
+    min-height: calc(100vh - 60px);
+    padding: 0.75rem 0;
+  }
+}
 </style>

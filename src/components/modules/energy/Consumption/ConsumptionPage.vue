@@ -543,8 +543,86 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
+  .consumption-page {
+    padding: 1rem;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.25rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+  }
+  
+  .period-selector {
+    width: 100%;
+    max-width: 250px;
+  }
+  
   .summary-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .summary-card {
+    padding: 1rem;
+  }
+  
+  .chart-card {
+    padding: 1rem;
+  }
+  
+  .chart-title {
+    font-size: 1rem;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .stats-table {
+    min-width: 600px;
+  }
+  
+  .stats-table th,
+  .stats-table td {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .consumption-page {
+    padding: 0.75rem;
+  }
+  
+  .page-title {
+    font-size: 1.125rem;
+  }
+  
+  .summary-card {
+    padding: 0.75rem;
+  }
+  
+  .summary-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .summary-value {
+    font-size: 1.25rem;
+  }
+  
+  .chart-card {
+    padding: 0.75rem;
   }
 }
 </style>

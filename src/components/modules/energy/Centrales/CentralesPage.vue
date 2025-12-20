@@ -537,8 +537,85 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
+  .centrales-page {
+    padding: 1rem;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.25rem;
+  }
+  
   .summary-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .summary-card {
+    padding: 1rem;
+  }
+  
+  .chart-card {
+    padding: 1rem;
+  }
+  
+  .chart-title {
+    font-size: 1rem;
+  }
+  
+  .stats-table-card {
+    padding: 1rem;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .stats-table {
+    min-width: 600px;
+  }
+  
+  .stats-table th,
+  .stats-table td {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .centrales-page {
+    padding: 0.75rem;
+  }
+  
+  .page-title {
+    font-size: 1.125rem;
+  }
+  
+  .summary-card {
+    padding: 0.75rem;
+  }
+  
+  .summary-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .summary-value {
+    font-size: 1.25rem;
+  }
+  
+  .chart-card {
+    padding: 0.75rem;
+  }
+  
+  .stats-table-card {
+    padding: 0.75rem;
   }
 }
 </style>

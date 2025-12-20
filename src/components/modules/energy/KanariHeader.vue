@@ -2,39 +2,45 @@
   <header class="kanari-header">
     <div class="header-container">
       <div class="header-left">
+        <button class="mobile-menu-btn" @click="toggleMobileMenu" aria-label="Menu">
+          <Menu v-if="!mobileMenuOpen" :size="24" />
+          <X v-else :size="24" />
+        </button>
         <router-link to="/kanari-energy/dashboard" class="logo-link">
           <img src="/kanari-logo.png" alt="KANARI Energy" class="kanari-logo-header" />
         </router-link>
-        <CountrySelector />
+        <div class="country-selector-wrapper">
+          <CountrySelector />
+        </div>
       </div>
-      <nav class="header-nav">
-        <router-link to="/kanari-energy/dashboard" class="nav-item" active-class="active">
+      <nav class="header-nav" :class="{ 'mobile-open': mobileMenuOpen }">
+        <router-link to="/kanari-energy/dashboard" class="nav-item" active-class="active" @click="closeMobileMenu">
           <span>Dashboard</span>
         </router-link>
-        <router-link to="/kanari-energy/production" class="nav-item" active-class="active">
+        <router-link to="/kanari-energy/production" class="nav-item" active-class="active" @click="closeMobileMenu">
           <span>Production</span>
         </router-link>
-        <router-link to="/kanari-energy/consumption" class="nav-item" active-class="active">
+        <router-link to="/kanari-energy/consumption" class="nav-item" active-class="active" @click="closeMobileMenu">
           <span>Consommation</span>
         </router-link>
-        <router-link to="/kanari-energy/infrastructure" class="nav-item" active-class="active">
+        <router-link to="/kanari-energy/infrastructure" class="nav-item" active-class="active" @click="closeMobileMenu">
           <span>Infrastructure</span>
         </router-link>
-        <router-link to="/kanari-energy/centrales" class="nav-item" active-class="active">
+        <router-link to="/kanari-energy/centrales" class="nav-item" active-class="active" @click="closeMobileMenu">
           <span>Centrales</span>
         </router-link>
-        <router-link to="/kanari-energy/realtime" class="nav-item" active-class="active">
+        <router-link to="/kanari-energy/realtime" class="nav-item" active-class="active" @click="closeMobileMenu">
           <span>Temps Réel</span>
         </router-link>
       </nav>
       <div class="header-right">
-        <button class="icon-btn">
+        <button class="icon-btn mobile-hidden">
           <Bell :size="20" />
         </button>
-        <button class="icon-btn">
+        <button class="icon-btn mobile-hidden">
           <MessageCircle :size="20" />
         </button>
-        <div class="user-menu">
+        <div class="user-menu mobile-hidden">
           <div class="user-avatar">
             <User :size="20" />
           </div>
@@ -42,12 +48,24 @@
         </div>
       </div>
     </div>
+    <div v-if="mobileMenuOpen" class="mobile-menu-overlay" @click="closeMobileMenu"></div>
   </header>
 </template>
 
 <script setup>
-import { Bell, MessageCircle, User, ChevronDown } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { Bell, MessageCircle, User, ChevronDown, Menu, X } from 'lucide-vue-next'
 import CountrySelector from './CountrySelector.vue'
+
+const mobileMenuOpen = ref(false)
+
+function toggleMobileMenu() {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+function closeMobileMenu() {
+  mobileMenuOpen.value = false
+}
 </script>
 
 <style scoped>
@@ -70,9 +88,33 @@ import CountrySelector from './CountrySelector.vue'
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
+  position: relative;
 }
 
 .header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6B7280;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: #F3F4F6;
+  color: #3B82F6;
+}
+
+.country-selector-wrapper {
   display: flex;
   align-items: center;
 }
@@ -105,6 +147,13 @@ import CountrySelector from './CountrySelector.vue'
   width: 80px;
   height: 80px;
   object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .kanari-logo-header {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .header-nav {
@@ -201,13 +250,104 @@ import CountrySelector from './CountrySelector.vue'
   justify-content: center;
 }
 
+.mobile-menu-overlay {
+  display: none;
+}
+
+.mobile-hidden {
+  display: flex;
+}
+
 @media (max-width: 968px) {
-  .header-nav {
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .mobile-hidden {
     display: none;
   }
   
   .header-container {
     padding: 0 1rem;
+  }
+  
+  .header-left {
+    gap: 0.5rem;
+  }
+  
+  .country-selector-wrapper {
+    display: none;
+  }
+  
+  .header-nav {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E5E7EB;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-nav.mobile-open {
+    max-height: 500px;
+    padding: 1rem;
+  }
+  
+  .nav-item {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    justify-content: flex-start;
+  }
+  
+  .nav-item.active::after {
+    display: none;
+  }
+  
+  .mobile-menu-overlay {
+    display: block;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .header-nav.mobile-open ~ .mobile-menu-overlay {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+@media (max-width: 480px) {
+  .kanari-header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .kanari-logo-header {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .header-nav {
+    top: 60px;
+  }
+  
+  .mobile-menu-overlay {
+    top: 60px;
   }
 }
 </style>

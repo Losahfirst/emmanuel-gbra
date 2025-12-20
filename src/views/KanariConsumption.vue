@@ -26,4 +26,16 @@ import ConsumptionPage from '../components/modules/energy/Consumption/Consumptio
   flex: 1;
   padding-top: 80px;
 }
+
+@media (max-width: 768px) {
+  .kanari-main {
+    padding-top: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kanari-main {
+    padding-top: 60px;
+  }
+}
 </style>

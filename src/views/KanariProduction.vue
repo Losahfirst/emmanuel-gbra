@@ -26,4 +26,16 @@ import ProductionPage from '../components/modules/energy/Production/ProductionPa
   flex: 1;
   padding-top: 80px;
 }
+
+@media (max-width: 768px) {
+  .kanari-main {
+    padding-top: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kanari-main {
+    padding-top: 60px;
+  }
+}
 </style>
