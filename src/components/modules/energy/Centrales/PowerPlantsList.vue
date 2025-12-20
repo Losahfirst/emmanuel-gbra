@@ -108,14 +108,21 @@ const props = defineProps({
   plants: {
     type: Array,
     default: () => []
+  },
+  type: {
+    type: String,
+    default: 'all'
   }
 })
 
-const selectedType = ref('all')
+const selectedType = ref(props.type || 'all')
 const selectedStatus = ref('all')
 
+// Variable locale pour stocker toutes les centrales si props.plants est vide
+const allPlants = ref(allPowerPlants)
+
 const filteredPlants = computed(() => {
-  let filtered = props.plants.length > 0 ? props.plants : plants.value
+  let filtered = props.plants.length > 0 ? props.plants : allPlants.value
 
   if (selectedType.value !== 'all') {
     filtered = filtered.filter(plant => plant.type === selectedType.value)
@@ -178,8 +185,14 @@ function formatTotalCapacity(plantsList) {
 }
 
 onMounted(() => {
+  // Si aucune plante n'est fournie via props, utiliser toutes les centrales
   if (props.plants.length === 0) {
-    plants.value = allPowerPlants
+    allPlants.value = allPowerPlants
+  }
+  
+  // Si un type est fourni via props, l'utiliser comme filtre initial
+  if (props.type && props.type !== 'all') {
+    selectedType.value = props.type
   }
 })
 </script>

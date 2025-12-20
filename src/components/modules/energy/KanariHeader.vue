@@ -29,8 +29,11 @@
         <router-link to="/kanari-energy/centrales" class="nav-item" active-class="active" @click="closeMobileMenu">
           <span>Centrales</span>
         </router-link>
-        <router-link to="/kanari-energy/realtime" class="nav-item" active-class="active" @click="closeMobileMenu">
-          <span>Temps Réel</span>
+        <router-link to="/kanari-energy/mapping" class="nav-item" active-class="active" @click="closeMobileMenu">
+          <span>Cartographie</span>
+        </router-link>
+        <router-link to="/kanari-energy/prediction" class="nav-item" active-class="active" @click="closeMobileMenu">
+          <span>Prédiction</span>
         </router-link>
       </nav>
       <div class="header-right">

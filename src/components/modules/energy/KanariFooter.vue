@@ -19,7 +19,6 @@
             <li><router-link to="/kanari-energy/consumption">Consommation</router-link></li>
             <li><router-link to="/kanari-energy/infrastructure">Infrastructure</router-link></li>
             <li><router-link to="/kanari-energy/centrales">Centrales</router-link></li>
-            <li><router-link to="/kanari-energy/realtime">Temps Réel</router-link></li>
           </ul>
         </div>
         <div class="footer-section">

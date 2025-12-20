@@ -12,8 +12,13 @@
         class="blog-card"
         @click="selectArticle(article)"
       >
-        <div class="blog-card-image" :style="{ background: article.color }">
-          <component :is="article.icon" :size="32" />
+        <div class="blog-card-image">
+          <img 
+            :src="article.image" 
+            :alt="article.title"
+            @error="handleImageError"
+            class="blog-image"
+          />
         </div>
         <div class="blog-card-content">
           <div class="blog-card-meta">
@@ -24,7 +29,19 @@
           <p class="blog-card-excerpt">{{ article.excerpt }}</p>
           <div class="blog-card-footer">
             <span class="blog-read-time">{{ article.readTime }} min de lecture</span>
-            <button class="blog-read-more">Lire la suite →</button>
+            <div class="blog-actions">
+              <a 
+                v-if="article.sourceUrl" 
+                :href="article.sourceUrl" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="blog-source-link"
+                @click.stop
+              >
+                Source
+              </a>
+              <button class="blog-read-more">Lire la suite →</button>
+            </div>
           </div>
         </div>
       </article>
@@ -52,6 +69,17 @@
               <h4 v-if="paragraph.type === 'heading'" class="article-heading">{{ paragraph.text }}</h4>
               <p v-else class="article-text">{{ paragraph.text }}</p>
             </div>
+          </div>
+          <div v-if="selectedArticle.sourceUrl" class="article-source">
+            <a 
+              :href="selectedArticle.sourceUrl" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="source-link"
+            >
+              <ExternalLink :size="16" />
+              <span>Lire l'article original</span>
+            </a>
           </div>
         </div>
       </div>
@@ -119,8 +147,12 @@ function updateArticlesWithRealData() {
     ? ((cons2020.total - cons2015.total) / cons2015.total * 100).toFixed(1)
     : '8.5'
   
-  // Créer une nouvelle copie des articles pour forcer la réactivité
-  const updatedArticles = articles.value.map(article => ({ ...article }))
+  // Créer une nouvelle copie des articles pour forcer la réactivité, en préservant image et sourceUrl
+  const updatedArticles = articles.value.map(article => ({ 
+    ...article,
+    image: article.image || 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800&h=400&fit=crop',
+    sourceUrl: article.sourceUrl || 'https://www.example.com/article'
+  }))
   
   // Mettre à jour les articles avec les vraies données
   if (updatedArticles.length > 0 && latestProd) {
@@ -161,49 +193,59 @@ const genericArticlesByCountry = {
   'SN': [
     {
       id: 1,
-      title: 'Sénégal : Nouveau parc solaire de 60 MW à Kolda',
-      excerpt: 'Le Sénégal renforce sa capacité solaire avec un nouveau projet de 60 MWc qui portera la puissance installée totale à 1 500 MW.',
-      category: 'Énergies Renouvelables',
-      date: new Date('2024-12-15'),
+      title: 'Sénégal : Transition vers le gaz domestique à partir de 2026',
+      excerpt: 'Le Sénégal annonce l\'approvisionnement de toutes ses centrales électriques en gaz domestique à partir de 2026, générant près de 140 milliards FCFA d\'économies annuelles.',
+      category: 'Politique Énergétique',
+      date: new Date('2024-08-27'),
       readTime: 5,
       color: '#FACC15',
       icon: Zap,
+      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=400&fit=crop',
+      sourceUrl: 'https://www.economie.gouv.sn/sites/default/files/2025-08/Revue_de_presse_du_mercredi_27_aout_2025.pdf',
       content: [
-        { type: 'text', text: 'Le gouvernement sénégalais a annoncé le lancement d\'un nouveau parc solaire de 60 MWc à Kolda. Ce projet s\'inscrit dans la stratégie nationale d\'augmentation de la part des énergies renouvelables dans le mix énergétique.' },
-        { type: 'heading', text: 'Capacité énergétique' },
-        { type: 'text', text: 'Avec ce nouveau projet, la puissance installée totale au Sénégal devrait atteindre 1 500 MW d\'ici 2025, incluant des sources solaires, hydroélectriques, éoliennes et thermiques.' },
-        { type: 'heading', text: 'Partenariats' },
-        { type: 'text', text: 'Le projet bénéficie du soutien de la Senelec et de partenaires internationaux. La construction devrait débuter en 2025.' }
+        { type: 'text', text: 'Le Sénégal a annoncé son intention d\'approvisionner l\'ensemble de ses centrales électriques en gaz domestique à partir de 2026, mettant ainsi fin aux importations de combustibles. Cette transition stratégique devrait générer annuellement près de 140 milliards de francs CFA d\'économies.' },
+        { type: 'heading', text: 'Souveraineté énergétique' },
+        { type: 'text', text: 'Cette décision marque une avancée significative vers la souveraineté énergétique du pays, réduisant sa dépendance aux importations de combustibles fossiles et améliorant la stabilité de son approvisionnement énergétique.' },
+        { type: 'heading', text: 'Impact économique' },
+        { type: 'text', text: 'Les économies générées permettront de réinvestir dans le développement des infrastructures énergétiques et d\'accélérer la transition vers les énergies renouvelables.' }
       ]
     },
     {
       id: 2,
-      title: 'Centrale de Sendou : Modernisation en cours',
-      excerpt: 'La centrale thermique de Sendou fait l\'objet d\'une modernisation pour améliorer son efficacité et réduire ses émissions.',
+      title: 'Sénégal : Augmentation des abonnements électriques en 2024',
+      excerpt: 'Le nombre de polices d\'abonnements électriques de l\'État est passé de 9 221 à 9 473 entre 2023 et 2024, avec une consommation totale de 431,6 kilowattheures.',
       category: 'Infrastructure',
-      date: new Date('2024-12-10'),
+      date: new Date('2024-10-28'),
       readTime: 4,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: 'https://www.economie.gouv.sn/sites/default/files/2025-11/Revue_de_presse_du_mardi_28_octobre_2025.pdf',
       content: [
-        { type: 'text', text: 'La centrale thermique de Sendou, d\'une capacité de 125 MW, fait l\'objet d\'un programme de modernisation pour améliorer son efficacité énergétique et réduire son empreinte carbone.' },
-        { type: 'heading', text: 'Objectifs' },
-        { type: 'text', text: 'Ce programme vise à réduire les émissions de CO₂ de 20% et à améliorer le taux de disponibilité de la centrale à plus de 90%.' }
+        { type: 'text', text: 'Entre 2023 et 2024, le nombre de polices d\'abonnements de l\'État est passé de 9 221 à 9 473, soit 252 nouveaux abonnés, avec une consommation totale de 431,6 kilowattheures en 2024.' },
+        { type: 'heading', text: 'Expansion de l\'accès' },
+        { type: 'text', text: 'Cette augmentation souligne l\'expansion continue de l\'accès à l\'électricité dans le pays, contribuant à l\'amélioration des conditions de vie de la population sénégalaise.' },
+        { type: 'heading', text: 'Développement du réseau' },
+        { type: 'text', text: 'Le gouvernement continue d\'investir dans l\'extension du réseau électrique pour atteindre l\'objectif d\'électrification universelle.' }
       ]
     },
     {
       id: 3,
-      title: 'Centrale solaire de Mékhé : Succès opérationnel',
-      excerpt: 'La centrale solaire de Mékhé, d\'une capacité de 30 MWc, continue de contribuer efficacement au réseau électrique sénégalais.',
-      category: 'Énergies Renouvelables',
-      date: new Date('2024-12-05'),
-      readTime: 4,
+      title: 'Sénégal : Lancement du satellite GaïndéSat-1A',
+      excerpt: 'Le Sénégal a lancé avec succès son premier satellite GaïndéSat-1A le 16 août 2024, renforçant ses capacités de surveillance et de gestion des ressources.',
+      category: 'Innovation',
+      date: new Date('2024-08-16'),
+      readTime: 5,
       color: '#FACC15',
       icon: Zap,
+      image: 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=800&h=400&fit=crop',
+      sourceUrl: 'https://www.geosenegal.gouv.sn/le-senegal-lance-son-premier-satellite-gaindesat-1a.html',
       content: [
-        { type: 'text', text: 'Depuis son inauguration en 2016, la centrale solaire de Mékhé a démontré sa fiabilité et sa contribution au mix énergétique sénégalais.' },
-        { type: 'heading', text: 'Performance' },
-        { type: 'text', text: 'La centrale produit annuellement environ 50 GWh d\'électricité propre, contribuant à réduire les émissions de gaz à effet de serre.' }
+        { type: 'text', text: 'Le 16 août 2024, le Sénégal a franchi une étape historique avec le lancement réussi de son premier satellite, GaïndéSat-1A, depuis la base de Vandenberg en Californie.' },
+        { type: 'heading', text: 'Partenariat technologique' },
+        { type: 'text', text: 'Développé en partenariat avec le Centre spatial universitaire de Montpellier, ce satellite permettra de collecter des données plusieurs fois par jour et de prendre des images du territoire sénégalais.' },
+        { type: 'heading', text: 'Applications énergétiques' },
+        { type: 'text', text: 'Les données satellitaires renforceront les capacités du pays en matière de surveillance et de gestion des ressources énergétiques, contribuant à une meilleure planification du secteur.' }
       ]
     }
   ],
@@ -217,6 +259,8 @@ const genericArticlesByCountry = {
       readTime: 6,
       color: '#8B5CF6',
       icon: Zap,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'Le Ghana a annoncé son intention de construire une centrale nucléaire d\'ici 2030-2035. Cette initiative fait partie d\'une stratégie à long terme pour diversifier les sources d\'énergie et assurer la sécurité énergétique du pays.' },
         { type: 'heading', text: 'Objectifs' },
@@ -251,6 +295,8 @@ const genericArticlesByCountry = {
       readTime: 5,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'La centrale thermique d\'Egbin, située près de Lagos, est en cours de modernisation pour augmenter sa capacité de production. Cette centrale est l\'une des plus importantes d\'Afrique subsaharienne.' },
         { type: 'heading', text: 'Capacité' },
@@ -336,6 +382,8 @@ const genericArticlesByCountry = {
       readTime: 4,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'La centrale thermique de Kossodo, située à Ouagadougou, est un élément important du réseau électrique burkinabè avec une capacité de 50 MW.' },
         { type: 'heading', text: 'Modernisation' },
@@ -370,6 +418,8 @@ const genericArticlesByCountry = {
       readTime: 5,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'La centrale KEKELI Efficient Power, d\'une capacité de 65 MW, est située dans la zone portuaire de Lomé. Elle utilise une technologie de cycle combiné avec une turbine à gaz (47 MW) et un cycle à vapeur (18 MW), ce qui limite les émissions de CO₂.' },
         { type: 'heading', text: 'Impact' },
@@ -387,6 +437,8 @@ const genericArticlesByCountry = {
       readTime: 4,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'Le Togo poursuit ses efforts de modernisation du réseau électrique avec les centrales thermiques de Kara (100 MW) et Lomé (80 MW).' },
         { type: 'heading', text: 'Objectifs' },
@@ -404,6 +456,8 @@ const genericArticlesByCountry = {
       readTime: 4,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'Le Bénin investit dans la modernisation de ses centrales thermiques, notamment celle de Maria Gléta (127 MW) à Cotonou et de Pobè (25 MW).' },
         { type: 'heading', text: 'Impact' },
@@ -440,6 +494,8 @@ const genericArticlesByCountry = {
       readTime: 4,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'La Guinée-Bissau continue de développer son secteur énergétique pour améliorer l\'accès à l\'électricité pour sa population.' },
         { type: 'heading', text: 'Projets' },
@@ -491,6 +547,8 @@ const genericArticlesByCountry = {
       readTime: 4,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: 'La Gambie investit dans la modernisation de sa centrale thermique de Kotu pour améliorer la fiabilité de l\'approvisionnement électrique.' },
         { type: 'heading', text: 'Objectifs' },
@@ -553,6 +611,8 @@ function getDefaultArticles() {
       readTime: 4,
       color: '#3B82F6',
       icon: Building2,
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+      sourceUrl: '#',
       content: [
         { type: 'text', text: `${countryName} poursuit ses efforts pour améliorer l'accès à l'électricité et développer les énergies renouvelables.` },
         { type: 'heading', text: 'Projets en cours' },
@@ -565,19 +625,21 @@ function getDefaultArticles() {
 const articles = ref([
   {
     id: 1,
-    title: 'Nouveau projet solaire de 50 MW dans le nord de la Côte d\'Ivoire',
-    excerpt: 'Le gouvernement ivoirien annonce le lancement d\'un nouveau parc solaire qui devrait augmenter la capacité de production d\'énergies renouvelables de 15%.',
+    title: 'Côte d\'Ivoire : Inauguration de la centrale solaire de Boundiali',
+    excerpt: 'La première phase de la centrale solaire de Boundiali a été inaugurée le 3 avril 2024, marquant une étape importante vers l\'objectif de 45% d\'énergies renouvelables d\'ici 2030.',
     category: 'Énergies Renouvelables',
-    date: new Date('2024-12-15'),
+    date: new Date('2024-04-03'),
     readTime: 5,
     color: '#FACC15',
     icon: Zap,
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=400&fit=crop',
+    sourceUrl: 'https://www.gouv.ci/actualite/18112',
     content: [
-      { type: 'text', text: 'Le gouvernement ivoirien a annoncé aujourd\'hui le lancement d\'un ambitieux projet de parc solaire dans la région du nord du pays. Ce projet, d\'une capacité de 50 mégawatts, représente une étape importante dans la transition énergétique de la Côte d\'Ivoire.' },
-      { type: 'heading', text: 'Impact sur le mix énergétique' },
-      { type: 'text', text: 'Avec ce nouveau parc, la part des énergies renouvelables dans le mix énergétique ivoirien devrait passer de 25% à près de 30% d\'ici 2025. Cette augmentation contribuera à réduire la dépendance aux énergies fossiles et à diminuer l\'empreinte carbone du pays.' },
-      { type: 'heading', text: 'Investissements et partenariats' },
-      { type: 'text', text: 'Le projet bénéficie d\'un financement de 45 millions d\'euros, avec le soutien de partenaires internationaux et de la Banque Africaine de Développement. La construction devrait commencer au premier trimestre 2025 et s\'achever d\'ici 18 mois.' }
+      { type: 'text', text: 'La première phase de la centrale solaire de Boundiali a été inaugurée le 3 avril 2024 par le gouvernement ivoirien. Ce projet s\'inscrit dans l\'objectif ambitieux de porter la part des énergies renouvelables à 45% du mix énergétique d\'ici 2030.' },
+      { type: 'heading', text: 'Projets solaires en développement' },
+      { type: 'text', text: 'En plus de Boundiali, une convention pour la réalisation d\'une centrale solaire de 50 MWc à Katiola a été signée le 2 décembre 2024. D\'autres projets de centrales solaires sont prévus à Mankono, Touba, Korhogo et Bondoukou.' },
+      { type: 'heading', text: 'Stratégie énergétique' },
+      { type: 'text', text: 'Ces investissements dans le solaire renforcent la position de la Côte d\'Ivoire comme hub énergétique en Afrique de l\'Ouest et contribuent à la diversification du mix énergétique national.' }
     ]
   },
   {
@@ -599,70 +661,78 @@ const articles = ref([
   },
   {
     id: 3,
-    title: 'Baisse de 8% de la consommation énergétique grâce aux mesures d\'efficacité',
-    excerpt: 'Les programmes d\'efficacité énergétique lancés en 2023 ont permis d\'économiser l\'équivalent de 200 MW, soit la consommation de 150 000 foyers.',
+    title: 'Côte d\'Ivoire : Lancement d\'audits énergétiques obligatoires',
+    excerpt: 'Le ministère des Mines, du Pétrole et de l\'Énergie a lancé le 10 octobre 2024 des audits énergétiques obligatoires pour maîtriser la consommation énergétique.',
     category: 'Efficacité Énergétique',
-    date: new Date('2024-12-05'),
+    date: new Date('2024-10-10'),
     readTime: 6,
     color: '#22C55E',
     icon: Leaf,
+    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&h=400&fit=crop',
+    sourceUrl: 'https://www.gouv.ci/actualite/17602',
     content: [
-      { type: 'text', text: 'Les résultats des programmes d\'efficacité énergétique mis en place par le gouvernement ivoirien sont impressionnants. En un an, la consommation énergétique a diminué de 8% grâce à diverses initiatives.' },
-      { type: 'heading', text: 'Mesures mises en place' },
-      { type: 'text', text: 'Parmi les mesures phares : remplacement de 500 000 ampoules à incandescence par des LED, installation de systèmes de climatisation à haute efficacité dans les bâtiments publics, et sensibilisation des entreprises aux bonnes pratiques énergétiques.' },
-      { type: 'heading', text: 'Impact économique' },
-      { type: 'text', text: 'Ces économies représentent une réduction de 45 millions d\'euros sur la facture énergétique nationale. L\'argent économisé sera réinvesti dans de nouveaux projets d\'infrastructure énergétique.' }
+      { type: 'text', text: 'Le ministère des Mines, du Pétrole et de l\'Énergie a lancé, le 10 octobre 2024, des audits énergétiques obligatoires pour maîtriser la consommation énergétique. Cette initiative répond à une demande intérieure en énergie en croissance annuelle de plus de 10%.' },
+      { type: 'heading', text: 'Objectifs des audits' },
+      { type: 'text', text: 'Ces audits permettront d\'identifier les opportunités d\'économie d\'énergie dans les secteurs industriel, commercial et résidentiel, contribuant à réduire la pression sur le réseau électrique national.' },
+      { type: 'heading', text: 'Gestion de la demande' },
+      { type: 'text', text: 'Face à une croissance annuelle de la demande énergétique de plus de 10%, ces audits sont essentiels pour optimiser l\'utilisation de l\'énergie et garantir la stabilité du réseau électrique.' }
     ]
   },
   {
     id: 4,
-    title: 'Côte d\'Ivoire : objectif 50% d\'énergies renouvelables d\'ici 2030',
-    excerpt: 'Le pays renforce son engagement en faveur de la transition énergétique avec un nouveau plan ambitieux pour atteindre 50% d\'énergies renouvelables.',
-    category: 'Politique Énergétique',
-    date: new Date('2024-11-28'),
+    title: 'Côte d\'Ivoire : 1er Salon international des Ressources extractives et énergétiques (SIREXE)',
+    excerpt: 'Le SIREXE s\'est tenu du 27 novembre au 1er décembre 2024 à Abidjan, réunissant plus de 1 500 délégués de 50 pays et générant 4 000 milliards FCFA d\'investissements.',
+    category: 'Événements',
+    date: new Date('2024-11-27'),
     readTime: 7,
     color: '#F97316',
     icon: TrendingUp,
+    image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=800&h=400&fit=crop',
+    sourceUrl: 'https://www.gouv.ci/uploads/publications/175072511253.pdf',
     content: [
-      { type: 'text', text: 'Le gouvernement ivoirien a présenté son nouveau plan de transition énergétique, visant à porter la part des énergies renouvelables à 50% d\'ici 2030. Actuellement, cette part s\'élève à environ 25%.' },
-      { type: 'heading', text: 'Stratégie de développement' },
-      { type: 'text', text: 'Pour atteindre cet objectif, le pays prévoit d\'investir 2,5 milliards d\'euros dans les énergies renouvelables. Les projets incluent des parcs solaires, éoliens, et l\'expansion des capacités hydroélectriques existantes.' },
-      { type: 'heading', text: 'Partenariats internationaux' },
-      { type: 'text', text: 'La Côte d\'Ivoire compte sur le soutien de partenaires internationaux et d\'organisations comme la Banque Mondiale et l\'Union Européenne pour financer cette transition. Des appels d\'offres seront lancés dès 2025 pour les premiers projets.' }
+      { type: 'text', text: 'Le 1er Salon international des Ressources extractives et énergétiques (SIREXE) s\'est tenu du 27 novembre au 1er décembre 2024 à Abidjan, réunissant plus de 1 500 délégués de 50 pays.' },
+      { type: 'heading', text: 'Investissements signés' },
+      { type: 'text', text: 'Cet événement majeur a permis la signature de contrats d\'investissement d\'environ 4 000 milliards de FCFA, démontrant l\'attractivité du secteur énergétique ivoirien pour les investisseurs internationaux.' },
+      { type: 'heading', text: 'Plateforme d\'échanges' },
+      { type: 'text', text: 'Le SIREXE a servi de plateforme d\'échanges pour les acteurs du secteur énergétique et minier, renforçant les partenariats stratégiques et les opportunités d\'investissement en Côte d\'Ivoire.' }
     ]
   },
   {
     id: 5,
-    title: 'Nouvelle centrale hydroélectrique de 200 MW en construction',
-    excerpt: 'Le chantier de la nouvelle centrale hydroélectrique sur le fleuve Sassandra avance bien et devrait être opérationnelle en 2026.',
-    category: 'Infrastructure',
-    date: new Date('2024-11-20'),
+    title: 'Côte d\'Ivoire : Investissements massifs dans le secteur pétrolier et minier',
+    excerpt: 'Depuis 2011, plus de 1 200 milliards FCFA ont été investis dans la recherche pétrolière et 4 513 milliards FCFA dans l\'exploitation pétrolière.',
+    category: 'Investissements',
+    date: new Date('2024-12-03'),
     readTime: 5,
     color: '#3B82F6',
     icon: Zap,
+    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=400&fit=crop',
+    sourceUrl: 'https://www.gouv.ci/doc/1733213276GOUV%20Revue%20de%20Presse%20-%2003%20decembre%202024.pdf',
     content: [
-      { type: 'text', text: 'La construction de la nouvelle centrale hydroélectrique de 200 MW sur le fleuve Sassandra progresse selon le calendrier prévu. Les travaux de génie civil sont à 60% d\'avancement.' },
-      { type: 'heading', text: 'Capacité et impact' },
-      { type: 'text', text: 'Une fois opérationnelle, cette centrale fournira de l\'électricité à plus de 1,5 million d\'Ivoiriens. Elle contribuera également à stabiliser le réseau électrique national et à réduire les coupures d\'électricité.' },
-      { type: 'heading', text: 'Respect de l\'environnement' },
-      { type: 'text', text: 'Le projet intègre des mesures environnementales strictes pour minimiser l\'impact sur l\'écosystème local. Des programmes de reforestation et de protection de la biodiversité sont en cours.' }
+      { type: 'text', text: 'Depuis 2011, plus de 1 200 milliards de FCFA ont été investis dans la recherche pétrolière et 4 513 milliards de FCFA dans l\'exploitation pétrolière en Côte d\'Ivoire. La réforme du code pétrolier en 2012 a attiré davantage d\'investissements privés.' },
+      { type: 'heading', text: 'Découvertes récentes' },
+      { type: 'text', text: 'Le pays a découvert d\'importants gisements pétroliers et gaziers, notamment "Baleine" et "Calao", ainsi que le gisement aurifère "Tanda-Iguéla" dont la production devrait débuter en 2028.' },
+      { type: 'heading', text: 'Impact économique' },
+      { type: 'text', text: 'Ces investissements renforcent la position de la Côte d\'Ivoire comme acteur majeur du secteur énergétique en Afrique de l\'Ouest et contribuent à la diversification de son économie.' }
     ]
   },
   {
     id: 6,
-    title: 'Exportation d\'électricité : la Côte d\'Ivoire renforce sa position régionale',
-    excerpt: 'Le pays confirme son rôle de hub énergétique en Afrique de l\'Ouest avec une augmentation de 20% de ses exportations d\'électricité.',
-    category: 'Commerce Énergétique',
-    date: new Date('2024-11-15'),
+    title: 'Côte d\'Ivoire : Découverte du gisement aurifère Tanda-Iguéla',
+    excerpt: 'Le gisement Tanda-Iguéla devrait produire environ 11 tonnes d\'or par an sur 15 ans, créant environ 4 000 emplois directs et indirects.',
+    category: 'Ressources Naturelles',
+    date: new Date('2024-12-03'),
     readTime: 4,
     color: '#8B5CF6',
     icon: TrendingUp,
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
+    sourceUrl: 'https://www.gouv.ci/doc/1733213276GOUV%20Revue%20de%20Presse%20-%2003%20decembre%202024.pdf',
     content: [
-      { type: 'text', text: 'La Côte d\'Ivoire continue de renforcer sa position de leader dans l\'exportation d\'électricité en Afrique de l\'Ouest. Les exportations ont augmenté de 20% cette année.' },
-      { type: 'heading', text: 'Pays destinataires' },
-      { type: 'text', text: 'Le pays exporte actuellement vers le Ghana, le Burkina Faso, le Mali, le Bénin et le Togo. Ces exportations représentent une source importante de revenus et renforcent l\'intégration régionale.' },
-      { type: 'heading', text: 'Perspectives d\'avenir' },
-      { type: 'text', text: 'Avec les nouveaux projets en cours, la capacité d\'exportation devrait encore augmenter de 30% d\'ici 2027. Des discussions sont en cours avec d\'autres pays de la sous-région pour étendre le réseau d\'interconnexion.' }
+      { type: 'text', text: 'Le gisement aurifère "Tanda-Iguéla" découvert en Côte d\'Ivoire devrait produire environ 11 tonnes d\'or par an sur 15 ans. La production devrait débuter en 2028, créant environ 4 000 emplois directs et indirects.' },
+      { type: 'heading', text: 'Impact économique' },
+      { type: 'text', text: 'Cette découverte renforce le secteur minier ivoirien et contribue à la diversification de l\'économie nationale, générant des revenus importants pour le pays.' },
+      { type: 'heading', text: 'Réforme du code minier' },
+      { type: 'text', text: 'La réforme du code minier en 2014 a augmenté le nombre de permis de recherche de 120 en 2012 à 189 en 2023, stimulant l\'exploration et les découvertes de nouveaux gisements.' }
     ]
   }
 ])
@@ -681,6 +751,11 @@ function selectArticle(article) {
 
 function closeArticle() {
   selectedArticle.value = null
+}
+
+function handleImageError(event) {
+  // Fallback vers une image par défaut si l'image ne charge pas
+  event.target.src = 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800&h=400&fit=crop'
 }
 </script>
 
@@ -719,11 +794,13 @@ function closeArticle() {
 .blog-card {
   background: #FFFFFF;
   border: 1px solid #E5E7EB;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
 }
 
 .blog-card:hover {
@@ -733,23 +810,41 @@ function closeArticle() {
 }
 
 .blog-card-image {
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #E5E7EB;
+}
+
+.blog-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.blog-card:hover .blog-image {
+  transform: scale(1.05);
 }
 
 .blog-card-content {
-  padding: 1.25rem;
+  padding: 1.5rem;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .blog-card-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
-  font-size: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .blog-category {
@@ -773,35 +868,62 @@ function closeArticle() {
 }
 
 .blog-card-excerpt {
-  font-size: 0.875rem;
-  color: #6B7280;
-  line-height: 1.6;
-  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+  color: #4B5563;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
 }
 
 .blog-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.blog-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.blog-source-link {
+  color: #6B7280;
+  font-size: 0.75rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.blog-source-link:hover {
+  color: #3B82F6;
+  text-decoration: underline;
 }
 
 .blog-read-time {
-  font-size: 0.75rem;
-  color: #9CA3AF;
+  font-size: 0.8125rem;
+  color: #6B7280;
+  font-weight: 500;
 }
 
 .blog-read-more {
   background: none;
   border: none;
   color: #3B82F6;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .blog-read-more:hover {
   color: #2563EB;
+  gap: 0.5rem;
 }
 
 .modal-overlay {
@@ -913,6 +1035,28 @@ function closeArticle() {
   font-size: 1rem;
   color: #374151;
   line-height: 1.8;
+}
+
+.article-source {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #E5E7EB;
+}
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3B82F6;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: color 0.2s ease;
+}
+
+.source-link:hover {
+  color: #2563EB;
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {

@@ -19,7 +19,7 @@ import { AlertCircle } from 'lucide-vue-next'
 import { useCountryStore } from '../../../stores/countryStore.js'
 
 const countryStore = useCountryStore()
-const countryName = computed(() => countryStore.selectedCountry.name)
+const countryName = computed(() => countryStore.selectedCountry?.name || 'ce pays')
 </script>
 
 <style scoped>

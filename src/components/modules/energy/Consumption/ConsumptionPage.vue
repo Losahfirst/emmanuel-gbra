@@ -4,7 +4,7 @@
     
     <template v-else>
     <div class="page-header">
-      <h1 class="page-title">Consommation Énergétique - {{ countryStore.selectedCountry.name }}</h1>
+      <h1 class="page-title">Consommation Énergétique - {{ countryStore.selectedCountry?.name || 'Chargement...' }}</h1>
       <div class="header-actions">
         <select v-model="selectedPeriod" @change="updateData" class="period-selector">
           <option value="5">5 dernières années</option>
@@ -171,7 +171,7 @@ import { useCountryStore } from '../../../../stores/countryStore.js'
 import NoDataMessage from '../NoDataMessage.vue'
 
 const countryStore = useCountryStore()
-const hasData = computed(() => countryStore.selectedCountry.hasData)
+const hasData = computed(() => countryStore.selectedCountry?.hasData || false)
 
 const selectedPeriod = ref('10')
 const consumptionData = ref([])

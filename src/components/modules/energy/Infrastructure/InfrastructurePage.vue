@@ -167,7 +167,7 @@ import { useCountryStore } from '../../../../stores/countryStore.js'
 import NoDataMessage from '../NoDataMessage.vue'
 
 const countryStore = useCountryStore()
-const hasData = computed(() => countryStore.selectedCountry.hasData)
+const hasData = computed(() => countryStore.selectedCountry?.hasData || false)
 
 const selectedPeriod = ref('10')
 const networkData = ref([])

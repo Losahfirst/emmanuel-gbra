@@ -1,10 +1,17 @@
 <template>
   <div class="production-page">
-    <NoDataMessage v-if="!hasData" />
+    <!-- Loading State -->
+    <div v-if="!countryStore.selectedCountry" class="loading-state">
+      <p>Chargement...</p>
+    </div>
     
+    <!-- No Data Message -->
+    <NoDataMessage v-else-if="!hasData" />
+    
+    <!-- Main Content -->
     <template v-else>
     <div class="page-header">
-      <h1 class="page-title">Production Énergétique - {{ countryStore.selectedCountry.name }}</h1>
+      <h1 class="page-title">Production Énergétique - {{ countryStore.selectedCountry?.name || 'Chargement...' }}</h1>
       <div class="header-actions">
         <select v-model="selectedPeriod" @change="updateData" class="period-selector">
           <option value="5">5 dernières années</option>
@@ -27,7 +34,7 @@
         </div>
         <div class="summary-content">
           <h3 class="summary-label">Production Totale</h3>
-          <p class="summary-value">{{ formatPower(latestProduction?.total || 0) }}</p>
+          <p class="summary-value">{{ latestProduction ? formatPower(latestProduction.total || 0) : '0 MW' }}</p>
           <span class="summary-change">Année {{ latestProduction?.year || 2020 }}</span>
         </div>
       </div>
@@ -49,7 +56,7 @@
         </div>
         <div class="summary-content">
           <h3 class="summary-label">Production Thermique</h3>
-          <p class="summary-value">{{ formatPower(latestProduction?.thermal || 0) }}</p>
+          <p class="summary-value">{{ latestProduction ? formatPower(latestProduction.thermal || 0) : '0 MW' }}</p>
           <span class="summary-change">{{ thermalPercentage }}% du total</span>
         </div>
       </div>
@@ -141,7 +148,7 @@
           <option value="bioenergy">Bioénergie</option>
         </select>
       </div>
-      <PowerPlantsList :type="selectedPlantType" />
+      <PowerPlantsList :plants="countryPlants" :type="selectedPlantType" />
     </div>
 
     <!-- Statistics Table -->
@@ -188,11 +195,27 @@ import { Zap, Droplet, Flame, TrendingUp } from 'lucide-vue-next'
 import { formatPower } from '../../../../utils/formatters.js'
 import { energyApi } from '../../../../api/energyApi.js'
 import { useCountryStore } from '../../../../stores/countryStore.js'
+import { getPowerPlantsByCountry } from '../../../../data/powerPlantsData.js'
 import NoDataMessage from '../NoDataMessage.vue'
+import PowerPlantsList from '../Centrales/PowerPlantsList.vue'
 
 const countryStore = useCountryStore()
-const hasData = computed(() => countryStore.selectedCountry.hasData)
-import PowerPlantsList from '../Centrales/PowerPlantsList.vue'
+
+// S'assurer que le store est initialisé immédiatement
+if (!countryStore.selectedCountryCode) {
+  countryStore.resetToDefault()
+}
+
+const hasData = computed(() => {
+  try {
+    const country = countryStore.selectedCountry
+    if (!country) return false
+    return country.hasData === true
+  } catch (error) {
+    console.error('Erreur dans hasData computed:', error)
+    return false
+  }
+})
 
 const selectedPeriod = ref('10')
 const selectedView = ref('annual')
@@ -203,19 +226,43 @@ const installedPowerData = ref([])
 const latestProduction = ref(null)
 const latestInstalled = ref(null)
 
+// Centrales du pays sélectionné
+const countryPlants = computed(() => {
+  if (!countryStore.selectedCountryCode) return []
+  return getPowerPlantsByCountry(countryStore.selectedCountryCode) || []
+})
+
 const renewableRate = computed(() => {
-  if (!latestProduction.value || latestProduction.value.total === 0) return 0
-  return Math.round((latestProduction.value.hydraulic / latestProduction.value.total) * 100)
+  try {
+    if (!latestProduction.value || !latestProduction.value.total || latestProduction.value.total === 0) return 0
+    const hydraulic = latestProduction.value.hydraulic || 0
+    return Math.round((hydraulic / latestProduction.value.total) * 100)
+  } catch (error) {
+    console.error('Erreur dans renewableRate:', error)
+    return 0
+  }
 })
 
 const hydraulicPercentage = computed(() => {
-  if (!latestProduction.value || latestProduction.value.total === 0) return 0
-  return Math.round((latestProduction.value.hydraulic / latestProduction.value.total) * 100)
+  try {
+    if (!latestProduction.value || !latestProduction.value.total || latestProduction.value.total === 0) return 0
+    const hydraulic = latestProduction.value.hydraulic || 0
+    return Math.round((hydraulic / latestProduction.value.total) * 100)
+  } catch (error) {
+    console.error('Erreur dans hydraulicPercentage:', error)
+    return 0
+  }
 })
 
 const thermalPercentage = computed(() => {
-  if (!latestProduction.value || latestProduction.value.total === 0) return 0
-  return Math.round((latestProduction.value.thermal / latestProduction.value.total) * 100)
+  try {
+    if (!latestProduction.value || !latestProduction.value.total || latestProduction.value.total === 0) return 0
+    const thermal = latestProduction.value.thermal || 0
+    return Math.round((thermal / latestProduction.value.total) * 100)
+  } catch (error) {
+    console.error('Erreur dans thermalPercentage:', error)
+    return 0
+  }
 })
 
 const annualProductionChartOptions = ref({
@@ -241,7 +288,7 @@ const annualProductionChartOptions = ref({
   tooltip: { theme: 'light' }
 })
 
-const annualProductionChartSeries = ref([])
+const annualProductionChartSeries = ref([{ name: 'Hydraulique', data: [] }, { name: 'Thermique', data: [] }, { name: 'Centrales Isolées', data: [] }])
 
 const monthlyProductionChartOptions = ref({
   chart: {
@@ -309,121 +356,245 @@ const installedPowerChartOptions = ref({
   }
 })
 
-const installedPowerChartSeries = ref([])
+const installedPowerChartSeries = ref([{ name: 'Hydraulique', data: [] }, { name: 'Thermique', data: [] }])
 
 const detailedStats = computed(() => {
-  return productionBruteData.value.map(item => {
-    const installed = installedPowerData.value.find(i => i.year === item.year)
-    const renewableRate = item.total > 0 
-      ? Math.round((item.hydraulic / item.total) * 100)
-      : 0
-
-    return {
-      year: item.year,
-      hydraulic: item.hydraulic,
-      thermal: item.thermal,
-      isolated: item.isolated,
-      total: item.total,
-      installedPower: installed?.total || 0,
-      renewableRate
+  try {
+    if (!productionBruteData.value || !Array.isArray(productionBruteData.value)) {
+      return []
     }
-  }).reverse()
+    
+    return productionBruteData.value.map(item => {
+      try {
+        const installed = installedPowerData.value?.find(i => i?.year === item?.year)
+        const total = item?.total || 0
+        const hydraulic = item?.hydraulic || 0
+        const renewableRate = total > 0 
+          ? Math.round((hydraulic / total) * 100)
+          : 0
+
+        return {
+          year: item?.year || 0,
+          hydraulic: hydraulic,
+          thermal: item?.thermal || 0,
+          isolated: item?.isolated || 0,
+          total: total,
+          installedPower: installed?.total || 0,
+          renewableRate
+        }
+      } catch (error) {
+        console.error('Erreur dans detailedStats map:', error)
+        return {
+          year: 0,
+          hydraulic: 0,
+          thermal: 0,
+          isolated: 0,
+          total: 0,
+          installedPower: 0,
+          renewableRate: 0
+        }
+      }
+    }).reverse()
+  } catch (error) {
+    console.error('Erreur dans detailedStats computed:', error)
+    return []
+  }
 })
 
 async function updateData() {
-  const years = parseInt(selectedPeriod.value)
-  const endYear = 2020
-  const startYear = years === 40 ? 1980 : endYear - years + 1
+  try {
+    const years = parseInt(selectedPeriod.value) || 10
+    const endYear = 2020
+    const startYear = years === 40 ? 1980 : endYear - years + 1
 
-  const [productionBrute, installedPower, productionMonthly] = await Promise.all([
-    energyApi.getProductionBrute({ startYear, endYear }),
-    energyApi.getInstalledPower({ startYear, endYear }),
-    selectedView.value === 'monthly' 
-      ? energyApi.getProduction({ 
-          startDate: new Date(startYear, 0, 1).toISOString(),
-          endDate: new Date(endYear, 11, 31).toISOString()
-        })
-      : Promise.resolve([])
-  ])
+    // Utiliser Promise.allSettled pour éviter qu'une erreur bloque tout
+    const results = await Promise.allSettled([
+      energyApi.getProductionBrute({ startYear, endYear }).catch(e => {
+        console.error('Erreur getProductionBrute:', e)
+        return []
+      }),
+      energyApi.getInstalledPower({ startYear, endYear }).catch(e => {
+        console.error('Erreur getInstalledPower:', e)
+        return []
+      }),
+      selectedView.value === 'monthly' 
+        ? energyApi.getProduction({ 
+            startDate: new Date(startYear, 0, 1).toISOString(),
+            endDate: new Date(endYear, 11, 31).toISOString()
+          }).catch(e => {
+            console.error('Erreur getProduction:', e)
+            return []
+          })
+        : Promise.resolve([])
+    ])
 
-  productionBruteData.value = productionBrute
-  installedPowerData.value = installedPower
-  productionMonthlyData.value = productionMonthly
+    const productionBrute = results[0].status === 'fulfilled' ? results[0].value : []
+    const installedPower = results[1].status === 'fulfilled' ? results[1].value : []
+    const productionMonthly = results[2].status === 'fulfilled' ? results[2].value : []
 
-  if (productionBrute.length > 0) {
-    latestProduction.value = productionBrute[productionBrute.length - 1]
+    productionBruteData.value = productionBrute || []
+    installedPowerData.value = installedPower || []
+    productionMonthlyData.value = productionMonthly || []
+
+    if (productionBrute && productionBrute.length > 0) {
+      latestProduction.value = productionBrute[productionBrute.length - 1]
+    }
+
+    if (installedPower && installedPower.length > 0) {
+      latestInstalled.value = installedPower[installedPower.length - 1]
+    }
+
+    // Générer les graphiques seulement si on a des données
+    if (productionBruteData.value.length > 0 || installedPowerData.value.length > 0) {
+      generateCharts()
+    }
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour des données:', error)
+    // Initialiser avec des valeurs par défaut pour éviter les erreurs
+    productionBruteData.value = []
+    installedPowerData.value = []
+    productionMonthlyData.value = []
+    // Générer des graphiques vides pour éviter les erreurs
+    generateCharts()
   }
-
-  if (installedPower.length > 0) {
-    latestInstalled.value = installedPower[installedPower.length - 1]
-  }
-
-  generateCharts()
 }
 
 function generateCharts() {
-  // Production annuelle
-  annualProductionChartSeries.value = [
-    {
-      name: 'Hydraulique',
-      data: productionBruteData.value.map(d => [d.year, d.hydraulic])
-    },
-    {
-      name: 'Thermique',
-      data: productionBruteData.value.map(d => [d.year, d.thermal])
-    },
-    {
-      name: 'Centrales Isolées',
-      data: productionBruteData.value.map(d => [d.year, d.isolated])
+  try {
+    // Production annuelle
+    if (productionBruteData.value && Array.isArray(productionBruteData.value) && productionBruteData.value.length > 0) {
+      annualProductionChartSeries.value = [
+        {
+          name: 'Hydraulique',
+          data: productionBruteData.value.map(d => [d.year || 0, d.hydraulic || 0])
+        },
+        {
+          name: 'Thermique',
+          data: productionBruteData.value.map(d => [d.year || 0, d.thermal || 0])
+        },
+        {
+          name: 'Centrales Isolées',
+          data: productionBruteData.value.map(d => [d.year || 0, d.isolated || 0])
+        }
+      ]
+    } else {
+      annualProductionChartSeries.value = []
     }
-  ]
 
-  // Production mensuelle
-  if (productionMonthlyData.value.length > 0) {
-    monthlyProductionChartSeries.value = [
-      {
-        name: 'Hydraulique',
-        data: productionMonthlyData.value.map(d => [new Date(d.timestamp).getTime(), d.hydraulic])
-      },
-      {
-        name: 'Thermique',
-        data: productionMonthlyData.value.map(d => [new Date(d.timestamp).getTime(), d.thermal])
-      }
-    ]
-  }
-
-  // Mix énergétique
-  if (latestProduction.value) {
-    mixChartSeries.value = [
-      latestProduction.value.hydraulic,
-      latestProduction.value.thermal,
-      latestProduction.value.isolated
-    ]
-  }
-
-  // Puissance installée
-  installedPowerChartSeries.value = [
-    {
-      name: 'Hydraulique',
-      data: installedPowerData.value.map(d => [d.year, d.hydraulic])
-    },
-    {
-      name: 'Thermique',
-      data: installedPowerData.value.map(d => [d.year, d.thermal])
+    // Production mensuelle
+    if (productionMonthlyData.value && Array.isArray(productionMonthlyData.value) && productionMonthlyData.value.length > 0) {
+      monthlyProductionChartSeries.value = [
+        {
+          name: 'Hydraulique',
+          data: productionMonthlyData.value.map(d => {
+            try {
+              return [new Date(d.timestamp).getTime(), d.hydraulic || 0]
+            } catch {
+              return [0, 0]
+            }
+          })
+        },
+        {
+          name: 'Thermique',
+          data: productionMonthlyData.value.map(d => {
+            try {
+              return [new Date(d.timestamp).getTime(), d.thermal || 0]
+            } catch {
+              return [0, 0]
+            }
+          })
+        }
+      ]
+    } else {
+      monthlyProductionChartSeries.value = []
     }
-  ]
+
+    // Mix énergétique
+    if (latestProduction.value) {
+      mixChartSeries.value = [
+        latestProduction.value.hydraulic || 0,
+        latestProduction.value.thermal || 0,
+        latestProduction.value.isolated || 0
+      ]
+    } else {
+      mixChartSeries.value = [0, 0, 0]
+    }
+
+    // Puissance installée
+    if (installedPowerData.value && Array.isArray(installedPowerData.value) && installedPowerData.value.length > 0) {
+      installedPowerChartSeries.value = [
+        {
+          name: 'Hydraulique',
+          data: installedPowerData.value.map(d => [d.year || 0, d.hydraulic || 0])
+        },
+        {
+          name: 'Thermique',
+          data: installedPowerData.value.map(d => [d.year || 0, d.thermal || 0])
+        }
+      ]
+    } else {
+      installedPowerChartSeries.value = []
+    }
+  } catch (error) {
+    console.error('Erreur lors de la génération des graphiques:', error)
+    // Initialiser avec des valeurs par défaut pour éviter les erreurs
+    annualProductionChartSeries.value = []
+    monthlyProductionChartSeries.value = []
+    mixChartSeries.value = [0, 0, 0]
+    installedPowerChartSeries.value = []
+  }
 }
 
 // Surveiller les changements de pays
 watch(() => countryStore.selectedCountryCode, async () => {
-  if (hasData.value) {
-    await updateData()
+  try {
+    if (hasData.value) {
+      await updateData()
+    } else {
+      // Réinitialiser les données si on change de pays sans données
+      productionBruteData.value = []
+      installedPowerData.value = []
+      productionMonthlyData.value = []
+      latestProduction.value = null
+      latestInstalled.value = null
+      generateCharts()
+    }
+  } catch (error) {
+    console.error('Erreur dans watch countryStore:', error)
+    generateCharts()
   }
 })
 
 onMounted(async () => {
-  if (hasData.value) {
-    await updateData()
+  try {
+    // S'assurer que le store est initialisé
+    if (!countryStore.selectedCountryCode) {
+      countryStore.resetToDefault()
+    }
+    
+    // Attendre que Vue ait mis à jour les computed properties
+    await new Promise(resolve => setTimeout(resolve, 200))
+    
+    // Toujours initialiser les graphiques d'abord pour éviter les erreurs de rendu
+    generateCharts()
+    
+    // Ensuite charger les données si disponibles
+    if (hasData.value) {
+      try {
+        await updateData()
+      } catch (error) {
+        console.error('Erreur lors du chargement des données:', error)
+        // En cas d'erreur, les graphiques sont déjà initialisés avec des valeurs vides
+      }
+    }
+  } catch (error) {
+    console.error('Erreur fatale dans onMounted:', error)
+    // En cas d'erreur fatale, s'assurer que les graphiques sont initialisés
+    try {
+      generateCharts()
+    } catch (chartError) {
+      console.error('Erreur lors de l\'initialisation des graphiques:', chartError)
+    }
   }
 })
 </script>
@@ -435,6 +606,13 @@ onMounted(async () => {
   margin: 0 auto;
   padding: 1.5rem;
   background: #FAFAFA;
+}
+
+.loading-state {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6B7280;
+  font-size: 1rem;
 }
 
 .page-header {

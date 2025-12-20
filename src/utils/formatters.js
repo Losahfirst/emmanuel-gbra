@@ -101,3 +101,26 @@ export function getEnergySourceColor(category) {
   }
   return colors[category] || '#6B7280'
 }
+
+/**
+ * Formate une longueur en km
+ */
+export function formatLength(value) {
+  if (value >= 1000) {
+    return `${(value / 1000).toFixed(1)}k km`
+  }
+  return `${Math.round(value)} km`
+}
+
+/**
+ * Formate un nombre avec séparateurs
+ */
+export function formatNumber(value) {
+  if (value >= 1000000) {
+    return `${(value / 1000000).toFixed(2)}M`
+  }
+  if (value >= 1000) {
+    return `${(value / 1000).toFixed(1)}k`
+  }
+  return value.toLocaleString('fr-FR')
+}

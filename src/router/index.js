@@ -9,8 +9,8 @@ import KanariInfrastructure from '../views/KanariInfrastructure.vue'
 import KanariProduction from '../views/KanariProduction.vue'
 import KanariAPI from '../views/KanariAPI.vue'
 import KanariCentrales from '../views/KanariCentrales.vue'
-import KanariRealtime from '../views/KanariRealtime.vue'
-
+import KanariMapping from '../views/KanariMapping.vue'
+import KanariPrediction from '../views/KanariPrediction.vue'
 const routes = [
   {
     path: '/',
@@ -67,9 +67,14 @@ const routes = [
     component: KanariCentrales
   },
   {
-    path: '/kanari-energy/realtime',
-    name: 'KanariRealtime',
-    component: KanariRealtime
+    path: '/kanari-energy/mapping',
+    name: 'KanariMapping',
+    component: KanariMapping
+  },
+  {
+    path: '/kanari-energy/prediction',
+    name: 'KanariPrediction',
+    component: KanariPrediction
   }
 ]
 
