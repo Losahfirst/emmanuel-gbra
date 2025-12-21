@@ -265,7 +265,7 @@ const scrollTo = (section) => {
 
 @media (max-width: 480px) {
   .hero-section {
-    padding: 5rem 0 2rem;
+    padding: 8.5rem 0 2rem;
   }
   
   .hero-headline {
