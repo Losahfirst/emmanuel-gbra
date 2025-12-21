@@ -5,7 +5,7 @@
         <div class="footer-section">
           <h3 class="footer-title">KOREKOU EMMANUEL GBRA</h3>
           <p class="footer-description">
-  Futur Machine Learning Engineer dédié à l'innovation énergétique et à l'intelligence artificielle.
+  Futur Machine Learning Engineer dédié à l'innovation énergétique.
 </p>
         </div>
         <div class="footer-section">

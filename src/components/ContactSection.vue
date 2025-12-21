@@ -62,10 +62,7 @@
       <div class="community-section">
         <h3 class="community-title">Communautés & Réseaux</h3>
         <div class="community-links">
-          <a href="https://techrepublic.love/" target="_blank" class="community-link">
-            <IconWrapper name="globe" size="md" />
-            <span>Tech Republic</span>
-          </a>
+         
           <a href="https://www.linkedin.com/in/korekou-emmanuel-gbra/" target="_blank" class="community-link">
             <IconWrapper name="briefcase" size="md" />
             <span>LinkedIn</span>
