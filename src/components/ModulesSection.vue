@@ -124,7 +124,13 @@ const closeModule = () => {
 }
 
 const openKanariPage = () => {
-  router.push('/kanari-energy/dashboard')
+  // Fermer la modal si elle est ouverte
+  closeModule()
+  // Rediriger vers la page d'accueil KANARI (pas le dashboard)
+  console.log('Navigation vers /kanari-energy (page d\'accueil)')
+  router.push('/kanari-energy').catch(err => {
+    console.error('Erreur de navigation:', err)
+  })
 }
 
 const handleOpenModuleEvent = (event) => {

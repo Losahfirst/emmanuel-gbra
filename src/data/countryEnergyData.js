@@ -83,7 +83,8 @@ export const countryEnergyData = {
     regulator: {
       name: 'Nigerian Electricity Regulatory Commission (NERC)',
       website: 'https://nerc.gov.ng',
-      description: 'Organisme de régulation du secteur électrique au Nigeria'
+      description: 'Organisme de régulation du secteur électrique au Nigeria',
+      logo: '/logos/regulators/nerc.png'
     },
     producers: [
       { name: 'Egbin Power', type: 'Thermique', capacity: '1320 MW' },

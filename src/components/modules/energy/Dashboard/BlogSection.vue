@@ -1,13 +1,13 @@
 <template>
   <div class="blog-section">
     <div class="blog-header">
-      <h2 class="blog-title">Actualité Énergétique - {{ countryStore.selectedCountry.name }}</h2>
-      <p class="blog-subtitle">Restez informé des dernières nouvelles sur le secteur énergétique {{ countryStore.selectedCountry.name === 'Côte d\'Ivoire' ? 'ivoirien' : 'de ' + countryStore.selectedCountry.name }}</p>
+      <h2 class="blog-title">Actualité Énergétique - {{ countryStore?.selectedCountry?.name || 'Pays' }}</h2>
+      <p class="blog-subtitle">Restez informé des dernières nouvelles sur le secteur énergétique {{ countryStore?.selectedCountry?.name === 'Côte d\'Ivoire' ? 'ivoirien' : 'de ' + (countryStore?.selectedCountry?.name || 'ce pays') }}</p>
     </div>
 
     <div class="blog-grid">
       <article
-        v-for="article in articles"
+        v-for="article in displayedArticles"
         :key="article.id"
         class="blog-card"
         @click="selectArticle(article)"
@@ -45,6 +45,14 @@
           </div>
         </div>
       </article>
+    </div>
+
+    <!-- Voir plus button -->
+    <div v-if="articles.length > 4" class="view-more-section">
+      <router-link to="/kanari-energy/articles/history" class="btn-view-more">
+        <span>Voir toutes les actualités ({{ articles.length }})</span>
+        <ArrowRight :size="18" />
+      </router-link>
     </div>
 
     <!-- Article Detail Modal -->
@@ -88,23 +96,100 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
-import { Zap, Leaf, TrendingUp, Building2, X } from 'lucide-vue-next'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { Zap, Leaf, TrendingUp, Building2, X, ExternalLink, ArrowRight } from 'lucide-vue-next'
 import { getAnalyticsData } from '../../../../services/realDataService.js'
 import { useCountryStore } from '../../../../stores/countryStore.js'
+import { getArticlesByCountry } from '../../../../services/jsonDataService.js'
 
 const countryStore = useCountryStore()
 const selectedArticle = ref(null)
 const analyticsData = ref(null)
+const articles = ref([])
+
+// Afficher seulement les 4 plus récentes sur le dashboard
+const displayedArticles = computed(() => {
+  // Trier par date (plus récentes en premier) et prendre les 4 premières
+  return [...articles.value]
+    .sort((a, b) => {
+      const dateA = new Date(a.date)
+      const dateB = new Date(b.date)
+      return dateB - dateA
+    })
+    .slice(0, 4)
+})
 
 // Fonction pour charger les articles selon le pays
 async function loadArticlesForCountry() {
-  if (countryStore.selectedCountry.hasData) {
-    analyticsData.value = await getAnalyticsData()
-    updateArticlesWithRealData()
-  } else {
-    // Pour les pays sans données, utiliser des articles génériques
-    loadGenericArticles()
+  if (!countryStore.selectedCountry || !countryStore.selectedCountryCode) {
+    articles.value = []
+    return
+  }
+  
+  try {
+    // Charger les articles (depuis localStorage en priorité, puis fichiers JSON)
+    const jsonArticles = await getArticlesByCountry(countryStore.selectedCountryCode)
+    
+    if (jsonArticles && jsonArticles.length > 0) {
+      // Transformer les articles JSON au format attendu
+      articles.value = jsonArticles.map(a => ({
+        id: a.id,
+        countryCode: a.countryCode,
+        title: a.title,
+        excerpt: a.excerpt || '',
+        category: a.category || 'Actualité',
+        date: a.date || new Date().toISOString(),
+        image: a.image || 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800&h=400&fit=crop',
+        sourceUrl: a.sourceUrl || '',
+        readTime: a.readTime || '5',
+        content: Array.isArray(a.content) ? a.content : (typeof a.content === 'string' ? JSON.parse(a.content || '[]') : [])
+      }))
+      return // Sortir si on a des articles JSON
+    }
+    
+    // Si pas d'articles SQLite, utiliser les fallbacks
+    if (countryStore.selectedCountry.hasData && countryStore.selectedCountryCode === 'CI') {
+      // Pour Côte d'Ivoire avec données, utiliser les articles par défaut avec données réelles
+      articles.value = [...defaultCIVArticles]
+      try {
+        analyticsData.value = await getAnalyticsData()
+        updateArticlesWithRealData()
+      } catch (e) {
+        console.error('Erreur lors du chargement des données réelles:', e)
+      }
+    } else if (countryStore.selectedCountry.hasData) {
+      // Pour autres pays avec données, utiliser les données réelles
+      try {
+        analyticsData.value = await getAnalyticsData()
+        updateArticlesWithRealData()
+      } catch (e) {
+        loadGenericArticles()
+      }
+    } else {
+      // Pour les pays sans données, utiliser des articles génériques
+      loadGenericArticles()
+    }
+  } catch (error) {
+    console.error('Erreur lors du chargement des articles:', error)
+    // Fallback sur les données par défaut
+    if (countryStore.selectedCountry && countryStore.selectedCountry.hasData && countryStore.selectedCountryCode === 'CI') {
+      articles.value = [...defaultCIVArticles]
+      try {
+        analyticsData.value = await getAnalyticsData()
+        updateArticlesWithRealData()
+      } catch (e) {
+        console.error('Erreur lors du chargement des données réelles:', e)
+      }
+    } else if (countryStore.selectedCountry && countryStore.selectedCountry.hasData) {
+      try {
+        analyticsData.value = await getAnalyticsData()
+        updateArticlesWithRealData()
+      } catch (e) {
+        loadGenericArticles()
+      }
+    } else {
+      loadGenericArticles()
+    }
   }
 }
 
@@ -113,13 +198,32 @@ watch(() => countryStore.selectedCountryCode, async () => {
   await loadArticlesForCountry()
 }, { immediate: true })
 
+// Gestionnaire d'événement pour les mises à jour
+let articlesUpdateHandler = null
+
 onMounted(async () => {
   // Charger les articles selon le pays sélectionné au montage
   await loadArticlesForCountry()
+  
+  // Écouter les événements de mise à jour des articles
+  articlesUpdateHandler = async () => {
+    // Petit délai pour s'assurer que la base de données est bien sauvegardée
+    await new Promise(resolve => setTimeout(resolve, 200))
+    await loadArticlesForCountry()
+  }
+  window.addEventListener('articles-updated', articlesUpdateHandler)
+})
+
+onUnmounted(() => {
+  // Nettoyer l'écouteur lors du démontage
+  if (articlesUpdateHandler) {
+    window.removeEventListener('articles-updated', articlesUpdateHandler)
+    articlesUpdateHandler = null
+  }
 })
 
 function updateArticlesWithRealData() {
-  if (!analyticsData.value) return
+  if (!analyticsData.value || !articles.value || articles.value.length === 0) return
   
   const prod = analyticsData.value.productionBrute || []
   const cons = analyticsData.value.consumption || []
@@ -622,7 +726,8 @@ function getDefaultArticles() {
   ]
 }
 
-const articles = ref([
+// Articles par défaut pour Côte d'Ivoire (fallback)
+const defaultCIVArticles = [
   {
     id: 1,
     title: 'Côte d\'Ivoire : Inauguration de la centrale solaire de Boundiali',
@@ -735,14 +840,21 @@ const articles = ref([
       { type: 'text', text: 'La réforme du code minier en 2014 a augmenté le nombre de permis de recherche de 120 en 2012 à 189 en 2023, stimulant l\'exploration et les découvertes de nouveaux gisements.' }
     ]
   }
-])
+]
 
 function formatDate(date) {
-  return new Date(date).toLocaleDateString('fr-FR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  })
+  if (!date) return ''
+  try {
+    const dateObj = date instanceof Date ? date : new Date(date)
+    if (isNaN(dateObj.getTime())) return date
+    return dateObj.toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    })
+  } catch (e) {
+    return date
+  }
 }
 
 function selectArticle(article) {
@@ -1059,18 +1171,217 @@ function handleImageError(event) {
   text-decoration: underline;
 }
 
+.view-more-section {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #E5E7EB;
+}
+
+.btn-view-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: #3B82F6;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.2s ease;
+}
+
+.btn-view-more:hover {
+  background: #2563EB;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
 @media (max-width: 768px) {
-  .blog-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .modal-overlay {
+  .blog-section {
     padding: 1rem;
   }
   
-  .modal-header,
+  .blog-title {
+    font-size: 1.5rem;
+  }
+  
+  .blog-subtitle {
+    font-size: 0.875rem;
+  }
+  
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .blog-card-image {
+    height: 180px;
+  }
+  
+  .blog-card-content {
+    padding: 1.25rem;
+  }
+  
+  .modal-overlay {
+    padding: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .modal-content {
+    border-radius: 0.75rem;
+    max-height: 100vh;
+    margin-top: 60px;
+  }
+  
+  .modal-header {
+    padding: 1.25rem;
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+  
+  .modal-title {
+    font-size: 1.375rem;
+    padding-right: 3rem;
+  }
+  
   .modal-body {
-    padding: 1.5rem;
+    padding: 1.25rem;
+  }
+  
+  .article-heading {
+    font-size: 1.125rem;
+  }
+  
+  .article-text {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-section {
+    padding: 0.75rem;
+  }
+  
+  .blog-header {
+    margin-bottom: 1.25rem;
+  }
+  
+  .blog-title {
+    font-size: 1.25rem;
+  }
+  
+  .blog-subtitle {
+    font-size: 0.8125rem;
+  }
+  
+  .blog-grid {
+    gap: 0.75rem;
+  }
+  
+  .blog-card {
+    border-radius: 0.75rem;
+  }
+  
+  .blog-card-image {
+    height: 160px;
+  }
+  
+  .blog-card-content {
+    padding: 1rem;
+  }
+  
+  .blog-card-meta {
+    margin-bottom: 0.75rem;
+  }
+  
+  .blog-category {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+  }
+  
+  .blog-card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .blog-card-excerpt {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .blog-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .modal-overlay {
+    padding: 0;
+  }
+  
+  .modal-content {
+    border-radius: 0;
+    max-height: 100%;
+    height: 100%;
+    margin-top: 0;
+  }
+  
+  .modal-header {
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .modal-close {
+    width: 36px;
+    height: 36px;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  
+  .modal-title {
+    font-size: 1.125rem;
+    padding-right: 2.5rem;
+  }
+  
+  .modal-meta {
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .article-heading {
+    font-size: 1rem;
+    margin-top: 0.75rem;
+  }
+  
+  .article-text {
+    font-size: 0.875rem;
+    line-height: 1.65;
+  }
+  
+  .btn-view-more {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
   }
 }
 </style>

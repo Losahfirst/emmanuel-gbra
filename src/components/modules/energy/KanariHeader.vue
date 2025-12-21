@@ -6,7 +6,7 @@
           <Menu v-if="!mobileMenuOpen" :size="24" />
           <X v-else :size="24" />
         </button>
-        <router-link to="/kanari-energy/dashboard" class="logo-link">
+        <router-link to="/kanari-energy" class="logo-link">
           <img src="/kanari-logo.png" alt="KANARI Energy" class="kanari-logo-header" />
         </router-link>
         <div class="country-selector-wrapper">
@@ -43,12 +43,6 @@
         <button class="icon-btn mobile-hidden">
           <MessageCircle :size="20" />
         </button>
-        <div class="user-menu mobile-hidden">
-          <div class="user-avatar">
-            <User :size="20" />
-          </div>
-          <ChevronDown :size="16" />
-        </div>
       </div>
     </div>
     <div v-if="mobileMenuOpen" class="mobile-menu-overlay" @click="closeMobileMenu"></div>
@@ -57,7 +51,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Bell, MessageCircle, User, ChevronDown, Menu, X } from 'lucide-vue-next'
+import { Bell, MessageCircle, Menu, X } from 'lucide-vue-next'
 import CountrySelector from './CountrySelector.vue'
 
 const mobileMenuOpen = ref(false)
@@ -147,15 +141,15 @@ function closeMobileMenu() {
 }
 
 .kanari-logo-header {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
 }
 
 @media (max-width: 768px) {
   .kanari-logo-header {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
   }
 }
 
@@ -279,7 +273,7 @@ function closeMobileMenu() {
   }
   
   .country-selector-wrapper {
-    display: none;
+    display: flex;
   }
   
   .header-nav {

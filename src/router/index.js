@@ -11,6 +11,9 @@ import KanariAPI from '../views/KanariAPI.vue'
 import KanariCentrales from '../views/KanariCentrales.vue'
 import KanariMapping from '../views/KanariMapping.vue'
 import KanariPrediction from '../views/KanariPrediction.vue'
+import KanariHome from '../views/KanariHome.vue'
+import KanariEditor from '../views/KanariEditor.vue'
+import KanariArticlesHistory from '../views/KanariArticlesHistory.vue'
 const routes = [
   {
     path: '/',
@@ -24,7 +27,8 @@ const routes = [
   },
   {
     path: '/kanari-energy',
-    redirect: '/kanari-energy/dashboard'
+    name: 'KanariHome',
+    component: KanariHome
   },
   {
     path: '/kanari-energy/dashboard',
@@ -75,6 +79,16 @@ const routes = [
     path: '/kanari-energy/prediction',
     name: 'KanariPrediction',
     component: KanariPrediction
+  },
+  {
+    path: '/kanari-energy/editor',
+    name: 'KanariEditor',
+    component: KanariEditor
+  },
+  {
+    path: '/kanari-energy/articles/history',
+    name: 'KanariArticlesHistory',
+    component: KanariArticlesHistory
   }
 ]
 

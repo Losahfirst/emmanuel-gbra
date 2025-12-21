@@ -3,7 +3,7 @@
     <div class="container">
       <nav class="nav">
         <router-link to="/" class="logo" @click="closeMenu">
-          <IconWrapper name="code" size="md" class="logo-icon" />
+          <img src="/profile-photo.png" alt="Emmanuel Gbra" class="profile-photo-header" />
           <span class="logo-text">EMMANUEL GBRA</span>
         </router-link>
         <ul class="nav-links" :class="{ 'nav-open': isMenuOpen }">
@@ -51,7 +51,7 @@
             </ul>
           </li>
           <li>
-            <router-link to="/kanari-energy/dashboard" class="nav-link" @click="closeMenu">
+            <router-link to="/kanari-energy" class="nav-link" @click="closeMenu">
               <IconWrapper name="bolt" size="sm" />
               <span>KANARI</span>
             </router-link>
@@ -179,6 +179,14 @@ onUnmounted(() => {
 
 .logo-icon {
   color: var(--accent-orange);
+}
+
+.profile-photo-header {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-orange);
 }
 
 .logo-text {
