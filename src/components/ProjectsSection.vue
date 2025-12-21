@@ -35,12 +35,17 @@ import ProjectLogo from './ProjectLogo.vue'
 const projects = [
   {
     iconName: 'bolt',
-    title: 'KANARI Energy - Monitoring Énergétique',
-    logoUrl: 'https://cdn-icons-png.flaticon.com/512/3655/3655581.png',
-    description: 'Plateforme web moderne de visualisation en temps réel de la production et consommation électrique de la Côte d\'Ivoire. Dashboard interactif avec graphiques du mix énergétique (hydraulique, thermique, solaire, bioénergie), KPIs en temps réel, alertes intelligentes et conseils éco-responsables. Intégration avec ApexCharts pour des visualisations performantes et export des données (PNG, PDF, CSV, Excel).',
-    technologies: ['Vue.js 3', 'Pinia', 'ApexCharts', 'Real-time Data', 'Data Visualization', 'Energy Monitoring'],
-    link: null
-  },
+    title: 'KANARI Energy Monitoring Énergétique d\'Afrique',
+    logoUrl: 'https://media.licdn.com/dms/image/v2/D4E0BAQHpc5zzJ8GLJQ/company-logo_100_100/B4EZY9a03xHgAU-/0/1744787165175?e=1767830400&v=beta&t=RTaSjH2GaVltqJN5VJLozCSr0Faxrnsb9lyCgu187zk', // Note: Vérifiez si vous avez un logo local plus pro
+    description: 'Suite de plateformes Big Data (Energy, Mining, Water) dédiée au monitoring temps réel des secteurs critiques en Afrique de l’Ouest. Kanari centralise des flux massifs de données historiques et temps réel via des dashboards haute fidélité, offrant une couverture multi-pays complète et une API REST robuste pour l\'intégration décisionnelle.',
+    technologies: [
+        'Python (Scrapy / Pandas / FastAPI)', 
+        'WebSockets / Real-time Data',
+        'PostgreSQL / TimeScaleDB', 
+        'REST API Design'
+    ],
+    link: 'https://kanari.ecobin.tech/' 
+},
   {
     iconName: 'gas-turbine',
     title: 'Analyse Prédictive des Turbines à Gaz',
@@ -93,25 +98,18 @@ const projects = [
     iconName: 'hand', // Ou 'video' selon votre bibliothèque d'icônes
     title: 'Contrôle Gestuel par IA',
     description: 'Développement d\'un algorithme de vision par ordinateur permettant de piloter un ordinateur par gestes (déplacement du curseur, clics) en temps réel.',
-    technologies: ['Python', 'OpenCV', 'MediaPipe', 'Vision par ordinateur'],
+    technologies: ['Python',  'MediaPipe', 'Vision par ordinateur'],
     link: 'https://www.linkedin.com/posts/korekou-emmanuel-gbra_ia-reconnaissancedimage-technologie-ugcPost-7314465519724625920-KyfK?utm_source=share&utm_medium=member_desktop&rcm=ACoAADIxZAgBar6Sg6SQUOd4eA86pTAqzXJf3nc',
     logoUrl: 'https://advertisingweek.com/wp-content/uploads/2023/10/ai-machine-learning-robot-hand-ai-artificial-intelligence-assistance-human-touching-on-big.jpg_s1024x1024wisk20cCbA1aSI-cfn3vkm3YfbkJvc7Jm3tZVJ5aibR8mYT-8w.jpg' 
   // Note : J'ai suggéré une image de haute qualité sur l'IA/Robotique, 
   // mais vous pouvez utiliser une capture d'écran de votre propre démo LinkedIn !
 },
-{
-  iconName: 'support',
-  title: 'Support Technique IA',
-  description: 'Accompagnement technique de l\'équipe lauréate du 1er Prix au Hackathon PNUD. J\'ai conseillé l\'intégration de modèles de reconnaissance d\'image (Teachable Machine) pour automatiser le signalement des déchets via un chatbot.',
-  technologies: ['Conseil IA', 'Teachable Machine', 'Prototypage Rapide', 'Telegram API'],
-  link: 'https://t.me/LigneverteBot',
-  logoUrl: 'https://cdn-icons-png.flaticon.com/512/5225/5225075.png' 
-},
+
 {
   iconName: 'book-open',
   title: 'Vulgarisation : ML & Énergétique',
   description: 'Partage d\'expertise sur l\'application du Machine Learning (Scikit-learn) pour prédire les pics de consommation. Une approche pédagogique liant IoT et maintenance prédictive pour relever les défis énergétiques en Afrique. Cette expertise a été mise en pratique dans KANARI Energy, une plateforme de monitoring énergétique en temps réel.',
-  technologies: ['Scikit-learn', 'IoT', 'Vulgarisation', 'Efficacité Énergétique'],
+  technologies: ['Scikit-learn', 'IoT',  'Efficacité Énergétique'],
   link: 'https://www.linkedin.com/posts/korekou-emmanuel-gbra_iot-machinelearning-energie-activity-7352090015633395713-2ONe?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADIxZAgBar6Sg6SQUOd4eA86pTAqzXJf3nc',
   logoUrl: 'https://cdn-icons-png.flaticon.com/512/8055/8055576.png'
 }
