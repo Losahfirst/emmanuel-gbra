@@ -50,12 +50,7 @@
               </li>
             </ul>
           </li>
-          <li>
-            <router-link to="/kanari-energy" class="nav-link" @click="closeMenu">
-              <IconWrapper name="bolt" size="sm" />
-              <span>KANARI</span>
-            </router-link>
-          </li>
+
           <li>
             <router-link to="/team-connect" class="nav-link" @click="closeMenu">
               <IconWrapper name="users" size="sm" />
