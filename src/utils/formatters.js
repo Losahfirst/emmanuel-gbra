@@ -93,13 +93,13 @@ export function getEnergySourceIcon(category) {
  */
 export function getEnergySourceColor(category) {
   const colors = {
-    hydraulic: '#3B82F6', // Bleu
-    thermal: '#F97316',   // Orange
+    hydraulic: '#2563EB', // Bleu
+    thermal: '#7C3AED',   // Violet
     solar: '#FACC15',     // Jaune
     bioenergy: '#22C55E',  // Vert
-    consumption: '#1F2937' // Gris foncé
+    consumption: '#0F172A' // Bleu nuit
   }
-  return colors[category] || '#6B7280'
+  return colors[category] || '#475569'
 }
 
 /**

@@ -3,10 +3,10 @@
     <HeroSection />
     <AboutSection />
     <ExperienceSection />
+    <SkillsSection />
+    <AwardsSection />
     <ProjectsSection />
     <ArticlesSection />
-    <SkillsSection />
-    
     <ContactSection />
   </div>
 </template>
@@ -15,9 +15,10 @@
 import HeroSection from '../components/HeroSection.vue'
 import AboutSection from '../components/AboutSection.vue'
 import ExperienceSection from '../components/ExperienceSection.vue'
+import SkillsSection from '../components/SkillsSection.vue'
+import AwardsSection from '../components/AwardsSection.vue'
 import ProjectsSection from '../components/ProjectsSection.vue'
 import ArticlesSection from '../components/ArticlesSection.vue'
-import SkillsSection from '../components/SkillsSection.vue'
-import TestimonialsSection from '../components/TestimonialsSection.vue'
 import ContactSection from '../components/ContactSection.vue'
 </script>
+

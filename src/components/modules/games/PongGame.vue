@@ -187,11 +187,11 @@ const draw = () => {
 }
 
 .score {
-  color: var(--accent-orange);
+  color: var(--accent-primary);
 }
 
 .game-canvas {
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   border-radius: 1rem;
   background: #1a1a1a;
   box-shadow: var(--shadow-game);

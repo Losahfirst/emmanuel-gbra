@@ -356,7 +356,7 @@ const downloadFile = (filename, content) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   color: white;
   box-shadow: var(--shadow-game);
 }
@@ -378,7 +378,7 @@ const downloadFile = (filename, content) => {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  border-bottom: var(--border-thick) solid var(--border-color);
+  border-bottom: var(--border-thick) solid var(--card-border);
 }
 
 .tab-button {
@@ -407,8 +407,8 @@ const downloadFile = (filename, content) => {
 }
 
 .tab-button.active {
-  color: var(--accent-orange);
-  border-bottom-color: var(--accent-orange);
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
 }
 
 .games-grid {
@@ -418,17 +418,19 @@ const downloadFile = (filename, content) => {
 }
 
 .game-card {
-  background: var(--bg-light);
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 1.25rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   transition: all 0.2s ease;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .game-card:hover {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+  border-color: var(--card-border-hover);
 }
 
 .game-header {
@@ -448,14 +450,15 @@ const downloadFile = (filename, content) => {
 .game-type {
   font-size: 0.75rem;
   padding: 0.25rem 0.75rem;
-  background: var(--accent-yellow);
+  background: var(--accent-light);
   color: var(--dark-gray);
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--card-border);
   border-radius: 0.5rem;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .game-type :deep(svg) {
@@ -502,7 +505,7 @@ const downloadFile = (filename, content) => {
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: var(--border-thick) solid var(--border-color);
+  border-bottom: var(--border-thick) solid var(--card-border);
 }
 
 .game-header-bar .btn {
@@ -519,25 +522,27 @@ const downloadFile = (filename, content) => {
 }
 
 .game-area {
-  background: var(--bg-light);
+  background: var(--card-bg);
   border-radius: 1.25rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   padding: 2rem;
   min-height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .offline-info {
-  background: var(--accent-yellow);
+  background: var(--accent-light);
   padding: 1rem 1.5rem;
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   margin-bottom: 2rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .offline-info :deep(svg) {

@@ -1,25 +1,56 @@
 <template>
-  <section class="experience-section section" id="experience">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">EXPÉRIENCE PROFESSIONNELLE</h2>
-        <p class="section-subtitle">Un parcours dédié à l'innovation technologique et énergétique</p>
-      </div>
-      <div class="timeline">
-        <div class="timeline-item" v-for="(exp, index) in experiences" :key="index">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <div class="timeline-header">
-              <h3 class="timeline-title">{{ exp.title }}</h3>
-              <span class="timeline-company">{{ exp.company }}</span>
-              <span class="timeline-period">{{ exp.period }}</span>
+  <section class="section experience" id="experience">
+    <h2 class="section-title">Parcours</h2>
+    <p class="section-subtitle">Expériences professionnelles et formation</p>
+    
+    <div class="timeline-container">
+      <!-- Experiences -->
+      <div class="timeline-section">
+        <h3 class="timeline-label">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+          </svg>
+          Expériences
+        </h3>
+        
+        <div class="timeline">
+          <div class="timeline-item" v-for="exp in experiences" :key="exp.id">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <span class="timeline-date">{{ exp.period }}</span>
+                <span class="timeline-type">{{ exp.type }}</span>
+              </div>
+              <h4>{{ exp.title }}</h4>
+              <p class="timeline-company">{{ exp.company }}</p>
+              <p class="timeline-desc">{{ exp.description }}</p>
+              <div class="timeline-techs">
+                <span v-for="tech in exp.techs" :key="tech">{{ tech }}</span>
+              </div>
             </div>
-            <p class="timeline-description">{{ exp.description }}</p>
-            <ul class="timeline-tasks">
-              <li v-for="(task, i) in exp.tasks" :key="i">{{ task }}</li>
-            </ul>
-            <div class="timeline-tech">
-              <span v-for="(tech, i) in exp.technologies" :key="i" class="tech-tag">{{ tech }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="timeline-section">
+        <h3 class="timeline-label">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+          </svg>
+          Formation
+        </h3>
+        
+        <div class="timeline">
+          <div class="timeline-item" v-for="edu in education" :key="edu.id">
+            <div class="timeline-dot edu"></div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <span class="timeline-date">{{ edu.period }}</span>
+              </div>
+              <h4>{{ edu.degree }}</h4>
+              <p class="timeline-company">{{ edu.school }}</p>
+              <p class="timeline-desc">{{ edu.description }}</p>
             </div>
           </div>
         </div>
@@ -31,49 +62,86 @@
 <script setup>
 const experiences = [
   {
-    title: 'Alternance en IoT et Data Monitoring',
+    id: 1,
+    title: 'Stage IoT & Data Monitoring',
     company: 'CIPREL',
-    period: 'Août 2025 – Décembre 2025',
-    description: 'Développement d\'applications Big Data pour l\'analyse prédictive des assets, notamment des turbines à gaz.',
-    tasks: [
-      'Conception d\'application web d\'analyse et de prédiction des arrêts des turbines à gaz avec Django, Vue.js et PostgreSQL',
-      'Mise en place de pipelines ETL pour le traitement automatique des données d\'exploitation à partir de données CSV',
-      'Conception de tableaux de bord de monitoring et d\'analyse des données',
-      'Classification des données par Random Forest avec Scikit-learn'
-    ],
-    technologies: ['Django', 'Vue.js', 'PostgreSQL', 'Python', 'Scikit-learn', 'ETL', 'Big Data']
+    type: 'Énergie',
+    period: 'Août 2025 – Déc 2025',
+    description: 'Développement d\'applications Big Data pour l\'analyse prédictive des turbines à gaz.',
+    techs: ['Django', 'Vue.js', 'PostgreSQL', 'Scikit-learn', 'ETL']
   },
   {
+    id: 2,
     title: 'Chef de Projet Maintenance',
     company: 'INOVATEC',
-    period: 'Septembre 2021 – Mai 2025',
-    description: 'Gestion de projets de maintenance intelligente et développement de solutions IoT pour le monitoring.',
-    tasks: [
-      'Conception d\'application de monitoring de température et humidité avec Flutter, Firebase, ESP32 et module DHT11',
-      'Mise en place du service ISmart pour la gestion intelligente de la maintenance avec solutions GMAO et GTB',
-      'Gestion de projets de maintenance pour ONOMO AEROPORT, PLAYCE MARCORY, COPHARMED DJIBI, Carrefour Market, NOOM HOTEL PLATEAU',
-      'Gestion de la maintenance CVC, groupe électrogène et onduleurs des agences MTN Abidjan et Up-Country'
-    ],
-    technologies: ['Flutter', 'Firebase', 'ESP32', 'IoT', 'GMAO', 'GTB']
+    type: 'Tech',
+    period: 'Sept 2021 – Mai 2025',
+    description: 'Gestion de projets IoT et solutions de maintenance intelligente (GMAO, GTB).',
+    techs: ['Flutter', 'Firebase', 'ESP32', 'IoT', 'GMAO']
+  }
+]
+
+const education = [
+  {
+    id: 1,
+    degree: 'Licence CNAM - IoT appliqué à l\'énergétique',
+    school: 'Eranove Academy',
+    period: 'Oct 2024 – Déc 2025',
+    description: 'IoT appliqué à la production d\'électricité, optimisation des performances énergétiques, maintenance prédictive.'
+  },
+  {
+    id: 2,
+    degree: 'ML Engineering & Intelligence Artificielle',
+    school: 'DataCamp - Bourse ISHERRO 2025-2026',
+    period: 'Juil 2025',
+    description: 'NLP, Deep Reinforcement Learning, MLOps, Deep Learning (PyTorch), XGBoost, Docker.'
+  },
+  {
+    id: 3,
+    degree: 'Bachelor Electronics for Embedded Systems',
+    school: 'Université Tertiaire et Technologique',
+    period: '2020 – 2021',
+    description: 'Informatique, Télécommunication, Électronique, Automatisme. Meilleur Étudiant Filière Info-Télécom 2021.'
+  },
+  {
+    id: 4,
+    degree: 'Baccalauréat Série C',
+    school: 'Lycée Classique Bouaké',
+    period: '2016 – 2018',
+    description: 'Physique théorique et mathématiques.'
   }
 ]
 </script>
 
 <style scoped>
-.experience-section {
-  background: var(--bg-light);
-  margin: 2rem;
-  border-radius: 2rem;
-  border: var(--border-thick) solid var(--border-color);
-  padding: 4rem 0;
-  box-shadow: var(--shadow-game);
+.experience {
+  background: var(--gray);
+}
+
+.timeline-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.timeline-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-label {
+  font-size: 1.1rem;
+  color: var(--dark);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--primary);
 }
 
 .timeline {
   position: relative;
-  max-width: 900px;
-  margin: 0 auto;
-  padding-left: 2rem;
+  padding-left: 1.5rem;
 }
 
 .timeline::before {
@@ -83,177 +151,101 @@ const experiences = [
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(180deg, var(--primary-purple) 0%, var(--primary-teal) 100%);
+  background: var(--gray-dark);
 }
 
 .timeline-item {
   position: relative;
-  margin-bottom: 3rem;
-  padding-left: 3rem;
+  padding-bottom: 2rem;
 }
 
-.timeline-marker {
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
   position: absolute;
   left: -1.5rem;
-  top: 0.5rem;
-  width: 16px;
-  height: 16px;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--primary);
   border-radius: 50%;
-  background: var(--primary-purple);
-  border: 4px solid white;
-  box-shadow: 0 0 0 3px var(--primary-purple);
+  transform: translateX(-5px);
+  border: 2px solid var(--white);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.timeline-dot.edu {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px #FEF3C7;
 }
 
 .timeline-content {
   background: var(--white);
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
-  box-shadow: var(--shadow-game);
-  transition: all 0.2s ease;
-}
-
-.timeline-content:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.15);
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .timeline-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: baseline;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
-.timeline-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--dark-gray);
-  flex: 1;
-  min-width: 200px;
-  font-family: 'Space Grotesk', sans-serif;
-  letter-spacing: -0.02em;
+.timeline-date {
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.timeline-type {
+  font-size: 0.7rem;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+}
+
+.timeline-content h4 {
+  font-size: 0.95rem;
+  color: var(--dark);
+  margin-bottom: 0.25rem;
 }
 
 .timeline-company {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--primary-purple);
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
-.timeline-period {
-  font-size: 0.9rem;
-  color: var(--light-gray);
-  background: #F7FAFC;
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.5rem;
-}
-
-.timeline-description {
-  font-size: 1rem;
-  color: var(--light-gray);
-  line-height: 1.7;
-  margin-bottom: 1rem;
-}
-
-.timeline-tasks {
-  list-style: none;
-  margin: 1rem 0;
-  padding-left: 0;
-}
-
-.timeline-tasks li {
-  position: relative;
-  padding-left: 1.5rem;
+.timeline-desc {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  line-height: 1.5;
   margin-bottom: 0.75rem;
-  color: var(--light-gray);
-  line-height: 1.6;
 }
 
-.timeline-tasks li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--primary-teal);
-  font-weight: bold;
-}
-
-.timeline-tech {
+.timeline-techs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.4rem;
 }
 
-.tech-tag {
-  font-size: 0.85rem;
-  padding: 0.5rem 1rem;
-  background: var(--accent-orange);
-  color: var(--white);
-  border: 2px solid var(--border-color);
-  border-radius: 0.75rem;
-  font-weight: 600;
-  font-family: 'Space Grotesk', sans-serif;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+.timeline-techs span {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  background: var(--gray);
+  border-radius: 10px;
+  color: var(--text);
 }
 
-@media (max-width: 968px) {
-  .experience-section {
-    margin: 1rem;
-    padding: 3rem 0;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
-  .timeline {
-    padding-left: 1.5rem;
-  }
-  
-  .timeline-item {
-    padding-left: 2rem;
-  }
-  
-  .timeline-content {
-    padding: 1.5rem;
-  }
-  
-  .timeline-header {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .experience-section {
-    margin: 0.5rem;
-    padding: 2rem 0;
-  }
-  
-  .section-title {
-    font-size: 1.75rem;
-  }
-  
-  .timeline {
-    padding-left: 1rem;
-  }
-  
-  .timeline-item {
-    padding-left: 1.5rem;
-  }
-  
-  .timeline-content {
-    padding: 1.25rem;
-  }
-  
-  .timeline-title {
-    font-size: 1.25rem;
-  }
-  
-  .timeline-tasks li {
-    font-size: 0.9rem;
+@media (max-width: 768px) {
+  .timeline-container {
+    grid-template-columns: 1fr;
   }
 }
 </style>

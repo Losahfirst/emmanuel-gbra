@@ -386,24 +386,26 @@ const resetWizard = () => {
 }
 
 .career-card {
-  background: var(--bg-light);
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 1.25rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .career-card:hover {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+  border-color: var(--card-border-hover);
 }
 
 .career-card.selected {
-  background: var(--accent-yellow);
-  border-color: var(--accent-orange);
+  background: var(--accent-light);
+  border-color: var(--accent-primary);
 }
 
 .career-icon {
@@ -432,8 +434,8 @@ const resetWizard = () => {
 
 .option-button {
   padding: 1.25rem;
-  background: var(--bg-light);
-  border: var(--border-thick) solid var(--border-color);
+  background: var(--surface-bg);
+  border: var(--border-thick) solid var(--card-border);
   border-radius: 1rem;
   font-size: 1rem;
   font-weight: 600;
@@ -445,15 +447,16 @@ const resetWizard = () => {
 }
 
 .option-button:hover {
-  background: var(--accent-yellow);
+  background: var(--card-bg);
   transform: translate(-2px, -2px);
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+  border-color: var(--card-border-hover);
 }
 
 .option-button.selected {
-  background: var(--accent-orange);
+  background: var(--accent-primary);
   color: var(--white);
-  border-color: var(--dark-gray);
+  border-color: var(--accent-primary);
 }
 
 .wizard-actions {
@@ -495,15 +498,16 @@ const resetWizard = () => {
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: var(--bg-light);
+  background: var(--card-bg);
   border-radius: 1.25rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .phase-number {
   width: 50px;
   height: 50px;
-  background: var(--accent-orange);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: var(--white);
   border-radius: 50%;
   display: flex;
@@ -512,7 +516,7 @@ const resetWizard = () => {
   font-size: 1.5rem;
   font-weight: 800;
   flex-shrink: 0;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
 }
 
 .phase-content {
@@ -529,7 +533,7 @@ const resetWizard = () => {
 
 .phase-duration {
   font-size: 0.9rem;
-  color: var(--accent-orange);
+  color: var(--accent-primary);
   font-weight: 600;
   margin-bottom: 1rem;
 }
@@ -551,7 +555,7 @@ const resetWizard = () => {
   content: '▸';
   position: absolute;
   left: 0;
-  color: var(--accent-orange);
+  color: var(--accent-secondary);
   font-weight: bold;
 }
 

@@ -68,21 +68,22 @@ const testimonials = [
 }
 
 .testimonial-card {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2.5rem;
   border-radius: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .testimonial-card:hover {
   transform: translate(-4px, -4px);
   box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.15);
-  background: var(--accent-yellow);
+  background: var(--accent-light);
 }
 
 .testimonial-content {
@@ -155,8 +156,8 @@ const testimonials = [
 
 @media (max-width: 968px) {
   .testimonials-section {
-    margin: 1rem;
-    padding: 3rem 0;
+    margin: 0;
+    padding: 2rem 0;
   }
   
   .section-title {
@@ -175,8 +176,8 @@ const testimonials = [
 
 @media (max-width: 480px) {
   .testimonials-section {
-    margin: 0.5rem;
-    padding: 2rem 0;
+    margin: 0;
+    padding: 1.5rem 0;
   }
   
   .section-title {

@@ -182,8 +182,8 @@ const resetGame = () => {
 }
 
 .cell {
-  background: var(--bg-light);
-  border: var(--border-thick) solid var(--border-color);
+  background: var(--surface-bg);
+  border: var(--border-thick) solid var(--card-border);
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
@@ -194,11 +194,13 @@ const resetGame = () => {
   transition: all 0.2s ease;
   font-family: 'Space Grotesk', sans-serif;
   color: var(--dark-gray);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .cell:hover:not(.disabled) {
-  background: var(--accent-yellow);
+  background: var(--accent-light);
   transform: scale(1.05);
+  border-color: var(--card-border-hover);
 }
 
 .cell.disabled {
@@ -210,9 +212,10 @@ const resetGame = () => {
   display: flex;
   gap: 2rem;
   padding: 1rem 2rem;
-  background: var(--bg-light);
+  background: var(--card-bg);
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .score-item {
@@ -231,7 +234,7 @@ const resetGame = () => {
 .score-value {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--accent-orange);
+  color: var(--accent-primary);
   font-family: 'Space Grotesk', sans-serif;
 }
 

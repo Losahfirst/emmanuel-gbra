@@ -158,7 +158,7 @@ onUnmounted(() => {
 }
 
 .score {
-  color: var(--accent-orange);
+  color: var(--accent-primary);
 }
 
 .time {
@@ -177,10 +177,11 @@ onUnmounted(() => {
 .question {
   text-align: center;
   padding: 2rem;
-  background: var(--bg-light);
+  background: var(--card-bg);
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   width: 100%;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .question h2 {
@@ -200,18 +201,19 @@ onUnmounted(() => {
 .answer-field {
   flex: 1;
   padding: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   border-radius: 0.75rem;
   font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
   font-family: 'Space Grotesk', sans-serif;
+  background: var(--surface-bg);
 }
 
 .answer-field:focus {
   outline: none;
-  border-color: var(--accent-orange);
-  box-shadow: 4px 4px 0px rgba(255, 107, 53, 0.2);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 4px var(--glow-primary);
 }
 
 .feedback {
@@ -232,7 +234,7 @@ onUnmounted(() => {
 }
 
 .feedback .incorrect {
-  color: var(--accent-orange);
+  color: var(--accent-danger);
 }
 
 .welcome-message {

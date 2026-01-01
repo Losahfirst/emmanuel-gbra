@@ -58,7 +58,7 @@ const position = computed(() => {
 <style scoped>
 .feature-bubble {
   position: absolute;
-  background: var(--white);
+  background: var(--card-bg);
   border-radius: 1.5rem;
   padding: 1rem 1.5rem;
   display: flex;
@@ -67,7 +67,8 @@ const position = computed(() => {
   box-shadow: var(--shadow-game);
   animation: float 3s ease-in-out infinite;
   z-index: 10;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
+  backdrop-filter: blur(var(--glass-blur));
   min-width: 180px;
 }
 
@@ -75,12 +76,12 @@ const position = computed(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--accent-orange);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   color: white;
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }

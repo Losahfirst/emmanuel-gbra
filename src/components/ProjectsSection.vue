@@ -1,272 +1,328 @@
 <template>
-  <section class="projects-section section" id="projects">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">PROJETS & INNOVATIONS</h2>
-        <p class="section-subtitle">Solutions technologiques au service de l'efficacité énergétique et du développement durable</p>
-      </div>
-      <div class="projects-grid">
-        <div class="project-card" v-for="(project, index) in projects" :key="index">
-          <ProjectLogo 
-            :name="project.title" 
-            :imageUrl="project.logoUrl"
-            :fallbackIcon="project.iconName"
-            size="md"
-          />
-          <h3 class="project-title">{{ project.title }}</h3>
-          <p class="project-description">{{ project.description }}</p>
-          <div class="project-tech">
-            <span v-for="(tech, i) in project.technologies" :key="i" class="tech-badge">{{ tech }}</span>
+  <section class="section projects" id="work">
+    <h2 class="section-title">Mes Projets</h2>
+    <p class="section-subtitle">Projets récents en ML, IoT et Data</p>
+    
+    <div class="projects-grid">
+      <div class="project-card" v-for="project in projects" :key="project.id" @click="openModal(project)">
+        <div class="project-image">
+          <img :src="project.image" :alt="project.title" />
+          <div class="project-overlay">
+            <span>Voir détails</span>
           </div>
-          <div class="project-links" v-if="project.link">
-            <a :href="project.link" target="_blank" class="project-link">
-              Voir le projet →
-            </a>
+        </div>
+        <div class="project-info">
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.description }}</p>
+          <div class="project-tags">
+            <span v-for="tag in project.tags" :key="tag">{{ tag }}</span>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <Teleport to="body">
+      <div class="modal-overlay" v-if="selectedProject" @click="closeModal">
+        <div class="modal-content" @click.stop>
+          <button class="modal-close" @click="closeModal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+          
+          <div class="modal-image">
+            <img :src="selectedProject.image" :alt="selectedProject.title" />
+          </div>
+          
+          <div class="modal-body">
+            <h2>{{ selectedProject.title }}</h2>
+            <p class="modal-description">{{ selectedProject.fullDescription }}</p>
+            
+            <div class="modal-tags">
+              <span v-for="tag in selectedProject.tags" :key="tag">{{ tag }}</span>
+            </div>
+            
+            <div class="modal-actions">
+              <a v-if="selectedProject.link" :href="selectedProject.link" target="_blank" class="btn btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Voir le projet
+              </a>
+              <a v-if="selectedProject.github" :href="selectedProject.github" target="_blank" class="btn btn-outline">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </section>
 </template>
 
 <script setup>
-import ProjectLogo from './ProjectLogo.vue'
+import { ref } from 'vue'
+
+const selectedProject = ref(null)
+
+const openModal = (project) => {
+  selectedProject.value = project
+  document.body.style.overflow = 'hidden'
+}
+
+const closeModal = () => {
+  selectedProject.value = null
+  document.body.style.overflow = ''
+}
 
 const projects = [
   {
-    iconName: 'bolt',
-    title: 'KANARI Energy Monitoring Énergétique d\'Afrique',
-    logoUrl: 'https://media.licdn.com/dms/image/v2/D4E0BAQHpc5zzJ8GLJQ/company-logo_100_100/B4EZY9a03xHgAU-/0/1744787165175?e=1767830400&v=beta&t=RTaSjH2GaVltqJN5VJLozCSr0Faxrnsb9lyCgu187zk', // Note: Vérifiez si vous avez un logo local plus pro
-    description: 'Suite de plateformes Big Data (Energy, Mining, Water) dédiée au monitoring temps réel des secteurs critiques en Afrique de l’Ouest. Kanari centralise des flux massifs de données historiques et temps réel via des dashboards haute fidélité, offrant une couverture multi-pays complète et une API REST robuste pour l\'intégration décisionnelle.',
-    technologies: [
-        'Python (Scrapy / Pandas / FastAPI)', 
-        'WebSockets / Real-time Data',
-        'PostgreSQL / TimeScaleDB', 
-        'REST API Design'
-    ],
-    link: 'https://kanari.ecobin.tech/' 
-},
-  {
-    iconName: 'gas-turbine',
-    title: 'Analyse Prédictive des Turbines à Gaz',
-    logoUrl: 'https://thumbs.dreamstime.com/b/ic%C3%B4ne-de-centrale-thermique-vectorielle-illustration-l-usine-d-%C3%A9lectricit%C3%A9-des-sources-%C3%A9nergie-traditionnelles-jour-la-terre-249173291.jpg', // À remplacer par le logo CIPREL si disponible
-    description: 'Application Big Data pour l\'analyse et la prédiction des arrêts des turbines à gaz à la CIPREL. Intégration IoT et Machine Learning pour optimiser les performances. Cette expertise en monitoring énergétique a inspiré le développement de KANARI Energy, une plateforme de visualisation du mix énergétique national.',
-    technologies: ['Django', 'Vue.js', 'PostgreSQL', 'Scikit-learn', 'Random Forest', 'ETL'],
-    link: null
+    id: 1,
+    title: 'Kanari - Energy Dashboard',
+    description: 'Dashboard analytique pour le secteur énergétique ivoirien.',
+    fullDescription: 'Dashboard analytique complet pour visualiser et analyser les données du secteur énergétique de la Côte d\'Ivoire. Suivi en temps réel de la production, consommation, et mix énergétique avec graphiques interactifs et KPIs.',
+    image: '/kanari-screenshot.png',
+    tags: ['Vue.js', 'Python', 'Supabase', 'Charts', 'Data Viz'],
+    link: 'https://kanari.energy',
+    github: 'https://github.com/emmanuel-gbra/kanari'
   },
   {
-    iconName: 'sparkles',
-    title: 'Ecobin+ - Poubelle Intelligente',
-    description: 'Poubelle connectée capable de reconnaître automatiquement les déchets et effectuer le tri sélectif. Solution IoT avec panneau solaire et application mobile.',
-    technologies: ['IoT', 'Machine Learning', 'Mobile App', 'Solar Energy'],
+    id: 2,
+    title: 'EcoBin - Poubelle Intelligente',
+    description: 'Poubelle connectée IoT avec tri automatique.',
+    fullDescription: 'Poubelle intelligente connectée développée lors du Hackathon Green Tech. Système IoT avec capteurs de niveau, tri automatique des déchets par type, et application mobile pour le suivi en temps réel du remplissage et statistiques de recyclage.',
+    image: '/ecobin-screenshot.jpg',
+    tags: ['IoT', 'ESP32', 'Flutter', 'Firebase', 'Capteurs'],
     link: 'https://rfi.my/BrJ0',
-    logoUrl: 'https://s.rfi.fr/media/display/8080a1ac-6261-11f0-9bc7-005056a97e36/w:1024/1-7-1.jpeg'// À remplacer par le logo Ecobin+ si disponible
+    github: 'https://github.com/emmanuel-gbra/ecobin-plus'
   },
   {
-    iconName: 'globe',
-    title: 'Site Web Paul Ginies',
-    logoUrl: 'https://paulginies.com/d.jpeg',
-    description: 'Conception et hébergement d\'un site web professionnel avec Vue.js et Node.js, mettant en avant l\'expertise et les réalisations de Monsieur Paul Ginies',
-    technologies: ['Vue.js', 'Node.js', 'Web Development'],
-    link: 'https://paulginies.com/'
+    id: 3,
+    title: 'Ecofier - ERP Pont Bascule',
+    description: 'Système ERP pour la gestion des pesées.',
+    fullDescription: 'Système ERP complet pour la gestion des opérations de ponts bascules. Gestion des pesées entrantes/sortantes, facturation automatique, rapports détaillés, gestion des clients et des véhicules, intégration avec balances électroniques.',
+    image: '/ecofier-screenshot.png',
+    tags: ['Django', 'PostgreSQL', 'Vue.js', 'REST API', 'Docker'],
+    link: 'https://ecofier-site.vercel.app/',
+    github: null
   },
   {
-    iconName: 'mobile',
-    title: 'Plateforme QR Code SICTA',
-    description: 'Plateforme de génération de QR codes pour la SICTA, développée avec Flask et React.js, permettant une gestion efficace des codes QR.',
-    technologies: ['Flask', 'React.js', 'Python', 'Backend'],
-    link: 'https://emmanuelgbra.pythonanywhere.com/',
-    logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdymmtr-mGpLiO6h_QIvtBgElSqWbyP_dGfQ&s'
+    id: 4,
+    title: 'Site M. Paul Ginies',
+    description: 'Site web professionnel moderne.',
+    fullDescription: 'Site web professionnel pour M. Paul Ginies avec un design moderne, élégant et entièrement responsive. Portfolio de ses travaux, page de contact, et intégration avec les réseaux sociaux.',
+    image: '/paulginies-screenshot.png',
+    tags: ['Vue.js', 'Tailwind CSS', 'Responsive', 'SEO'],
+    link: 'https://paulginies.com',
+    github: null
   },
   {
-    iconName: 'cpu',
-    title: 'Modèle IA Transformers TTS/STT',
-    description: 'Intégration de modèles Transformers pour la transcription et synthèse vocale en langue locale Dioula, utilisant Hugging Face.',
-    technologies: ['Transformers', 'Hugging Face', 'NLP', 'TTS', 'STT'],
+    id: 5,
+    title: 'CIE WELE - Chatbot Telegram',
+    description: 'Chatbot IA multilingue pour la CIE.',
+    fullDescription: 'Solution IA conversationnelle via Telegram pour la Compagnie Ivoirienne d\'Électricité (CIE). Support des langues locales ivoiriennes (Baoulé, Dioula, Bété), assistance pour les factures, signalement de pannes, et informations sur les services.',
+    image: '/ciewele-screenshot.png',
+    tags: ['Telegram Bot', 'NLP', 'AI/ML', 'Cloud', 'Python'],
+    link: 'https://t.me/Welecie_bot',
+    github: null
+  },
+  {
+    id: 6,
+    title: 'Turbine Predictive Maintenance',
+    description: 'Prédiction des arrêts de turbines à gaz.',
+    fullDescription: 'Application de maintenance prédictive pour les turbines à gaz de CIPREL. Analyse des données opérationnelles, détection d\'anomalies avec Machine Learning (Random Forest, XGBoost), et prédiction des arrêts pour optimiser la maintenance.',
+    image: 'https://www.africa50.com/fileadmin/uploads/africa50/Photos/Images/Project/Malicounda_power_plant.jpg',
+    tags: ['Django', 'Scikit-learn', 'PostgreSQL', 'ETL', 'ML'],
     link: null,
-    logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvAJhsMcU0wohrj9ok1VMlaxfngB7JN0MxdQ&s'
-  },
-  {
-    iconName: 'users',
-    title: 'Chatbot Interactif',
-    description: 'Conception de chatbots interactifs pour Telegram et WhatsApp avec intégration d\'API, offrant une expérience utilisateur fluide.',
-    technologies: ['Telegram API', 'WhatsApp API', 'Python', 'Chatbot'],
-    link: null,
-    logoUrl: 'https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/Knms/di-dong/1-chatbot-ai-la-gi.jpg'
-  },
-  {
-    iconName: 'hand', // Ou 'video' selon votre bibliothèque d'icônes
-    title: 'Contrôle Gestuel par IA',
-    description: 'Développement d\'un algorithme de vision par ordinateur permettant de piloter un ordinateur par gestes (déplacement du curseur, clics) en temps réel.',
-    technologies: ['Python',  'MediaPipe', 'Vision par ordinateur'],
-    link: 'https://www.linkedin.com/posts/korekou-emmanuel-gbra_ia-reconnaissancedimage-technologie-ugcPost-7314465519724625920-KyfK?utm_source=share&utm_medium=member_desktop&rcm=ACoAADIxZAgBar6Sg6SQUOd4eA86pTAqzXJf3nc',
-    logoUrl: 'https://advertisingweek.com/wp-content/uploads/2023/10/ai-machine-learning-robot-hand-ai-artificial-intelligence-assistance-human-touching-on-big.jpg_s1024x1024wisk20cCbA1aSI-cfn3vkm3YfbkJvc7Jm3tZVJ5aibR8mYT-8w.jpg' 
-  // Note : J'ai suggéré une image de haute qualité sur l'IA/Robotique, 
-  // mais vous pouvez utiliser une capture d'écran de votre propre démo LinkedIn !
-},
-
-{
-  iconName: 'book-open',
-  title: 'Vulgarisation : ML & Énergétique',
-  description: 'Partage d\'expertise sur l\'application du Machine Learning (Scikit-learn) pour prédire les pics de consommation. Une approche pédagogique liant IoT et maintenance prédictive pour relever les défis énergétiques en Afrique. Cette expertise a été mise en pratique dans KANARI Energy, une plateforme de monitoring énergétique en temps réel.',
-  technologies: ['Scikit-learn', 'IoT',  'Efficacité Énergétique'],
-  link: 'https://www.linkedin.com/posts/korekou-emmanuel-gbra_iot-machinelearning-energie-activity-7352090015633395713-2ONe?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADIxZAgBar6Sg6SQUOd4eA86pTAqzXJf3nc',
-  logoUrl: 'https://cdn-icons-png.flaticon.com/512/8055/8055576.png'
-}
+    github: null
+  }
 ]
 </script>
 
 <style scoped>
-.projects-section {
-  background: var(--bg-light);
-  margin: 2rem;
-  border-radius: 2rem;
-  padding: 4rem 0;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
-}
-
 .project-card {
-  background: var(--white);
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
-  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(16, 185, 129, 0.9);
   display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow-game);
-  position: relative;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.project-card :deep(.project-logo) {
-  margin-bottom: 1.5rem;
-  align-self: flex-start;
-}
-
-.project-card:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.15);
-}
-
-.project-card:nth-child(odd) {
-  background: var(--white);
-}
-
-.project-card:nth-child(even) {
-  background: var(--accent-yellow);
-}
-
-.project-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--dark-gray);
-  margin-bottom: 1rem;
-  font-family: 'Space Grotesk', sans-serif;
-  letter-spacing: -0.02em;
-}
-
-.project-description {
+.project-overlay span {
+  color: white;
+  font-weight: 600;
   font-size: 0.95rem;
-  color: var(--light-gray);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
-  font-weight: 400;
 }
 
-.project-tech {
+.project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+.project-image {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modal-image {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-body h2 {
+  font-size: 1.5rem;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.modal-description {
+  color: #6B7280;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.modal-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.tech-badge {
-  font-size: 0.8rem;
-  padding: 0.375rem 0.875rem;
-  background: var(--white);
-  color: var(--dark-gray);
-  border: 2px solid var(--border-color);
-  border-radius: 0.75rem;
-  font-weight: 600;
-  font-family: 'Space Grotesk', sans-serif;
+.modal-tags span {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.75rem;
+  background: #D1FAE5;
+  color: #059669;
+  border-radius: 15px;
+  font-weight: 500;
 }
 
-.project-links {
-  margin-top: auto;
+.modal-actions {
+  display: flex;
+  gap: 1rem;
 }
 
-.project-link {
-  color: var(--dark-gray);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
+.modal-actions .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'Space Grotesk', sans-serif;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 2px solid var(--border-color);
-  background: var(--white);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.project-link:hover {
-  background: var(--accent-orange);
-  color: var(--white);
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+.modal-actions .btn-primary {
+  background: #10B981;
+  color: white;
+  border: none;
 }
 
-@media (max-width: 968px) {
-  .projects-section {
-    margin: 1rem;
-    padding: 3rem 0;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
-  .section-subtitle {
-    font-size: 1rem;
-  }
-  
-  .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .project-card {
-    padding: 1.5rem;
-  }
+.modal-actions .btn-primary:hover {
+  background: #059669;
 }
 
-@media (max-width: 480px) {
-  .projects-section {
-    margin: 0.5rem;
-    padding: 2rem 0;
-  }
-  
-  .section-title {
-    font-size: 1.75rem;
-  }
-  
-  .project-card {
-    padding: 1.25rem;
-  }
-  
-  .project-title {
-    font-size: 1.25rem;
-  }
-  
-  .project-description {
-    font-size: 0.9rem;
-  }
+.modal-actions .btn-outline {
+  background: transparent;
+  color: #374151;
+  border: 2px solid #E5E7EB;
+}
+
+.modal-actions .btn-outline:hover {
+  border-color: #374151;
+  background: #F9FAFB;
 }
 </style>

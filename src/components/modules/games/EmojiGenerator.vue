@@ -270,14 +270,15 @@ watch(inputText, () => {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: var(--bg-light);
+  background: var(--surface-bg);
   padding: 1rem 1.5rem;
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .input-icon {
-  color: var(--accent-orange);
+  color: var(--accent-primary);
   flex-shrink: 0;
 }
 
@@ -300,11 +301,12 @@ watch(inputText, () => {
 }
 
 .result-card {
-  background: var(--bg-light);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 1.25rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .result-header {
@@ -322,7 +324,7 @@ watch(inputText, () => {
 }
 
 .result-header :deep(svg) {
-  color: var(--accent-orange);
+  color: var(--accent-primary);
 }
 
 .emojis-grid {
@@ -332,20 +334,22 @@ watch(inputText, () => {
 }
 
 .emoji-item {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 1.25rem;
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .emoji-item:hover {
   transform: translate(-2px, -2px);
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
-  background: var(--accent-yellow);
+  background: var(--accent-light);
+  border-color: var(--card-border-hover);
 }
 
 .emoji-display {
@@ -370,7 +374,7 @@ watch(inputText, () => {
   color: var(--light-gray);
   font-weight: 600;
   padding: 0.25rem 0.5rem;
-  background: var(--bg-light);
+  background: var(--accent-light);
   border-radius: 0.5rem;
   display: inline-block;
 }
@@ -389,10 +393,11 @@ watch(inputText, () => {
 .no-results {
   text-align: center;
   padding: 2rem;
-  background: var(--bg-light);
+  background: var(--card-bg);
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   margin-bottom: 2rem;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .no-results p {
@@ -425,8 +430,8 @@ watch(inputText, () => {
 
 .suggestion-tag {
   padding: 0.5rem 1rem;
-  background: var(--white);
-  border: var(--border-thick) solid var(--border-color);
+  background: var(--card-bg);
+  border: var(--border-thick) solid var(--card-border);
   border-radius: 0.75rem;
   font-size: 0.9rem;
   font-weight: 600;
@@ -434,10 +439,11 @@ watch(inputText, () => {
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: 'Space Grotesk', sans-serif;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .suggestion-tag:hover {
-  background: var(--accent-orange);
+  background: var(--accent-primary);
   color: var(--white);
   transform: translate(-2px, -2px);
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);

@@ -134,7 +134,7 @@ onMounted(() => {
 }
 
 .moves {
-  color: var(--accent-orange);
+  color: var(--accent-primary);
 }
 
 .pairs {
@@ -166,20 +166,21 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   transition: transform 0.3s ease;
 }
 
 .card-front {
-  background: var(--accent-orange);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: var(--white);
   transform: rotateY(0deg);
 }
 
 .card-back {
-  background: var(--white);
+  background: var(--card-bg);
   color: var(--dark-gray);
   transform: rotateY(180deg);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .card.flipped .card-front {
@@ -203,9 +204,10 @@ onMounted(() => {
 .win-message {
   text-align: center;
   padding: 2rem;
-  background: var(--accent-yellow);
+  background: var(--card-bg);
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .win-message h3 {

@@ -759,7 +759,7 @@ const shareOnLinkedIn = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   color: white;
   box-shadow: var(--shadow-game);
 }
@@ -797,20 +797,22 @@ const shareOnLinkedIn = () => {
 }
 
 .category-card {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   transition: all 0.2s ease;
   cursor: pointer;
   text-align: center;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .category-card:hover {
   transform: translate(-4px, -4px);
   box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.15);
-  background: var(--accent-yellow);
+  background: var(--accent-light);
+  border-color: var(--card-border-hover);
 }
 
 .category-icon {
@@ -822,7 +824,7 @@ const shareOnLinkedIn = () => {
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   color: white;
 }
 
@@ -843,7 +845,7 @@ const shareOnLinkedIn = () => {
 
 .category-stats {
   font-size: 0.85rem;
-  color: var(--accent-orange);
+  color: var(--accent-primary);
   font-weight: 600;
 }
 
@@ -866,9 +868,9 @@ const shareOnLinkedIn = () => {
 .progress-bar {
   width: 100%;
   height: 12px;
-  background: var(--bg-light);
+  background: var(--surface-bg);
   border-radius: 0.5rem;
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--card-border);
   overflow: hidden;
   margin-bottom: 0.5rem;
 }
@@ -891,16 +893,17 @@ const shareOnLinkedIn = () => {
   gap: 0.5rem;
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--accent-orange);
+  color: var(--accent-primary);
   font-family: 'Space Grotesk', sans-serif;
 }
 
 .question-card {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2.5rem;
   border-radius: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .question-header {
@@ -916,7 +919,7 @@ const shareOnLinkedIn = () => {
   border-radius: 0.75rem;
   font-size: 0.85rem;
   font-weight: 700;
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--card-border);
   font-family: 'Space Grotesk', sans-serif;
 }
 
@@ -931,7 +934,7 @@ const shareOnLinkedIn = () => {
 }
 
 .question-difficulty.Difficile {
-  background: var(--accent-orange);
+  background: var(--accent-secondary);
   color: var(--white);
 }
 
@@ -970,8 +973,8 @@ const shareOnLinkedIn = () => {
   align-items: center;
   gap: 1rem;
   padding: 1.25rem 1.5rem;
-  background: var(--bg-light);
-  border: var(--border-thick) solid var(--border-color);
+  background: var(--surface-bg);
+  border: var(--border-thick) solid var(--card-border);
   border-radius: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -985,12 +988,13 @@ const shareOnLinkedIn = () => {
 .option-button:hover:not(:disabled) {
   transform: translate(-2px, -2px);
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
-  background: var(--white);
+  background: var(--card-bg);
+  border-color: var(--card-border-hover);
 }
 
 .option-button.selected {
-  background: var(--accent-yellow);
-  border-color: var(--accent-orange);
+  background: var(--accent-light);
+  border-color: var(--accent-primary);
 }
 
 .option-button.correct {
@@ -1015,8 +1019,8 @@ const shareOnLinkedIn = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--white);
-  border: 2px solid var(--border-color);
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
   border-radius: 0.5rem;
   font-weight: 700;
   flex-shrink: 0;
@@ -1040,11 +1044,12 @@ const shareOnLinkedIn = () => {
 }
 
 .answer-explanation {
-  background: var(--bg-light);
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   margin-bottom: 2rem;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .answer-explanation h4 {
@@ -1072,12 +1077,13 @@ const shareOnLinkedIn = () => {
 }
 
 .results-header {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 3rem;
   border-radius: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   margin-bottom: 2rem;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .results-icon {
@@ -1089,7 +1095,7 @@ const shareOnLinkedIn = () => {
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   color: white;
 }
 
@@ -1112,7 +1118,7 @@ const shareOnLinkedIn = () => {
 .score-value {
   font-size: 4rem;
   font-weight: 800;
-  color: var(--accent-orange);
+  color: var(--accent-primary);
   font-family: 'Space Grotesk', sans-serif;
 }
 
@@ -1139,9 +1145,9 @@ const shareOnLinkedIn = () => {
 .achievement-badge {
   margin-top: 1.5rem;
   padding: 1rem;
-  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-yellow) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-radius: 1rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   display: flex;
   flex-direction: column;
   align-items: center;

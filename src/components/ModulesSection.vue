@@ -92,8 +92,8 @@
 
 <style scoped>
 .modal-energy .module-modal-content {
-  background: #0F172A;
-  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--bg-light);
+  border-color: var(--border-color);
 }
 
 .modal-energy .modal-close {
@@ -154,7 +154,7 @@ onUnmounted(() => {
   background: var(--bg-light);
   margin: 2rem;
   border-radius: 2rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   padding: 4rem 0;
 }
@@ -167,31 +167,32 @@ onUnmounted(() => {
 }
 
 .module-card {
-  background: var(--white);
+  background: var(--card-bg);
   padding: 2.5rem;
   border-radius: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   transition: all 0.2s ease;
   cursor: pointer;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .module-card:hover {
   transform: translate(-4px, -4px);
   box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.15);
-  background: var(--accent-yellow);
+  background: var(--accent-light);
 }
 
 .module-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-teal) 100%);
+  background: var(--accent-primary);
   border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   color: white;
 }
 
@@ -220,15 +221,16 @@ onUnmounted(() => {
 .feature-tag {
   font-size: 0.85rem;
   padding: 0.375rem 0.875rem;
-  background: var(--white);
+  background: var(--card-bg);
   color: var(--dark-gray);
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--card-border);
   border-radius: 0.75rem;
   font-weight: 600;
   font-family: 'Space Grotesk', sans-serif;
   display: flex;
   align-items: center;
   gap: 0.375rem;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .feature-tag :deep(svg) {
@@ -242,7 +244,8 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(244, 247, 255, 0.82);
+  backdrop-filter: blur(10px);
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -252,9 +255,9 @@ onUnmounted(() => {
 }
 
 .module-modal-content {
-  background: var(--white);
+  background: var(--card-bg);
   border-radius: 2rem;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   box-shadow: var(--shadow-game);
   max-width: 1200px;
   width: 100%;
@@ -262,11 +265,12 @@ onUnmounted(() => {
   overflow-y: auto;
   position: relative;
   padding: 2rem;
+  backdrop-filter: blur(var(--glass-blur));
 }
 
 .modal-energy-content {
-  background: #0F172A !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: var(--bg-light) !important;
+  border-color: var(--border-color) !important;
 }
 
 .modal-energy-content :deep(.energy-module) {
@@ -290,7 +294,7 @@ onUnmounted(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: var(--border-thick) solid var(--border-color);
+  border: var(--border-thick) solid var(--card-border);
   background: var(--accent-orange);
   color: var(--white);
   font-size: 1.5rem;
@@ -310,8 +314,8 @@ onUnmounted(() => {
 
 @media (max-width: 968px) {
   .modules-section {
-    margin: 1rem;
-    padding: 3rem 0;
+    margin: 0;
+    padding: 2rem 0;
   }
   
   .modules-grid {
@@ -331,8 +335,8 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .modules-section {
-    margin: 0.5rem;
-    padding: 2rem 0;
+    margin: 0;
+    padding: 1.5rem 0;
   }
   
   .module-card {
