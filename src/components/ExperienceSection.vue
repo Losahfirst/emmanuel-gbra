@@ -76,8 +76,8 @@ const experiences = [
     company: 'INOVATEC',
     type: 'Tech',
     period: 'Sept 2021 – Mai 2025',
-    description: 'Gestion de projets IoT et solutions de maintenance intelligente (GMAO, GTB).',
-    techs: ['Flutter', 'Firebase', 'ESP32', 'IoT', 'GMAO']
+    description: 'Gestion de projets maintenance CVC, UPS et Groupe Electrogène pour MTN, ONOMO HOTEL, NOOM HOTEL...',
+    techs: ['Gestion de projet', 'Maintenance CVC', 'Plannification de maintenance', 'Gestion d\'équipe']
   }
 ]
 
@@ -86,14 +86,14 @@ const education = [
     id: 1,
     degree: 'Licence CNAM - IoT appliqué à l\'énergétique',
     school: 'Eranove Academy',
-    period: 'Oct 2024 – Déc 2025',
+    period: 'Oct 2024 – ',
     description: 'IoT appliqué à la production d\'électricité, optimisation des performances énergétiques, maintenance prédictive.'
   },
   {
     id: 2,
     degree: 'ML Engineering & Intelligence Artificielle',
     school: 'DataCamp - Bourse ISHERRO 2025-2026',
-    period: 'Juil 2025',
+    period: 'Juil 2025 -',
     description: 'NLP, Deep Reinforcement Learning, MLOps, Deep Learning (PyTorch), XGBoost, Docker.'
   },
   {
@@ -101,13 +101,13 @@ const education = [
     degree: 'Bachelor Electronics for Embedded Systems',
     school: 'Université Tertiaire et Technologique',
     period: '2020 – 2021',
-    description: 'Informatique, Télécommunication, Électronique, Automatisme. Meilleur Étudiant Filière Info-Télécom 2021.'
+    description: 'Informatique, Télécommunication, Électronique, Automatisme. Meilleur Étudiant Filière Informatique-Télécom 2021.'
   },
   {
     id: 4,
     degree: 'Baccalauréat Série C',
     school: 'Lycée Classique Bouaké',
-    period: '2016 – 2018',
+    period: '2018',
     description: 'Physique théorique et mathématiques.'
   }
 ]
