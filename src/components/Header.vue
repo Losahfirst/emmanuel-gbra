@@ -13,7 +13,7 @@
       <a href="#contact" @click="closeMenu">Contact</a>
     </nav>
     
-    <div class="menu-toggle" @click="menuOpen = !menuOpen">
+    <div class="menu-toggle" :class="{ active: menuOpen }" @click="menuOpen = !menuOpen">
       <span></span>
       <span></span>
       <span></span>

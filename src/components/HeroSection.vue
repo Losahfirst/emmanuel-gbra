@@ -382,6 +382,17 @@ onUnmounted(() => {
   .floating-code {
     font-size: 0.7rem;
     padding: 0.4rem 0.8rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1f2937;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .floating-code .code-keyword {
+    color: #7C3AED;
+  }
+  
+  .floating-code .code-func {
+    color: #059669;
   }
   
   .icon-5, .icon-6, .icon-7, .icon-8 {
