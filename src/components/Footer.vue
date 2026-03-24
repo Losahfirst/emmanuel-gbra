@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <p>© {{ year }} Emmanuel Gbra. Made with ❤️</p>
+    <p>© {{ year }} Emmanuel Gbra — Built with passion ✦</p>
   </footer>
 </template>
 

@@ -3,17 +3,7 @@
   <transition name="fade-loader">
     <div v-if="isLoading" class="loading-screen">
       <div class="loader-content">
-        <div class="loader-rings">
-          <div class="ring"></div>
-          <div class="ring"></div>
-          <div class="ring"></div>
-        </div>
-        <div class="loader-text">
-          <span class="loader-name">Emmanuel Gbra</span>
-          <span class="loader-dots">
-            <span>.</span><span>.</span><span>.</span>
-          </span>
-        </div>
+        <div class="loader-logo">E<span>.</span></div>
         <div class="loader-progress">
           <div class="progress-bar" :style="{ width: loadProgress + '%' }"></div>
         </div>
@@ -90,14 +80,14 @@ onMounted(() => {
   }
 }
 
-/* Loading Screen */
+/* Loading Screen — Minimal Monochrome */
 .loading-screen {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f1923 100%);
+  background: #0a0a0a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,113 +98,40 @@ onMounted(() => {
   text-align: center;
 }
 
-/* Animated Rings */
-.loader-rings {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 2rem;
-}
-
-.ring {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 3px solid transparent;
-}
-
-.ring:nth-child(1) {
-  border-top-color: #10B981;
-  animation: spin 1.5s linear infinite;
-}
-
-.ring:nth-child(2) {
-  width: 80%;
-  height: 80%;
-  top: 10%;
-  left: 10%;
-  border-right-color: #34D399;
-  animation: spin 1.2s linear infinite reverse;
-}
-
-.ring:nth-child(3) {
-  width: 60%;
-  height: 60%;
-  top: 20%;
-  left: 20%;
-  border-bottom-color: #6EE7B7;
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Loader Text */
-.loader-text {
-  margin-bottom: 1.5rem;
-}
-
-.loader-name {
-  font-size: 1.5rem;
-  font-weight: 600;
+.loader-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
   color: white;
-  letter-spacing: 2px;
-  display: block;
-  animation: textPulse 2s ease-in-out infinite;
+  letter-spacing: -2px;
+  margin-bottom: 2rem;
+  animation: logoPulse 2s ease-in-out infinite;
 }
 
-@keyframes textPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-.loader-dots {
-  display: inline-flex;
-  gap: 4px;
-  margin-left: 4px;
-}
-
-.loader-dots span {
+.loader-logo span {
   color: #10B981;
-  font-size: 1.5rem;
-  font-weight: bold;
-  animation: dotBounce 1.4s ease-in-out infinite;
 }
 
-.loader-dots span:nth-child(1) { animation-delay: 0s; }
-.loader-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loader-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes dotBounce {
-  0%, 80%, 100% {
-    transform: translateY(0);
-    opacity: 0.5;
-  }
-  40% {
-    transform: translateY(-8px);
-    opacity: 1;
-  }
+@keyframes logoPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 /* Progress Bar */
 .loader-progress {
   width: 200px;
-  height: 3px;
+  height: 2px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: 2px;
   overflow: hidden;
   margin: 0 auto;
 }
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #10B981, #34D399, #6EE7B7);
-  border-radius: 3px;
+  background: white;
+  border-radius: 2px;
   transition: width 0.3s ease;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
 }
 
 /* Fade Transition */
@@ -226,6 +143,6 @@ onMounted(() => {
 .fade-loader-enter-from,
 .fade-loader-leave-to {
   opacity: 0;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 </style>

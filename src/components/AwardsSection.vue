@@ -1,7 +1,10 @@
 <template>
   <section class="section awards" id="awards">
-    <h2 class="section-title">Récompenses</h2>
-    <p class="section-subtitle">Hackathons et distinctions</p>
+    <div class="section-header">
+      <span class="section-label">Distinctions</span>
+      <h2 class="section-title">Récompenses</h2>
+      <p class="section-subtitle">Hackathons et distinctions académiques</p>
+    </div>
     
     <div class="awards-grid">
       <div class="award-card" v-for="award in awards" :key="award.id">
@@ -35,9 +38,9 @@
 const awards = [
   {
     id: 1,
-    title: 'Hackathon Green Tech 2025 - Eranove Academy',
+    title: 'Hackathon Green Tech 2025 – Eranove Academy',
     date: '2025',
-    rank: '1er Prix',
+    rank: '1er Prix + Meilleur Pitcher',
     description: 'Victoire avec EcoBin+, une poubelle intelligente connectée permettant le tri automatique des déchets et le suivi en temps réel du remplissage.',
     techs: ['IoT', 'ESP32', 'Flutter', 'Raspberry PI']
   },
@@ -46,7 +49,7 @@ const awards = [
     title: 'Hackathon GS2E 2025',
     date: 'Décembre 2025',
     rank: '1er Prix',
-    description: 'Développement d\'une solution IA WhatsApp pour la CIE, permettant aux citoyens de communiquer en langues locales ivoiriennes.',
+    description: 'Développement d\'une solution IA WhatsApp pour la CIE, permettant aux citoyens de communiquer en langues locales ivoiriennes (Baoulé, Dioula, Bété).',
     techs: ['WhatsApp API', 'AI/ML', 'NLP', 'Cloud']
   },
   {

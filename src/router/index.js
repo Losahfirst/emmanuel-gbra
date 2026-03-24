@@ -13,6 +13,18 @@ const routes = [
     name: 'TeamConnect',
     component: TeamConnect
   }
+  ,
+  {
+    path: '/representative-works',
+    name: 'RepresentativeWorks',
+    component: () => import('../views/RepresentativeWorks.vue')
+  },
+  {
+    path: '/representative-works/:id',
+    name: 'ProjectDetail',
+    component: () => import('../components/ProjectDetail.vue'),
+    props: true
+  }
 ]
 
 const router = createRouter({

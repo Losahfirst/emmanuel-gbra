@@ -1,14 +1,17 @@
 <template>
   <section class="section projects" id="work">
-    <h2 class="section-title">Mes Projets</h2>
-    <p class="section-subtitle">Projets récents en ML, IoT et Data</p>
+    <div class="section-header">
+      <span class="section-label">Portfolio</span>
+      <h2 class="section-title">Mes Projets</h2>
+      <p class="section-subtitle">Projets récents en ML, IoT et Data</p>
+    </div>
     
     <div class="projects-grid">
       <div class="project-card" v-for="project in projects" :key="project.id" @click="openModal(project)">
         <div class="project-image">
           <img :src="project.image" :alt="project.title" />
           <div class="project-overlay">
-            <span>Voir détails</span>
+            <span>Voir détails →</span>
           </div>
         </div>
         <div class="project-info">
@@ -44,7 +47,7 @@
             </div>
             
             <div class="modal-actions">
-              <a v-if="selectedProject.link" :href="selectedProject.link" target="_blank" class="btn btn-primary">
+              <a v-if="selectedProject.link" :href="selectedProject.link" target="_blank" class="btn btn-dark">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                   <polyline points="15 3 21 3 21 9"/>
@@ -84,7 +87,7 @@ const closeModal = () => {
 const projects = [
   {
     id: 1,
-    title: 'Kanari - Energy Dashboard',
+    title: 'Kanari – Energy Dashboard',
     description: 'Dashboard analytique pour le secteur énergétique ivoirien.',
     fullDescription: 'Dashboard analytique complet pour visualiser et analyser les données du secteur énergétique de la Côte d\'Ivoire. Suivi en temps réel de la production, consommation, et mix énergétique avec graphiques interactifs et KPIs.',
     image: '/kanari-screenshot.png',
@@ -94,7 +97,7 @@ const projects = [
   },
   {
     id: 2,
-    title: 'EcoBin - Poubelle Intelligente',
+    title: 'EcoBin – Poubelle Intelligente',
     description: 'Poubelle connectée IoT avec tri automatique.',
     fullDescription: 'Poubelle intelligente connectée développée lors du Hackathon Green Tech. Système IoT avec capteurs de niveau, tri automatique des déchets par type, et application mobile pour le suivi en temps réel du remplissage et statistiques de recyclage.',
     image: '/ecobin-screenshot.jpg',
@@ -104,7 +107,7 @@ const projects = [
   },
   {
     id: 3,
-    title: 'Ecofier - ERP Pont Bascule',
+    title: 'Ecofier – ERP Pont Bascule',
     description: 'Système ERP pour la gestion des pesées.',
     fullDescription: 'Système ERP complet pour la gestion des opérations de ponts bascules. Gestion des pesées entrantes/sortantes, facturation automatique, rapports détaillés, gestion des clients et des véhicules, intégration avec balances électroniques.',
     image: '/ecofier-screenshot.png',
@@ -124,7 +127,7 @@ const projects = [
   },
   {
     id: 5,
-    title: 'CIE WELE - Chatbot Telegram',
+    title: 'CIE WELE – Chatbot Telegram',
     description: 'Chatbot IA multilingue pour la CIE.',
     fullDescription: 'Solution IA conversationnelle via Telegram pour la Compagnie Ivoirienne d\'Électricité (CIE). Support des langues locales ivoiriennes (Baoulé, Dioula, Bété), assistance pour les factures, signalement de pannes, et informations sur les services.',
     image: '/ciewele-screenshot.png',
@@ -137,7 +140,7 @@ const projects = [
     title: 'Turbine Predictive Maintenance',
     description: 'Prédiction des arrêts de turbines à gaz.',
     fullDescription: 'Application de maintenance prédictive pour les turbines à gaz de CIPREL. Analyse des données opérationnelles, détection d\'anomalies avec Machine Learning (Random Forest, XGBoost), et prédiction des arrêts pour optimiser la maintenance.',
-    image: 'https://www.africa50.com/fileadmin/uploads/africa50/Photos/Images/Project/Malicounda_power_plant.jpg',
+    image: '/turbine-screenshot.png',
     tags: ['Django', 'Scikit-learn', 'PostgreSQL', 'ETL', 'ML'],
     link: null,
     github: null
@@ -156,7 +159,7 @@ const projects = [
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(16, 185, 129, 0.9);
+  background: rgba(10, 10, 10, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,6 +171,7 @@ const projects = [
   color: white;
   font-weight: 600;
   font-size: 0.95rem;
+  font-family: var(--font-display);
 }
 
 .project-card:hover .project-overlay {
@@ -186,13 +190,13 @@ const projects = [
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
   padding: 1rem;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
 }
 
 .modal-content {
@@ -261,13 +265,15 @@ const projects = [
 }
 
 .modal-body h2 {
+  font-family: var(--font-display);
   font-size: 1.5rem;
-  color: #111827;
+  font-weight: 800;
+  color: #0a0a0a;
   margin-bottom: 1rem;
 }
 
 .modal-description {
-  color: #6B7280;
+  color: #737373;
   line-height: 1.7;
   margin-bottom: 1.25rem;
 }
@@ -282,47 +288,14 @@ const projects = [
 .modal-tags span {
   font-size: 0.75rem;
   padding: 0.3rem 0.75rem;
-  background: #D1FAE5;
-  color: #059669;
-  border-radius: 15px;
+  background: #f5f5f5;
+  color: #525252;
+  border-radius: 100px;
   font-weight: 500;
 }
 
 .modal-actions {
   display: flex;
   gap: 1rem;
-}
-
-.modal-actions .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.modal-actions .btn-primary {
-  background: #10B981;
-  color: white;
-  border: none;
-}
-
-.modal-actions .btn-primary:hover {
-  background: #059669;
-}
-
-.modal-actions .btn-outline {
-  background: transparent;
-  color: #374151;
-  border: 2px solid #E5E7EB;
-}
-
-.modal-actions .btn-outline:hover {
-  border-color: #374151;
-  background: #F9FAFB;
 }
 </style>
