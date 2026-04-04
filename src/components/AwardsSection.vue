@@ -1,33 +1,20 @@
 <template>
   <section class="section awards" id="awards">
-    <div class="section-header">
-      <span class="section-label">Distinctions</span>
-      <h2 class="section-title">Récompenses</h2>
-      <p class="section-subtitle">Hackathons et distinctions académiques</p>
+    <div class="section-header reveal">
+      <span class="section-label">Distinctions & Impact</span>
+      <h2 class="section-title">Reconnaissance</h2>
+      <p class="section-subtitle">Prix et distinctions reçus pour l'innovation technologique.</p>
     </div>
     
-    <div class="awards-grid">
-      <div class="award-card" v-for="award in awards" :key="award.id">
-        <div class="award-header">
-          <div class="award-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-              <path d="M5 3h14c.55 0 1 .45 1 1v3c0 2.55-1.92 4.63-4.39 4.94.33 1.23 1.15 2.3 2.21 3.01.76.51 1.18 1.35 1.18 2.25V19c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-1.8c0-.9.42-1.74 1.18-2.25 1.06-.71 1.88-1.78 2.21-3.01C5.92 11.63 4 9.55 4 7V4c0-.55.45-1 1-1zm2 2v2c0 1.1.9 2 2 2h.28c-.04-.32-.07-.65-.07-1 0-1.07.26-2.08.71-2.98L7 5zm10 0l-2.93.02c.46.9.72 1.91.72 2.98 0 .35-.03.68-.07 1H15c1.1 0 2-.9 2-2V5zM12 5c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-3 14h6v-1c0-.07-.03-.13-.06-.19-.56-.38-1.01-.86-1.31-1.43-.46.4-1.06.62-1.63.62s-1.17-.22-1.63-.62c-.3.57-.75 1.05-1.31 1.43-.03.06-.06.12-.06.19v1z"/>
-            </svg>
-          </div>
-          <div class="award-info">
-            <h3>{{ award.title }}</h3>
-            <div class="award-meta">
-              <span>{{ award.date }}</span>
-              <span class="award-badge">{{ award.rank }}</span>
-            </div>
-          </div>
-        </div>
-        <p class="award-description">{{ award.description }}</p>
-        <div class="award-project">
-          <h4>Technologies</h4>
-          <div class="award-techs">
-            <span v-for="tech in award.techs" :key="tech">{{ tech }}</span>
-          </div>
+    <div class="awards-list">
+      <div v-for="(award, index) in awards" :key="award.id" 
+           class="award-item reveal"
+           :style="{ transitionDelay: (index * 150) + 'ms' }">
+        <div class="award-date">{{ award.date }}</div>
+        <div class="award-content">
+          <h3 class="award-title">{{ award.title }}</h3>
+          <span class="award-rank">{{ award.rank }}</span>
+          <p class="award-desc">{{ award.description }}</p>
         </div>
       </div>
     </div>
@@ -35,30 +22,100 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
 const awards = [
   {
     id: 1,
-    title: 'Hackathon Green Tech 2025 – Eranove Academy',
+    title: 'Hackathon GS2E 2025 (CIE / SODECI)',
     date: '2025',
-    rank: '1er Prix + Meilleur Pitcher',
-    description: 'Victoire avec EcoBin+, une poubelle intelligente connectée permettant le tri automatique des déchets et le suivi en temps réel du remplissage.',
-    techs: ['IoT', 'ESP32', 'Flutter', 'Raspberry PI']
+    rank: '1er Prix - Innovation IA',
+    description: 'Vainqueur avec une solution IA multilingue permettant aux citoyens de communiquer en langues locales (Baoulé, Dioula, Bété) via WhatsApp.'
   },
   {
     id: 2,
-    title: 'Hackathon GS2E 2025',
-    date: 'Décembre 2025',
-    rank: '1er Prix',
-    description: 'Développement d\'une solution IA WhatsApp pour la CIE, permettant aux citoyens de communiquer en langues locales ivoiriennes (Baoulé, Dioula, Bété).',
-    techs: ['WhatsApp API', 'AI/ML', 'NLP', 'Cloud']
+    title: 'Hackathon Green Tech – Eranove Academy',
+    date: '2025',
+    rank: '1er Prix & Meilleur Pitcher',
+    description: 'Lauréat pour le projet EcoBin+, une solution IoT de tri intelligent des déchets présentée lors de l\'inauguration du TechLab.'
   },
   {
     id: 3,
-    title: 'Meilleur Étudiant Info-Télécom 2021',
+    title: 'Meilleur Étudiant – Info-Télécom',
     date: '2021',
-    rank: 'Major de Promo',
-    description: 'Meilleur étudiant de la filière Informatique Télécommunication à l\'Université Tertiaire et Technologique.',
-    techs: ['Embedded C', 'IoT', 'Électronique', 'Automatisme']
+    rank: 'Major de Promotion',
+    description: 'Distinction académique majeure pour l\'excellence dans la filière Informatique Télécommunication.'
   }
 ]
+
+onMounted(() => {
+  const reveals = document.querySelectorAll('.reveal')
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-in')
+      }
+    })
+  }, { threshold: 0.1 })
+  
+  reveals.forEach(r => observer.observe(r))
+})
 </script>
+
+<style scoped>
+.awards-list {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.award-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 4rem;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--gray-200);
+  transition: all 0.4s ease;
+}
+
+.award-item:hover {
+  transform: translateX(10px);
+}
+
+.award-date {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.award-title {
+  font-size: 1.6rem;
+  font-weight: 850;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.award-rank {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+
+.award-desc {
+  font-size: 1.1rem;
+  color: var(--gray-500);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .award-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 2rem 0;
+  }
+}
+</style>

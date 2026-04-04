@@ -1,60 +1,37 @@
 <template>
   <section class="section experience" id="experience">
-    <div class="section-header">
-      <span class="section-label">Mon Parcours</span>
-      <h2 class="section-title">Expériences & Formation</h2>
-      <p class="section-subtitle">De l'ingénierie terrain à la Data Science appliquée à l'énergie</p>
+    <div class="section-header reveal">
+      <span class="section-label">Parcours Professionnel</span>
+      <h2 class="section-title">Expérience & Vision</h2>
+      <p class="section-subtitle">Une trajectoire dédiée à l'innovation énergétique et digitale.</p>
     </div>
     
-    <div class="timeline-container">
-      <!-- Experiences -->
-      <div class="timeline-section">
-        <h3 class="timeline-label">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
-          </svg>
-          Expériences
-        </h3>
-        
-        <div class="timeline">
-          <div class="timeline-item" v-for="exp in experiences" :key="exp.id">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-header">
-                <span class="timeline-date">{{ exp.period }}</span>
-                <span class="timeline-type">{{ exp.type }}</span>
-              </div>
-              <h4>{{ exp.title }}</h4>
-              <p class="timeline-company">{{ exp.company }} · {{ exp.location }}</p>
-              <p class="timeline-desc">{{ exp.description }}</p>
-              <div class="timeline-techs">
-                <span v-for="tech in exp.techs" :key="tech">{{ tech }}</span>
-              </div>
-            </div>
-          </div>
+    <div class="experience-grid">
+      <div v-for="(exp, index) in experiences" :key="exp.id" 
+           class="experience-card reveal"
+           :style="{ transitionDelay: (index * 100) + 'ms' }">
+        <div class="exp-header">
+          <span class="exp-date">{{ exp.period }}</span>
+          <span class="exp-type">{{ exp.type }}</span>
+        </div>
+        <h3 class="exp-title">{{ exp.title }}</h3>
+        <p class="exp-company">{{ exp.company }} <span v-if="exp.location">| {{ exp.location }}</span></p>
+        <p class="exp-desc">{{ exp.description }}</p>
+        <div class="exp-techs">
+          <span v-for="tech in exp.techs" :key="tech">{{ tech }}</span>
         </div>
       </div>
+    </div>
 
-      <!-- Education -->
-      <div class="timeline-section">
-        <h3 class="timeline-label">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
-          </svg>
-          Formation
-        </h3>
-        
-        <div class="timeline">
-          <div class="timeline-item" v-for="edu in education" :key="edu.id">
-            <div class="timeline-dot edu"></div>
-            <div class="timeline-content">
-              <div class="timeline-header">
-                <span class="timeline-date">{{ edu.period }}</span>
-              </div>
-              <h4>{{ edu.degree }}</h4>
-              <p class="timeline-company">{{ edu.school }}</p>
-              <p class="timeline-desc">{{ edu.description }}</p>
-            </div>
+    <!-- Education Inline for clean layout -->
+    <div class="education-section reveal">
+      <h3 class="edu-heading">Formation Académique</h3>
+      <div class="edu-grid">
+        <div v-for="edu in education" :key="edu.id" class="edu-item">
+          <span class="edu-date">{{ edu.period }}</span>
+          <div class="edu-content">
+            <h4>{{ edu.degree }}</h4>
+            <p>{{ edu.school }}</p>
           </div>
         </div>
       </div>
@@ -63,80 +40,197 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
 const experiences = [
   {
     id: 1,
-    title: 'Co-Founder – Energy Data Platform & Smart Energy Analytics',
+    title: 'Founder',
     company: 'KANARI AFRICA',
-    type: 'Co-Founder',
-    location: 'Nairobi, Kenya · Hybride',
+    type: 'Temps plein',
+    location: 'Abidjan · Hybride',
     period: 'Déc 2025 – Aujourd\'hui',
-    description: 'Plateforme d\'analyse et de valorisation des données énergétiques en Afrique de l\'Ouest. Collecte, structuration et analyse de données pour décisions stratégiques.',
-    techs: ['Full-Stack', 'Gestion de projet', 'Data Analytics', 'Energy']
+    description: 'Première plateforme open data dédiée au secteur énergétique en Afrique de l’Ouest. Analyse et prévision des ressources énergétiques pour la prise de décision stratégique.',
+    techs: ['Open Data', 'Energy Analysis', 'Strategic Decision']
   },
   {
     id: 2,
-    title: 'IoT & Energy Data Monitoring Engineer',
-    company: 'Compagnie Ivoirienne de Production d\'Electricité (CIPREL)',
-    type: 'Apprentissage',
-    location: 'Abidjan, Côte d\'Ivoire',
+    title: 'Stage d’alternance en exploitation conduite',
+    company: 'CIPREL (Compagnie Ivoirienne de Production d\'Electricité)',
+    type: 'Alternance',
+    location: 'Abidjan',
     period: 'Août 2025 – Déc 2025',
-    description: 'Analyse des données d\'arrêts turbines, pipelines ETL, tableaux de bord de monitoring et prédiction des arrêts critiques.',
-    techs: ['Machine Learning', 'Python', 'ETL', 'Data Viz', 'Django']
+    description: 'Conception d’une solution IoT pour le suivi prédictif des moteurs de refroidissement (TAG 06) et mise en place d\'analyses dynamiques des arrêts turbines.',
+    techs: ['IoT', 'Predictive Maintenance', 'Turbine Analytics']
   },
   {
     id: 3,
-    title: 'Data Monitoring & Evaluation Analyst',
-    company: 'SAYNA – Talent4Startup',
-    type: 'Freelance',
-    location: 'À distance',
-    period: 'Mai 2025 – Août 2025',
-    description: 'Collecte, structuration des données des apprenants et suivi-évaluation des performances des participants.',
-    techs: ['Data Analysis', 'Monitoring', 'Evaluation', 'Reporting']
-  },
-  {
-    id: 4,
-    title: 'Technical Project Manager – Industrial Systems',
+    title: 'Chef de Projet Maintenance CVC et Énergie',
     company: 'Inovatec Côte d\'Ivoire',
     type: 'CDI',
-    location: 'Abidjan · Hybride',
-    period: 'Août 2021 – Avr 2025',
-    description: 'Gestion de projets CVC, groupes électrogènes (2000KVA, 500KVA), ascenseurs et maintenance multi-technique pour Noom Hotel, MTN, JECEDA.',
-    techs: ['Gestion de projet', 'Electronics', 'Maintenance', 'CVC']
+    location: 'Abidjan',
+    period: 'Sept 2021 – Avr 2025',
+    description: 'Pilotage de la maintenance multi-technique (CVC, Onduleurs, Groupes Électrogènes) pour MTN Abidjan, Playce Marcory et Onomo Aéroport.',
+    techs: ['Maintenance Management', 'HVAC/CVC', 'Project Leadership']
   }
 ]
 
 const education = [
   {
     id: 1,
-    degree: 'Licence CNAM – IoT appliqué à l\'énergétique',
+    degree: 'Licence Energétique et génie climatique option IoT',
     school: 'Eranove Academy',
-    period: 'Oct 2024 – Mars 2026',
-    description: 'IoT pour la production d\'électricité, optimisation énergétique, maintenance prédictive. 🏆 Meilleur Pitcher Hackathon Green Tech 2025.'
+    period: '2024 – 2026',
   },
   {
     id: 2,
-    degree: 'ML Engineering & Intelligence Artificielle',
-    school: 'DataCamp – Bourse ISHERRO 2025-2026',
-    period: 'Juil 2025',
-    description: 'NLP, Deep Reinforcement Learning, MLOps, Deep Learning (PyTorch), XGBoost, Docker, Design Patterns.'
-  },
-  {
-    id: 3,
     degree: 'Bachelor Electronics for Embedded Systems',
     school: 'Université Tertiaire et Technologique',
     period: '2020 – 2021',
-    description: 'Informatique, Télécommunication, Électronique, Automatisme. 🏆 Meilleur Étudiant Filière Info-Télécom 2021.'
-  },
-  {
-    id: 4,
-    degree: 'Baccalauréat Série C',
-    school: 'Lycée Classique Bouaké',
-    period: '2016 – 2018',
-    description: 'Physique théorique et mathématiques.'
   }
 ]
+
+onMounted(() => {
+  const reveals = document.querySelectorAll('.reveal')
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-in')
+      }
+    })
+  }, { threshold: 0.1 })
+  
+  reveals.forEach(r => observer.observe(r))
+})
 </script>
 
 <style scoped>
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto 6rem;
+}
+
+.experience-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  padding: 3rem;
+  transition: all 0.4s ease;
+}
+
+.experience-card:hover {
+  background: var(--white);
+  border-color: var(--accent);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  transform: translateY(-5px);
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.exp-date {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.exp-type {
+  font-size: 0.7rem;
+  background: var(--gray-200);
+  padding: 0.3rem 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.exp-title {
+  font-size: 1.4rem;
+  font-weight: 850;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.exp-company {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  margin-bottom: 1.5rem;
+}
+
+.exp-desc {
+  font-size: 1rem;
+  color: var(--gray-600);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.exp-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.exp-techs span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--black);
+  text-transform: uppercase;
+  background: var(--white);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--gray-200);
+}
+
+/* Education Section */
+.education-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 4rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.edu-heading {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  letter-spacing: 2px;
+}
+
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+}
+
+.edu-item {
+  display: flex;
+  gap: 2rem;
+}
+
+.edu-date {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--gray-300);
+}
+
+.edu-content h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.edu-content p {
+  color: var(--gray-500);
+}
+
+@media (max-width: 768px) {
+  .edu-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
 </style>

@@ -1,40 +1,120 @@
 <template>
   <section class="section about" id="about">
-    <div class="section-header">
-      <span class="section-label">À Propos</span>
-      <h2 class="section-title">Qui suis-je ?</h2>
-    </div>
-    
-    <div class="about-content">
-      <p>
-        Ingénieur IoT & Efficacité Énergétique, je me spécialise dans la digitalisation 
-        des installations techniques et la Smart Energy. Mon expertise 
-        combine intelligence artificielle, IoT et développement logiciel pour transformer 
-        le secteur de l'énergie.
-      </p>
-      
-      <div class="skills-tags">
-          <span class="skill-tag">GTB / GTC</span>
-          <span class="skill-tag">Audit Énergétique</span>
-          <span class="skill-tag">Thermique du Bâtiment</span>
-          <span class="skill-tag">CVC / HVAC</span>
-          <span class="skill-tag">Régulation PID / TOR</span>
-          <span class="skill-tag">IoT</span>
-          <span class="skill-tag">Maintenance Prédictive</span>
-          <span class="skill-tag">SCADA</span>
-          <span class="skill-tag">Siemens TIA Portal</span>
-          <span class="skill-tag">BACnet</span>
-          <span class="skill-tag">AutoCAD</span>
-          <span class="skill-tag">Power BI</span>
-          <span class="skill-tag">Raspberry Pi</span>
+    <div class="about-grid">
+      <div class="about-image-wrapper reveal-left">
+        <img src="/images/site/emmanuel-portrait.jpg" alt="Emmanuel Gbra - Portrait Professionnel" />
+      </div>
+      <div class="about-text reveal">
+        <span class="section-label">Vision & Expertise</span>
+        <h2 class="section-title">Mesurer et optimiser la performance énergétique</h2>
+        <p>
+          Mon expérience dans la gestion de maintenance d’équipements énergivores m’a permis de mieux appréhender les enjeux réels de la consommation énergétique.
+        </p>
+        <p>
+          En tant que <strong>Chargé d’étude IoT & Efficacité Énergétique</strong>, je souhaite aujourd’hui contribuer à rendre ces consommations <strong>mesurables, exploitables et optimisables</strong> grâce aux solutions numériques et à l'intelligence des données.
+        </p>
+        
+        <div class="about-key-stats">
+          <div class="stat-item">
+            <span class="stat-num">2500+</span>
+            <span class="stat-label">Abonnés LinkedIn</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">1er</span>
+            <span class="stat-label">Prix GS2E 2025</span>
+          </div>
         </div>
+      </div>
     </div>
   </section>
 </template>
 
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const reveals = document.querySelectorAll('.reveal, .reveal-left')
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-in')
+      }
+    })
+  }, { threshold: 0.1 })
+  
+  reveals.forEach(r => observer.observe(r))
+})
+</script>
+
 <style scoped>
-.about-content p strong {
-  color: var(--black);
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 5rem;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.about-image-wrapper {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+.about-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.about-image-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+.about-text p {
+  font-size: 1.2rem;
+  color: var(--gray-600);
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.about-key-stats {
+  display: flex;
+  gap: 4rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-200);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 950;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
   font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
 }
 </style>

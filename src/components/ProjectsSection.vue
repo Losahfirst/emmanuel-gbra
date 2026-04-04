@@ -1,66 +1,51 @@
 <template>
   <section class="section projects" id="work">
-    <div class="section-header">
-      <span class="section-label">Portfolio</span>
-      <h2 class="section-title">Mes Projets</h2>
-      <p class="section-subtitle">Projets récents en ML, IoT et Data</p>
+    <div class="section-header reveal">
+      <span class="section-label">Sélection de Travaux</span>
+      <h2 class="section-title">Impact & Innovation</h2>
+      <p class="section-subtitle">Solutions technologiques pour les défis énergétiques de demain.</p>
     </div>
     
     <div class="projects-grid">
-      <div class="project-card" v-for="project in projects" :key="project.id" @click="openModal(project)">
-        <div class="project-image">
+      <div class="project-card reveal" v-for="(project, index) in projects" 
+           :key="project.id" 
+           :style="{ transitionDelay: (index * 100) + 'ms' }"
+           @click="openModal(project)">
+        <div class="project-image-wrapper">
           <img :src="project.image" :alt="project.title" />
-          <div class="project-overlay">
-            <span>Voir détails →</span>
-          </div>
-        </div>
-        <div class="project-info">
-          <h3>{{ project.title }}</h3>
-          <p>{{ project.description }}</p>
-          <div class="project-tags">
-            <span v-for="tag in project.tags" :key="tag">{{ tag }}</span>
+          <div class="project-info-overlay">
+            <span class="project-category">{{ project.tags[0] }}</span>
+            <h3 class="project-title">{{ project.title }}</h3>
+            <p class="project-excerpt-hover">{{ project.shortDescription }}</p>
+            <span class="view-project">Détails →</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Premium -->
     <Teleport to="body">
       <div class="modal-overlay" v-if="selectedProject" @click="closeModal">
         <div class="modal-content" @click.stop>
-          <button class="modal-close" @click="closeModal">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-          </button>
+          <button class="modal-close" @click="closeModal">✕</button>
           
-          <div class="modal-image">
-            <img :src="selectedProject.image" :alt="selectedProject.title" />
-          </div>
-          
-          <div class="modal-body">
-            <h2>{{ selectedProject.title }}</h2>
-            <p class="modal-description">{{ selectedProject.fullDescription }}</p>
-            
-            <div class="modal-tags">
-              <span v-for="tag in selectedProject.tags" :key="tag">{{ tag }}</span>
+          <div class="modal-grid">
+            <div class="modal-image-side">
+              <img :src="selectedProject.image" :alt="selectedProject.title" />
             </div>
-            
-            <div class="modal-actions">
-              <a v-if="selectedProject.link" :href="selectedProject.link" target="_blank" class="btn btn-dark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-                Voir le projet
-              </a>
-              <a v-if="selectedProject.github" :href="selectedProject.github" target="_blank" class="btn btn-outline">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-                GitHub
-              </a>
+            <div class="modal-info-side">
+              <span class="modal-label">Projet</span>
+              <h2 class="modal-title">{{ selectedProject.title }}</h2>
+              <p class="modal-description">{{ selectedProject.fullDescription }}</p>
+              
+              <div class="modal-tags">
+                <span v-for="tag in selectedProject.tags" :key="tag" class="tag">{{ tag }}</span>
+              </div>
+              
+              <div class="modal-footer">
+                <a v-if="selectedProject.link" :href="selectedProject.link" target="_blank" class="btn btn-dark">Consulter</a>
+                <a v-if="selectedProject.github" :href="selectedProject.github" target="_blank" class="btn btn-outline-dark">Code Source</a>
+              </div>
             </div>
           </div>
         </div>
@@ -70,9 +55,48 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const selectedProject = ref(null)
+
+const projects = [
+  {
+    id: 1,
+    title: 'Supervision VRIDI II',
+    shortDescription: 'Maquette de supervision SCADA pour turbines industrielles.',
+    fullDescription: 'Conception de maquette d\'écran de supervision (SCADA) pour la maintenance proactive du site CIPREL. Interface HMI optimisée pour le suivi des turbines.',
+    image: '/images/projects/motor-analytics.jpg',
+    tags: ['Maquette UI/UX', 'SCADA Design', 'Industrie 4.0'],
+    link: null
+  },
+  {
+    id: 2,
+    title: 'Maintenance Prédictive IoT',
+    shortDescription: 'Maquette d\'application web de monitoring énergétique en temps réel.',
+    fullDescription: 'Maquette de conception d\'application web pour le suivi temps réel des installations énergétiques. Architecture orientée monitoring cloud.',
+    image: '/images/projects/web-monitoring.png',
+    tags: ['Design App', 'IoT Dashboard', 'Prototype'],
+    link: null
+  },
+  {
+    id: 3,
+    title: 'Dashboard KANARI',
+    shortDescription: 'Maquette analytique du mix énergétique et de la charge du réseau.',
+    fullDescription: 'Maquette analytique visualisant la charge du réseau électrique ivoirien et le mix énergétique pour la transition vers des énergies propres.',
+    image: '/images/projects/kanari-dashboard.png',
+    tags: ['Data Viz', 'Energy Mix', 'Concept'],
+    link: 'https://kanari.energy'
+  },
+  {
+    id: 4,
+    title: 'Systèmes Embarqués',
+    shortDescription: 'Maquette de carte électronique et d\'un système d\'acquisition de données.',
+    fullDescription: 'Conception de maquette de carte électronique et système électronique embarqué sur mesure pour l’acquisition de données IoT.',
+    image: '/images/projects/pcb-design.jpg',
+    tags: ['Electronic Design', 'Hardware Maquette', 'PCB'],
+    link: null
+  }
+]
 
 const openModal = (project) => {
   selectedProject.value = project
@@ -84,218 +108,177 @@ const closeModal = () => {
   document.body.style.overflow = ''
 }
 
-const projects = [
-  {
-    id: 1,
-    title: 'Kanari – Energy Dashboard',
-    description: 'Dashboard analytique pour le secteur énergétique ivoirien.',
-    fullDescription: 'Dashboard analytique complet pour visualiser et analyser les données du secteur énergétique de la Côte d\'Ivoire. Suivi en temps réel de la production, consommation, et mix énergétique avec graphiques interactifs et KPIs.',
-    image: '/kanari-screenshot.png',
-    tags: ['Vue.js', 'Python', 'Supabase', 'Charts', 'Data Viz'],
-    link: 'https://kanari.energy',
-    github: 'https://github.com/emmanuel-gbra/kanari'
-  },
-  {
-    id: 2,
-    title: 'EcoBin – Poubelle Intelligente',
-    description: 'Poubelle connectée IoT avec tri automatique.',
-    fullDescription: 'Poubelle intelligente connectée développée lors du Hackathon Green Tech. Système IoT avec capteurs de niveau, tri automatique des déchets par type, et application mobile pour le suivi en temps réel du remplissage et statistiques de recyclage.',
-    image: '/ecobin-screenshot.jpg',
-    tags: ['IoT', 'ESP32', 'Flutter', 'Firebase', 'Capteurs'],
-    link: 'https://rfi.my/BrJ0',
-    github: 'https://github.com/emmanuel-gbra/ecobin-plus'
-  },
-  {
-    id: 3,
-    title: 'Ecofier – ERP Pont Bascule',
-    description: 'Système ERP pour la gestion des pesées.',
-    fullDescription: 'Système ERP complet pour la gestion des opérations de ponts bascules. Gestion des pesées entrantes/sortantes, facturation automatique, rapports détaillés, gestion des clients et des véhicules, intégration avec balances électroniques.',
-    image: '/ecofier-screenshot.png',
-    tags: ['Django', 'PostgreSQL', 'Vue.js', 'REST API', 'Docker'],
-    link: 'https://ecofier-site.vercel.app/',
-    github: null
-  },
-  {
-    id: 4,
-    title: 'Site M. Paul Ginies',
-    description: 'Site web professionnel moderne.',
-    fullDescription: 'Site web professionnel pour M. Paul Ginies avec un design moderne, élégant et entièrement responsive. Portfolio de ses travaux, page de contact, et intégration avec les réseaux sociaux.',
-    image: '/paulginies-screenshot.png',
-    tags: ['Vue.js', 'Tailwind CSS', 'Responsive', 'SEO'],
-    link: 'https://paulginies.com',
-    github: null
-  },
-  {
-    id: 5,
-    title: 'CIE WELE – Chatbot Telegram',
-    description: 'Chatbot IA multilingue pour la CIE.',
-    fullDescription: 'Solution IA conversationnelle via Telegram pour la Compagnie Ivoirienne d\'Électricité (CIE). Support des langues locales ivoiriennes (Baoulé, Dioula, Bété), assistance pour les factures, signalement de pannes, et informations sur les services.',
-    image: '/ciewele-screenshot.png',
-    tags: ['Telegram Bot', 'NLP', 'AI/ML', 'Cloud', 'Python'],
-    link: 'https://t.me/Welecie_bot',
-    github: null
-  },
-  {
-    id: 6,
-    title: 'Turbine Predictive Maintenance',
-    description: 'Prédiction des arrêts de turbines à gaz.',
-    fullDescription: 'Application de maintenance prédictive pour les turbines à gaz de CIPREL. Analyse des données opérationnelles, détection d\'anomalies avec Machine Learning (Random Forest, XGBoost), et prédiction des arrêts pour optimiser la maintenance.',
-    image: '/turbine-screenshot.png',
-    tags: ['Django', 'Scikit-learn', 'PostgreSQL', 'ETL', 'ML'],
-    link: null,
-    github: null
-  }
-]
+onMounted(() => {
+  const reveals = document.querySelectorAll('.reveal')
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-in')
+      }
+    })
+  }, { threshold: 0.1 })
+  
+  reveals.forEach(r => observer.observe(r))
+})
 </script>
 
 <style scoped>
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .project-card {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
   cursor: pointer;
+  background: var(--gray-100);
 }
 
-.project-overlay {
+.project-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.project-info-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
-  background: rgba(10, 10, 10, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: 0;
+  width: 100%;
+  padding: 3rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: var(--white);
+  transform: translateY(20px);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: all 0.5s ease;
 }
 
-.project-overlay span {
-  color: white;
-  font-weight: 600;
-  font-size: 0.95rem;
-  font-family: var(--font-display);
-}
-
-.project-card:hover .project-overlay {
+.project-card:hover .project-info-overlay {
+  transform: translateY(0);
   opacity: 1;
 }
 
-.project-image {
-  position: relative;
-  overflow: hidden;
+.project-card:hover img {
+  transform: scale(1.05);
 }
 
-/* Modal Styles */
+.project-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.project-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.project-excerpt-hover {
+  font-size: 0.9rem;
+  color: var(--gray-300);
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+  max-width: 90%;
+}
+
+.view-project {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  padding: 1rem;
-  backdrop-filter: blur(8px);
+  padding: 2rem;
 }
 
 .modal-content {
-  background: white;
-  border-radius: 16px;
-  max-width: 600px;
+  background: var(--white);
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 1000px;
   position: relative;
-  animation: modalIn 0.3s ease;
+  overflow: hidden;
+  animation: modalSlide 0.5s cubic-bezier(0.2, 0, 0, 1);
 }
 
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+@keyframes modalSlide {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
+  top: 1.5rem;
+  right: 1.5rem;
+  background: var(--black);
+  color: var(--white);
   border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 10;
-  transition: all 0.2s ease;
 }
 
-.modal-close:hover {
-  background: white;
-  transform: scale(1.1);
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
-.modal-close svg {
-  width: 20px;
-  height: 20px;
-}
-
-.modal-image {
-  width: 100%;
-  height: 250px;
-  overflow: hidden;
-}
-
-.modal-image img {
+.modal-image-side img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.modal-body {
-  padding: 1.5rem;
-}
-
-.modal-body h2 {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #0a0a0a;
-  margin-bottom: 1rem;
+.modal-info-side {
+  padding: 4rem;
 }
 
 .modal-description {
-  color: #737373;
+  font-size: 1.1rem;
+  color: var(--gray-600);
+  margin: 2rem 0;
   line-height: 1.7;
-  margin-bottom: 1.25rem;
 }
 
 .modal-tags {
   display: flex;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
 }
 
-.modal-tags span {
+.tag {
   font-size: 0.75rem;
-  padding: 0.3rem 0.75rem;
-  background: #f5f5f5;
-  color: #525252;
-  border-radius: 100px;
-  font-weight: 500;
+  font-weight: 700;
+  background: var(--gray-100);
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
 }
 
-.modal-actions {
-  display: flex;
-  gap: 1rem;
+@media (max-width: 768px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .modal-grid { grid-template-columns: 1fr; }
+  .modal-info-side { padding: 2rem; }
 }
 </style>

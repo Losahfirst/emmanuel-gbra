@@ -1,53 +1,266 @@
 <template>
   <section class="section articles" id="articles">
-    <div class="section-header">
-      <span class="section-label">Publications</span>
-      <h2 class="section-title">Articles</h2>
-      <p class="section-subtitle">Mes publications sur Medium</p>
+    <div class="section-header reveal">
+      <span class="section-label">Publications & Insights</span>
+      <h2 class="section-title">Mes Articles</h2>
+      <p class="section-subtitle">Analyses et perspectives sur la data science appliquée au secteur de l'énergie et de l'IoT.</p>
+    </div>
+
+    <!-- Filtres (Inspiration Kanari) -->
+    <div class="articles-filters reveal">
+      <button v-for="filter in filters" :key="filter" 
+              :class="['filter-btn', { active: activeFilter === filter }]"
+              @click="activeFilter = filter">
+        {{ filter }}
+      </button>
     </div>
     
     <div class="articles-grid">
-      <article class="article-card" v-for="article in articles" :key="article.id">
-        <div class="article-image">
-          <svg viewBox="0 0 24 24" fill="white" width="40" height="40" opacity="0.4">
-            <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
-          </svg>
+      <article v-for="(article, index) in filteredArticles" 
+               :key="article.id" 
+               class="article-card reveal"
+               :style="{ transitionDelay: (index * 100) + 'ms' }">
+        <div class="article-image-wrapper">
+          <img :src="article.image" :alt="article.title" class="article-image" />
+          <span class="article-category">{{ article.category }}</span>
         </div>
-        <div class="article-content">
-          <span class="article-platform">{{ article.platform }}</span>
-          <h3>{{ article.title }}</h3>
-          <p>{{ article.excerpt }}</p>
-          <a :href="article.url" target="_blank" class="article-link">
-            Lire l'article →
+        
+        <div class="article-body">
+          <div class="article-meta">
+            <span class="article-date">{{ article.date }}</span>
+            <span class="article-read-time">{{ article.readTime }}</span>
+          </div>
+          <h3 class="article-card-title">{{ article.title }}</h3>
+          <p class="article-excerpt">{{ article.excerpt }}</p>
+          <a :href="article.url" target="_blank" class="article-read-more">
+            Lire l'article
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
           </a>
         </div>
       </article>
+    </div>
+
+    <div class="articles-footer reveal">
+      <p>Envie d'en savoir plus ? Retrouvez toutes mes publications sur Medium.</p>
+      <a href="https://medium.com/@emmanuelgbra88" target="_blank" class="btn btn-dark">
+        Voir mon Blog Medium
+      </a>
     </div>
   </section>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
+
+const activeFilter = ref('Tout')
+const filters = ['Tout', 'Data Science', 'Énergie', 'IoT', 'Innovation']
+
 const articles = [
   {
     id: 1,
-    title: 'Machine Learning et Production d\'Électricité : Un Duo Gagnant',
-    excerpt: 'Applications du ML dans l\'optimisation de la production électrique, turbines à gaz et maintenance prédictive.',
+    title: 'Machine Learning et Production d\'Électricité',
+    excerpt: 'Optimisation des turbines à gaz et maintenance prédictive via l\'IA pour un réseau plus résilient.',
     url: 'https://medium.com/@emmanuelgbra88/machine-learning-et-production-d%C3%A9lectricit%C3%A9-un-duo-gagnant-fd8a0cc80275',
-    platform: 'Medium'
+    category: 'Data Science',
+    date: '15 Mars 2024',
+    readTime: '6 min',
+    image: '/images/articles/ml-energy.png'
   },
   {
     id: 2,
-    title: 'Machine Learning et Compteurs Intelligents en Côte d\'Ivoire',
-    excerpt: 'Intégration du ML dans les systèmes de compteurs intelligents pour améliorer la gestion énergétique.',
+    title: 'Smart Meters & IoT en Afrique',
+    excerpt: 'Comment l\'IA révolutionne les compteurs intelligents pour une gestion optimale de l\'énergie.',
     url: 'https://medium.com/@emmanuelgbra88/machine-learning-et-compteurs-%C3%A9lectriques-intelligents-une-opportunit%C3%A9-pour-la-c%C3%B4te-divoire-1f72a4580bd0',
-    platform: 'Medium'
+    category: 'IoT',
+    date: '02 Février 2024',
+    readTime: '5 min',
+    image: '/images/articles/ev-charging.jpg'
   },
   {
     id: 3,
-    title: 'Les Métiers de la Data et l\'Énergie',
-    excerpt: 'Comment l\'IA et les technologies de données transforment le secteur énergétique.',
+    title: 'Les Métiers de la Data Énergie',
+    excerpt: 'Analyse de la transformation digitale des métiers du secteur énergétique ivoirien.',
     url: 'https://medium.com/@emmanuelgbra88/les-m%C3%A9tiers-de-la-data-et-l%C3%A9nergie-78e19a5631b0',
-    platform: 'Medium'
+    category: 'Innovation',
+    date: '20 Janvier 2024',
+    readTime: '4 min',
+    image: '/images/articles/data-jobs.png'
   }
 ]
+
+const filteredArticles = computed(() => {
+  if (activeFilter.value === 'Tout') return articles
+  return articles.filter(a => a.category === activeFilter.value)
+})
 </script>
+
+<style scoped>
+.articles {
+  background-color: var(--white);
+  padding: 8rem 4%;
+}
+
+.articles-filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 100px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-btn:hover {
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.filter-btn.active {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.article-card {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: var(--transition-slow);
+}
+
+.article-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.article-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(20%);
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.5s ease;
+}
+
+.article-card:hover .article-image {
+  transform: scale(1.05);
+  filter: grayscale(0%);
+}
+
+.article-category {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--black);
+  color: var(--white);
+  padding: 0.4rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.article-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.article-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  margin-bottom: 0.75rem;
+}
+
+.article-card-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--black);
+  margin-bottom: 1rem;
+  transition: color var(--transition);
+}
+
+.article-card:hover .article-card-title {
+  color: var(--accent);
+}
+
+.article-excerpt {
+  font-size: 0.95rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-read-more {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.article-read-more svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition);
+}
+
+.article-card:hover .article-read-more svg {
+  transform: translateX(5px);
+}
+
+.articles-footer {
+  margin-top: 6rem;
+  text-align: center;
+  padding-top: 3rem;
+  border-top: 1px solid var(--gray-100);
+}
+
+.articles-footer p {
+  color: var(--gray-500);
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .articles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+

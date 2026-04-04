@@ -1,112 +1,22 @@
 <template>
   <section class="section skills" id="skills">
-    <div class="section-header">
-      <span class="section-label">Compétences</span>
-      <h2 class="section-title">Expertise Technique</h2>
-      <p class="section-subtitle">Spécialiste en audit énergétique, pilotage de bâtiments et CVC</p>
+    <div class="section-header reveal">
+      <span class="section-label">Matrice de Compétences</span>
+      <h2 class="section-title">Domaines d'Expertise</h2>
+      <p class="section-subtitle">Une approche multidisciplinaire alliant ingénierie thermique et digital. </p>
     </div>
     
-    <div class="skills-container">
-      <!-- Pilotage & Supervision (GTB/GTC) -->
-      <div class="skill-category">
-        <h3>
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15h14v3H5zm0-4h4v2H5zm6 0h8v2h-8zm0-4h8v2h-8zM5 7h4v4H5z"/></svg>
-          Pilotage & Supervision (GTB/GTC)
-        </h3>
-        <div class="skill-items">
-          <div class="skill-item">
-            <div class="skill-icon-text">GTB</div>
-            <span>GTB / GTC (Siemens, Schneider)</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">PID</div>
-            <span>Régulation PID / TOR</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">TIA</div>
-            <span>Programmation PLC (TIA Portal)</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">MB</div>
-            <span>BACnet / Modbus / OPC UA</span>
-          </div>
+    <div class="skills-grid">
+      <div v-for="(cat, index) in skillCategories" :key="cat.title" 
+           class="skill-category-card reveal"
+           :style="{ transitionDelay: (index * 100) + 'ms' }">
+        <div class="category-header">
+          <div class="category-icon" v-html="cat.icon"></div>
+          <h3>{{ cat.title }}</h3>
         </div>
-      </div>
-
-      <!-- Audit & Efficacité Énergétique -->
-      <div class="skill-category">
-        <h3>
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-          Efficacité Énergétique
-        </h3>
-        <div class="skill-items">
-          <div class="skill-item">
-            <div class="skill-icon-text">AU</div>
-            <span>Audit Énergétique</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">TH</div>
-            <span>Thermique du bâtiment</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">ET</div>
-            <span>ETAP / Calcul de charges</span>
-          </div>
-          <div class="skill-item">
-            <img src="https://www.vectorlogo.zone/logos/microsoft_powerbi/microsoft_powerbi-icon.svg" alt="Power BI" />
-            <span>Reporting (Power BI)</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- CVC & Maintenance -->
-      <div class="skill-category">
-        <h3>
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-          Génie Thermique & CVC
-        </h3>
-        <div class="skill-items">
-          <div class="skill-item">
-            <div class="skill-icon-text">CVC</div>
-            <span>Dimensionnement CVC</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">MT</div>
-            <span>Maintenance prédictive</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">AC</div>
-            <span>AutoCAD Electrical</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">GE</div>
-            <span>Groupes Électrogènes</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- IoT & Mesure -->
-      <div class="skill-category">
-        <h3>
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14zM6 13h5v4H6zm6-6h4v3h-4zM6 7h5v5H6zm6 4h4v6h-4z"/></svg>
-          IoT & Mesure
-        </h3>
-        <div class="skill-items">
-          <div class="skill-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" />
-            <span>Raspberry Pi</span>
-          </div>
-          <div class="skill-item">
-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg" alt="ESP32/Arduino" />
-            <span>Capteurs & ESP32</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">MQTT</div>
-            <span>Protocole MQTT</span>
-          </div>
-          <div class="skill-item">
-            <div class="skill-icon-text">NR</div>
-            <span>Flux Node-RED</span>
+        <div class="skill-list">
+          <div v-for="skill in cat.items" :key="skill" class="skill-pill">
+            {{ skill }}
           </div>
         </div>
       </div>
@@ -115,22 +25,116 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
+const skillCategories = [
+  {
+    title: 'Supervision & GTB/GTC',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>',
+    items: ['Vijeo Citect (Alarmes & Tendances)', 'MODBUS', 'PROFINET', 'BACNET', 'Régulation Industrielle']
+  },
+  {
+    title: 'IoT & Monitoring',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M12 8v4l3 3"/></svg>',
+    items: ['Thermographie FLUKE Ti450', 'Architectures d’acquisition', 'MQTT / LORAWAN', 'Capteurs (PT100, 4–20 mA, Rogowski)']
+  },
+  {
+    title: 'Analyse & Performance',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+    items: ['Méthodes Pareto & Ishikawa', 'KPI Énergétiques', 'Maintenance Prédictive', 'Analyse de données ETL']
+  },
+  {
+    title: 'Génie Énergétique & CVC',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',
+    items: ['Norme ISO 50001', 'Dimensionnement VRV / CTA / CVC', 'Groupes à eau glacée', 'Systèmes d’extraction']
+  }
+]
+
+onMounted(() => {
+  const reveals = document.querySelectorAll('.reveal')
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-in')
+      }
+    })
+  }, { threshold: 0.1 })
+  
+  reveals.forEach(r => observer.observe(r))
+})
 </script>
 
 <style scoped>
-.skill-icon-text {
-  width: 28px;
-  height: 28px;
-  background: var(--black);
-  color: var(--white);
-  border-radius: 6px;
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.skill-category-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  padding: 3rem;
+  border-radius: 4px;
+  transition: all 0.4s ease;
+}
+
+.skill-category-card:hover {
+  background: var(--white);
+  border-color: var(--accent);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.category-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 0.6rem;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.category-icon {
+  color: var(--accent);
+}
+
+.category-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.category-header h3 {
+  font-size: 1.35rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
-  flex-shrink: 0;
+  color: var(--black);
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skill-pill {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.skill-category-card:hover .skill-pill {
+  border-color: var(--gray-300);
+  color: var(--black);
+}
+
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 </style>

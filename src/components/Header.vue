@@ -1,23 +1,43 @@
 <template>
   <header class="header" :class="{ scrolled: isScrolled }">
-    <a href="#" class="logo">
-      <span class="logo-icon">E</span>
-      <span class="logo-text">mmanuel<span class="logo-dot">.</span></span>
-    </a>
-    
-    <nav class="nav" :class="{ active: menuOpen }">
-      <a href="#about" @click="closeMenu">About</a>
-      <a href="#experience" @click="closeMenu">Parcours</a>
-      <a href="#skills" @click="closeMenu">Skills</a>
-      <a href="#work" @click="closeMenu">Works</a>
-      <a href="#articles" @click="closeMenu">Articles</a>
-      <a href="#contact" @click="closeMenu">Contact</a>
-    </nav>
-    
-    <div class="menu-toggle" :class="{ active: menuOpen }" @click="menuOpen = !menuOpen">
-      <span></span>
-      <span></span>
-      <span></span>
+    <div class="header-container">
+      <!-- Logo Side -->
+      <a href="#" class="logo">
+        <span class="logo-text">EMMANUEL GBRA</span>
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="nav-desktop">
+        <ul class="nav-links">
+          <li><router-link to="/#about">ABOUT</router-link></li>
+          <li><router-link to="/#experience">EXPERIENCE</router-link></li>
+          <li><router-link to="/#skills">EXPERTISE</router-link></li>
+          <li><router-link to="/articles">ARTICLES</router-link></li>
+        </ul>
+        <a href="#contact" class="nav-cta">CONTACT</a>
+      </nav>
+      
+      <!-- Mobile Toggle -->
+      <div class="menu-toggle" :class="{ active: menuOpen }" @click="toggleMenu">
+        <span class="menu-label">MENU</span>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" :class="{ open: menuOpen }">
+      <nav class="mobile-nav">
+        <router-link to="/#about" @click="closeMenu">ABOUT</router-link>
+        <router-link to="/#experience" @click="closeMenu">EXPERIENCE</router-link>
+        <router-link to="/#skills" @click="closeMenu">EXPERTISE</router-link>
+        <router-link to="/#work" @click="closeMenu">PROJECTS</router-link>
+        <router-link to="/articles" @click="closeMenu">ARTICLES</router-link>
+        <router-link to="/#contact" @click="closeMenu" class="mobile-cta">CONTACT</router-link>
+      </nav>
     </div>
   </header>
 </template>
@@ -32,8 +52,14 @@ const handleScroll = () => {
   isScrolled.value = window.scrollY > 50
 }
 
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+  document.body.style.overflow = menuOpen.value ? 'hidden' : ''
+}
+
 const closeMenu = () => {
   menuOpen.value = false
+  document.body.style.overflow = ''
 }
 
 onMounted(() => {
@@ -46,40 +72,164 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.logo {
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  z-index: 2000;
+  background: var(--white);
+  transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+  padding: 0 4%;
+  border-bottom: 1px solid var(--gray-100);
 }
 
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  background: var(--black);
-  color: var(--white);
-  border-radius: 10px;
+.header-container {
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.2rem;
+}
+
+/* Logo */
+.logo {
+  text-decoration: none;
 }
 
 .logo-text {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: 1px;
+}
+
+/* Desktop Nav */
+.nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.75rem;
   font-weight: 700;
+  color: var(--gray-500);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links .router-link-active {
   color: var(--black);
 }
 
-.logo-dot {
-  color: #10B981;
+.nav-cta {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--black);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 0.5rem 1rem;
+  border: 1.5px solid var(--black);
+  transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .logo-text {
-    display: none;
-  }
+.nav-cta:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* Mobile Toggle */
+.menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  z-index: 3000;
+}
+
+.menu-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 1.5px;
+  background: var(--black);
+  transition: 0.3s ease;
+}
+
+.menu-toggle.active .hamburger span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+.menu-toggle.active .hamburger span:nth-child(2) { opacity: 0; }
+.menu-toggle.active .hamburger span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+  z-index: 2500;
+}
+
+.mobile-menu.open {
+  transform: translateY(0);
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.mobile-nav a {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--black);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mobile-cta {
+  border: 2px solid var(--black);
+  padding: 0.8rem 2rem;
+}
+
+@media (max-width: 1024px) {
+  .logo-text { display: none; }
+  .nav-desktop { display: none; }
+  .menu-toggle { display: flex; }
 }
 </style>
