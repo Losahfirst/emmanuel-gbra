@@ -24,10 +24,13 @@
           <span class="step-text">Supervision Dashboard</span>
         </div>
       </div>
+      <div class="mobile-step-indicator">
+        Étape {{ currentStep === 'arch' ? '1' : currentStep === 'config' ? '2' : '3' }}/3
+      </div>
       <div class="header-right">
         <div class="status-indicator">
           <div class="dot" :class="{ 'active': isRunning }"></div>
-          {{ isRunning ? 'En Ligne' : 'Hors Ligne' }}
+          <span class="status-text">{{ isRunning ? 'En Ligne' : 'Hors Ligne' }}</span>
         </div>
       </div>
     </header>
@@ -643,6 +646,16 @@ watch(config, () => { if (isRunning.value) stopSimulation() }, { deep: true })
 .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-400); }
 .dot.active { background: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.5); }
 
+.mobile-step-indicator {
+  display: none;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+}
+
 .platform-body { background: #f8fafc; }
 
 .step-view { padding: 3rem 2rem; max-width: 1300px; margin: 0 auto; }
@@ -779,10 +792,49 @@ watch(config, () => { if (isRunning.value) stopSimulation() }, { deep: true })
 
 @media (max-width: 1024px) {
   .header-steps { display: none; }
-  .config-layout { grid-template-columns: 1fr; }
-  .scada-bottom { grid-template-columns: 1fr; }
-  .scada-gauges { grid-template-columns: repeat(2, 1fr); }
+  .mobile-step-indicator { display: block; }
+  .platform-header { padding: 0 1rem; height: 60px; }
+  .platform-logo h2 { font-size: 1rem; }
+  .status-text { display: none; }
+  
+  .step-view { padding: 1.5rem 1rem; }
+  .view-header h3 { font-size: 1.5rem; }
+  .view-header p { font-size: 0.9rem; }
+
+  .builder-section { padding: 1.5rem; }
+  .col-title { font-size: 1.1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .section-top { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .grid-cards-small { grid-template-columns: 1fr; }
+  
+  .config-layout { grid-template-columns: 1fr; gap: 1rem; }
+  .code-editor-area { height: 350px; padding: 1rem; font-size: 0.8rem; }
+  .step-footer-alt { padding: 1rem; }
+  .next-btn { width: 100%; justify-content: center; font-size: 0.9rem; padding: 1rem; }
+
+  .run-header h3 { font-size: 1.5rem; }
+  .dash-tabs { width: 100%; overflow-x: auto; padding-bottom: 0.5rem; }
+  .dash-tabs button { white-space: nowrap; flex: 1; text-align: center; }
+  
+  .scada-gauges { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .gauge-card { padding: 1rem; }
+  .gauge-svg { width: 100px; height: 100px; }
+  
+  .scada-bottom { grid-template-columns: 1fr; gap: 1rem; }
+  .scada-chart-box { height: auto; }
+  .chart-wrapper { padding: 0.5rem; }
+  
   .webapp-body { flex-direction: column; }
-  .webapp-sidebar-fake { width: 100%; }
+  .webapp-sidebar-fake { width: 100%; display: flex; overflow-x: auto; padding: 0.5rem; border-right: none; border-bottom: 1px solid #1e3a5f; }
+  .wsf-logo { display: none; }
+  .wsf-item { white-space: nowrap; padding: 0.5rem 1rem; }
+  .webapp-kpis { grid-template-columns: repeat(2, 1fr); }
+  
+  .dash-terminal-full { height: 400px; }
+}
+
+@media (max-width: 480px) {
+  .scada-gauges { grid-template-columns: 1fr; }
+  .webapp-kpis { grid-template-columns: 1fr; }
+  .run-header-left { flex-direction: column; align-items: flex-start; gap: 1rem; }
 }
 </style>
