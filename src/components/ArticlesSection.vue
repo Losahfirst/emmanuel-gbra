@@ -43,10 +43,17 @@
     </div>
 
     <div class="articles-footer reveal">
-      <p>Envie d'en savoir plus ? Retrouvez toutes mes publications sur Medium.</p>
-      <a href="https://medium.com/@emmanuelgbra88" target="_blank" class="btn btn-dark">
-        Voir mon Blog Medium
-      </a>
+      <p>Envie d'en savoir plus ? Retrouvez toutes mes publications sur mes blogs.</p>
+      <div class="blog-links">
+        <a href="https://medium.com/@emmanuelgbra88" target="_blank" class="blog-link-item">
+          <img src="https://logos-world.net/wp-content/uploads/2023/07/Medium-Emblem.png" alt="Medium Blog" class="blog-logo" />
+          <span>Medium</span>
+        </a>
+        <a href="https://losah.substack.com/" target="_blank" class="blog-link-item">
+          <img src="https://substackcdn.com/image/fetch/$s_!dIv-!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F478c3813-a178-4032-9ccb-e8fd74912ffc_2832x1332.png" alt="Substack Blog" class="blog-logo substack-logo" />
+          <span>Substack</span>
+        </a>
+      </div>
     </div>
   </section>
 </template>
@@ -66,7 +73,7 @@ const articles = [
     category: 'Data Science',
     date: '15 Mars 2024',
     readTime: '6 min',
-    image: '/images/articles/ml-energy.png'
+    image: 'https://miro.medium.com/v2/resize:fit:720/format:webp/1*C9DGz4YZP66PUIm006TvAA@2x.jpeg'
   },
   {
     id: 2,
@@ -76,7 +83,7 @@ const articles = [
     category: 'IoT',
     date: '02 Février 2024',
     readTime: '5 min',
-    image: '/images/articles/ev-charging.jpg'
+    image: 'https://miro.medium.com/v2/resize:fit:720/format:webp/1*RXRuiNk_SKnnZHBaSHiZ2w.jpeg'
   },
   {
     id: 3,
@@ -86,7 +93,7 @@ const articles = [
     category: 'Innovation',
     date: '20 Janvier 2024',
     readTime: '4 min',
-    image: '/images/articles/data-jobs.png'
+    image: 'https://miro.medium.com/v2/resize:fit:640/format:webp/0*lif3rzaN8t0_9J_n.jpg'
   }
 ]
 
@@ -254,7 +261,58 @@ const filteredArticles = computed(() => {
 
 .articles-footer p {
   color: var(--gray-500);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+}
+
+.blog-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.blog-link-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.blog-link-item:hover {
+  transform: translateY(-8px);
+}
+
+.blog-logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+  filter: grayscale(100%) opacity(0.7);
+}
+
+.blog-link-item:hover .blog-logo {
+  filter: grayscale(0%) opacity(1);
+}
+
+.substack-logo {
+  height: 50px; /* Slight adjustment for substack logo ratio */
+}
+
+.blog-link-item span {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gray-400);
+  transition: color 0.3s ease;
+}
+
+.blog-link-item:hover span {
+  color: var(--black);
 }
 
 @media (max-width: 768px) {

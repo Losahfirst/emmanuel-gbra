@@ -12,9 +12,9 @@
           <li><router-link to="/#about">ABOUT</router-link></li>
           <li><router-link to="/#experience">EXPERIENCE</router-link></li>
           <li><router-link to="/outils">MES OUTILS</router-link></li>
-          <li><router-link to="/articles">ARTICLES</router-link></li>
+          <li><a href="#contact">CONTACT</a></li>
         </ul>
-        <a href="#contact" class="nav-cta">CONTACT</a>
+        <router-link to="/articles" class="nav-cta">ARTICLES</router-link>
       </nav>
       
       <!-- Mobile Toggle -->
@@ -35,8 +35,8 @@
         <router-link to="/#experience" @click="closeMenu">EXPERIENCE</router-link>
         <router-link to="/outils" @click="closeMenu">MES OUTILS</router-link>
         <router-link to="/#work" @click="closeMenu">PROJECTS</router-link>
-        <router-link to="/articles" @click="closeMenu">ARTICLES</router-link>
-        <router-link to="/#contact" @click="closeMenu" class="mobile-cta">CONTACT</router-link>
+        <a href="#contact" @click="closeMenu">CONTACT</a>
+        <router-link to="/articles" @click="closeMenu" class="mobile-cta">ARTICLES</router-link>
       </nav>
     </div>
   </header>
@@ -140,18 +140,21 @@ onUnmounted(() => {
 .nav-cta {
   font-size: 0.75rem;
   font-weight: 800;
-  color: var(--black);
+  color: var(--white);
+  background: var(--accent);
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  padding: 0.5rem 1rem;
-  border: 1.5px solid var(--black);
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 4px;
   transition: all 0.3s ease;
 }
 
 .nav-cta:hover {
   background: var(--black);
-  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(227, 27, 35, 0.3);
 }
 
 /* Mobile Toggle */
@@ -223,8 +226,10 @@ onUnmounted(() => {
 }
 
 .mobile-cta {
-  border: 2px solid var(--black);
-  padding: 0.8rem 2rem;
+  background: var(--accent);
+  color: var(--white) !important;
+  padding: 1rem 3rem;
+  border-radius: 4px;
 }
 
 @media (max-width: 1024px) {
