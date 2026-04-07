@@ -3,7 +3,7 @@
     <div class="footer-grid">
       <div class="footer-logo">
         <span class="logo-text">Emmanuel<span>.</span>Gbra</span>
-        <p>Ingénieur Data & IoT pour un futur énergétique durable.</p>
+        <p>Chargé d'étude IoT & Efficacité Énergétique pour un futur durable.</p>
       </div>
       <div class="footer-copy">
         <p>&copy; {{ year }} Emmanuel Gbra. Tous droits réservés.</p>

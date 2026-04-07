@@ -31,22 +31,22 @@ const skillCategories = [
   {
     title: 'Supervision & GTB/GTC',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>',
-    items: ['Vijeo Citect (Alarmes & Tendances)', 'MODBUS', 'PROFINET', 'BACNET', 'Régulation Industrielle']
+    items: ['Vijeo Citect / AVEVA', 'OPC UA / DA', 'MODBUS / PROFINET / BACNET', 'Siemens TIA Portal', 'Régulation Industrielle (PID)']
   },
   {
     title: 'IoT & Monitoring',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M12 8v4l3 3"/></svg>',
-    items: ['Thermographie FLUKE Ti450', 'Architectures d’acquisition', 'MQTT / LORAWAN', 'Capteurs (PT100, 4–20 mA, Rogowski)']
+    items: ['ThingsBoard & Grafana', 'Apache Kafka / Node-RED', 'InfluxDB', 'MQTT / LoRaWAN', 'Thermographie Ti450', 'Capteurs Analogiques (4-20mA)']
   },
   {
     title: 'Analyse & Performance',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
-    items: ['Méthodes Pareto & Ishikawa', 'KPI Énergétiques', 'Maintenance Prédictive', 'Analyse de données ETL']
+    items: ['Python (Pandas, Numpy)', 'Power BI', 'SQL / ETL Pipelines', 'Maintenance Prédictive', 'Pareto & Ishikawa', 'KPI Énergétiques']
   },
   {
     title: 'Génie Énergétique & CVC',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',
-    items: ['Norme ISO 50001', 'Dimensionnement VRV / CTA / CVC', 'Groupes à eau glacée', 'Systèmes d’extraction']
+    items: ['AutoCAD / Revit (BIM)', 'Carrier HAP / TRACE', 'Norme ISO 50001', 'Groupes à eau glacée / VRV', 'Bilan Carbone', 'Diagrammes Psychrométriques']
   }
 ]
 

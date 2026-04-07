@@ -12,8 +12,7 @@ const routes = [
     path: '/team-connect',
     name: 'TeamConnect',
     component: TeamConnect
-  }
-  ,
+  },
   {
     path: '/representative-works',
     name: 'RepresentativeWorks',
@@ -29,6 +28,31 @@ const routes = [
     path: '/articles',
     name: 'Articles',
     component: () => import('../views/ArticlesPage.vue')
+  },
+  {
+    path: '/outils',
+    name: 'Tools',
+    component: () => import('../views/ToolsPage.vue')
+  },
+  {
+    path: '/outils/satellite',
+    name: 'SatelliteMap',
+    component: () => import('../views/SatelliteMap.vue')
+  },
+  {
+    path: '/outils/cvc',
+    name: 'CvcTools',
+    component: () => import('../views/CvcToolsPage.vue')
+  },
+  {
+    path: '/outils/datasets',
+    name: 'DatasetsPage',
+    component: () => import('../views/DatasetsPage.vue')
+  },
+  {
+    path: '/outils/iot',
+    name: 'IotSimulator',
+    component: () => import('../views/IotSimulatorPage.vue')
   }
 ]
 

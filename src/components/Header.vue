@@ -2,16 +2,16 @@
   <header class="header" :class="{ scrolled: isScrolled }">
     <div class="header-container">
       <!-- Logo Side -->
-      <a href="#" class="logo">
+      <router-link to="/" class="logo">
         <span class="logo-text">EMMANUEL GBRA</span>
-      </a>
+      </router-link>
       
       <!-- Desktop Navigation -->
       <nav class="nav-desktop">
         <ul class="nav-links">
           <li><router-link to="/#about">ABOUT</router-link></li>
           <li><router-link to="/#experience">EXPERIENCE</router-link></li>
-          <li><router-link to="/#skills">EXPERTISE</router-link></li>
+          <li><router-link to="/outils">MES OUTILS</router-link></li>
           <li><router-link to="/articles">ARTICLES</router-link></li>
         </ul>
         <a href="#contact" class="nav-cta">CONTACT</a>
@@ -33,7 +33,7 @@
       <nav class="mobile-nav">
         <router-link to="/#about" @click="closeMenu">ABOUT</router-link>
         <router-link to="/#experience" @click="closeMenu">EXPERIENCE</router-link>
-        <router-link to="/#skills" @click="closeMenu">EXPERTISE</router-link>
+        <router-link to="/outils" @click="closeMenu">MES OUTILS</router-link>
         <router-link to="/#work" @click="closeMenu">PROJECTS</router-link>
         <router-link to="/articles" @click="closeMenu">ARTICLES</router-link>
         <router-link to="/#contact" @click="closeMenu" class="mobile-cta">CONTACT</router-link>
@@ -228,7 +228,6 @@ onUnmounted(() => {
 }
 
 @media (max-width: 1024px) {
-  .logo-text { display: none; }
   .nav-desktop { display: none; }
   .menu-toggle { display: flex; }
 }
