@@ -176,54 +176,100 @@
         </div>
       </div>
 
-      <!-- STEP 3 : RUN (TERMINAL & GRAPH) -->
+      <!-- STEP 3 : SCADA DASHBOARD -->
       <div v-show="currentStep === 'run'" class="step-view view-run fade-in">
         <div class="run-header">
-          <h3>Tableau de Bord / Supervision SCADA</h3>
-          <button class="launch-btn" @click="startSimulation" v-if="!isRunning">
-            <Power size="18" /> Initialiser la Simulation
-          </button>
-          <button class="stop-btn" @click="stopSimulation" v-else>
-            <Square size="18" /> Arrêter la Simulation
-          </button>
-        </div>
-
-        <div class="dashboard-grid">
-          <div class="dash-card dash-chart">
-            <div class="dash-card-header">
-              <strong>Courbes Temps Réel (Multi-Capteurs)</strong>
-            </div>
-            <div class="chart-wrapper">
-              <VueApexCharts 
-                width="100%" 
-                height="100%" 
-                type="area" 
-                :options="chartOptions" 
-                :series="chartSeries" 
-              />
+          <div class="run-header-left">
+            <h3>Supervision SCADA</h3>
+            <div class="dash-tabs">
+              <button :class="{ active: dashTab === 'scada' }" @click="dashTab = 'scada'">Synoptique</button>
+              <button :class="{ active: dashTab === 'web' }" @click="dashTab = 'web'">Application Web</button>
+              <button :class="{ active: dashTab === 'terminal' }" @click="dashTab = 'terminal'">Terminal</button>
             </div>
           </div>
+          <div class="run-actions">
+            <button class="launch-btn" @click="startSimulation" v-if="!isRunning">
+              <Power size="18" /> Démarrer
+            </button>
+            <button class="stop-btn" @click="stopSimulation" v-else>
+              <Square size="18" /> Arrêter
+            </button>
+          </div>
+        </div>
 
-          <div class="dash-card dash-info">
-            <div class="dash-card-header"><strong>Matériel Déployé</strong></div>
-            <div class="info-content">
-              <p><span>Automate :</span> {{ selectedBoardName }}</p>
-              <p><span>Protocole :</span> {{ config.protocol.toUpperCase() }} vers {{ config.ip }}</p>
-              <p><span>Capteurs :</span> {{ config.sensors.length }} Actif(s)</p>
-            </div>
-            <hr>
-            <div class="dash-card-header"><strong>Dernières Valeurs</strong></div>
-            <div class="live-values">
-              <div v-for="(val, key) in lastValuesMap" :key="key" class="live-val-box">
-                <span class="l-key">{{ key }}</span>
-                <span class="l-val">{{ val }}</span>
+        <!-- TAB: SCADA SYNOPTIC -->
+        <div v-show="dashTab === 'scada'" class="scada-panel">
+          <div class="scada-gauges">
+            <div v-for="(val, key) in lastValuesMap" :key="key" class="gauge-card">
+              <svg viewBox="0 0 120 120" class="gauge-svg">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="8" />
+                <circle cx="60" cy="60" r="52" fill="none" :stroke="getGaugeColor(key)" stroke-width="8"
+                  stroke-linecap="round" :stroke-dasharray="getGaugeDash(key, val)" stroke-dashoffset="0"
+                  transform="rotate(-90 60 60)" class="gauge-arc" />
+                <text x="60" y="55" text-anchor="middle" class="gauge-val">{{ val }}</text>
+                <text x="60" y="72" text-anchor="middle" class="gauge-label">{{ key }}</text>
+              </svg>
+              <div class="gauge-status" :class="getGaugeStatus(key, val)">
+                {{ getGaugeStatus(key, val) === 'ok' ? 'Normal' : 'Alerte' }}
               </div>
             </div>
           </div>
+          <div class="scada-bottom">
+            <div class="scada-chart-box">
+              <div class="dash-card-header"><strong>Tendances Temps Réel</strong></div>
+              <div class="chart-wrapper">
+                <VueApexCharts width="100%" height="280" type="area" :options="chartOptions" :series="chartSeries" />
+              </div>
+            </div>
+            <div class="scada-alarms">
+              <div class="dash-card-header"><strong>Journal Alarmes ({{ alarms.length }})</strong></div>
+              <div class="alarm-list">
+                <div v-if="alarms.length === 0" class="alarm-empty">Aucune alarme.</div>
+                <div v-for="(a, i) in alarms" :key="i" class="alarm-row" :class="a.level">
+                  <span class="a-time">{{ a.time }}</span>
+                  <span class="a-msg">{{ a.msg }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <div class="dash-card dash-terminal">
+        <!-- TAB: WEB APP PREVIEW -->
+        <div v-show="dashTab === 'web'" class="webapp-panel">
+          <div class="webapp-frame">
+            <div class="webapp-topbar">
+              <div class="webapp-dots"><span></span><span></span><span></span></div>
+              <div class="webapp-url">https://{{ config.ip }}/dashboard</div>
+            </div>
+            <div class="webapp-body">
+              <div class="webapp-sidebar-fake">
+                <div class="wsf-logo">{{ selectedCloudName }}</div>
+                <div class="wsf-item active">Dashboard</div>
+                <div class="wsf-item">Devices</div>
+                <div class="wsf-item">Alerts</div>
+                <div class="wsf-item">Settings</div>
+              </div>
+              <div class="webapp-main">
+                <h4>Live Telemetry - {{ selectedBoardName }}</h4>
+                <div class="webapp-kpis">
+                  <div v-for="(val, key) in lastValuesMap" :key="key" class="webapp-kpi">
+                    <span class="kpi-label">{{ key }}</span>
+                    <span class="kpi-value">{{ val }}</span>
+                  </div>
+                </div>
+                <div class="webapp-chart-area">
+                  <VueApexCharts width="100%" height="220" type="line" :options="webChartOpts" :series="chartSeries" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: TERMINAL -->
+        <div v-show="dashTab === 'terminal'" class="terminal-panel">
+          <div class="dash-card dash-terminal-full">
             <div class="terminal-header">
-              <span><Terminal size="16" /> Sniffer Réseau</span>
+              <span><Terminal size="16" /> Console Industrielle [ {{ config.board }} @ {{ config.ip }} ]</span>
               <div class="window-actions">
                 <div class="window-dot red"></div>
                 <div class="window-dot yellow"></div>
@@ -336,6 +382,47 @@ const isArchValid = computed(() => config.sensors.length > 0 && config.board !==
 const getSensorName = (id) => SENSORS.find(s => s.id === id)?.name || id
 const selectedSensorsNames = computed(() => config.sensors.map(id => getSensorName(id)).join(', '))
 const selectedBoardName = computed(() => BOARDS.find(b => b.id === config.board)?.name || '')
+const selectedCloudName = computed(() => CLOUDS.find(c => c.id === config.platform)?.name || '')
+
+const dashTab = ref('scada')
+const alarms = ref([])
+
+const getGaugeColor = (key) => {
+  const colors = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#f97316']
+  let hash = 0
+  for (let i = 0; i < key.length; i++) hash = key.charCodeAt(i) + ((hash << 5) - hash)
+  return colors[Math.abs(hash) % colors.length]
+}
+
+const getGaugeDash = (key, val) => {
+  const circ = 2 * Math.PI * 52
+  const sensorId = config.sensors.find(s => getSensorName(s) === key)
+  if (!sensorId) return '0 ' + circ
+  const cal = config.calib[sensorId]
+  if (!cal) return '0 ' + circ
+  const pct = Math.min(1, Math.max(0, (val - cal.min) / (cal.max - cal.min)))
+  return (pct * circ).toFixed(1) + ' ' + circ
+}
+
+const getGaugeStatus = (key, val) => {
+  const sensorId = config.sensors.find(s => getSensorName(s) === key)
+  if (!sensorId) return 'ok'
+  const cal = config.calib[sensorId]
+  if (!cal) return 'ok'
+  const pct = (val - cal.min) / (cal.max - cal.min)
+  return pct > 0.85 ? 'warn' : 'ok'
+}
+
+const webChartOpts = computed(() => ({
+  chart: { type: 'line', toolbar: { show: false }, zoom: { enabled: false }, background: 'transparent',
+    animations: { enabled: true, easing: 'linear', dynamicAnimation: { speed: parseInt(config.interval)*1000 } } },
+  stroke: { curve: 'smooth', width: 2 },
+  dataLabels: { enabled: false },
+  xaxis: { type: 'datetime', labels: { show: false }, range: parseInt(config.interval)*1000 * 15 },
+  legend: { position: 'top' },
+  grid: { borderColor: '#e2e8f0', strokeDashArray: 4 },
+  theme: { mode: 'dark' }
+}))
 
 const toggleSensor = (id) => {
   if (config.sensors.includes(id)) {
@@ -475,8 +562,8 @@ const addLog = (message, type = 'info') => {
 const startSimulation = () => {
   isRunning.value = true
   logs.value = []
+  alarms.value = []
   
-  // Init graphs arrays
   let newSeries = []
   config.sensors.forEach(s => {
     newSeries.push({ name: getSensorName(s), data: [] })
@@ -492,6 +579,7 @@ const startSimulation = () => {
     let payloadObj = {}
     let now = new Date().getTime()
     let currentSeries = [...chartSeries.value]
+    let timeStr = new Date().toISOString().split('T')[1].slice(0,8)
     
     config.sensors.forEach((s, idx) => {
       let min = parseFloat(config.calib[s]?.min || 0)
@@ -503,20 +591,24 @@ const startSimulation = () => {
       payloadObj[targetKey] = floatVal
       lastValuesMap[getSensorName(s)] = floatVal
 
-      // Array update for Chart
       if(!currentSeries[idx].data) currentSeries[idx].data = []
       currentSeries[idx].data.push([now, floatVal])
       if (currentSeries[idx].data.length > 20) currentSeries[idx].data.shift()
+
+      // Alarm logic
+      let pct = (floatVal - min) / (max - min)
+      if (pct > 0.9) {
+        alarms.value.unshift({ time: timeStr, msg: getSensorName(s) + ' = ' + floatVal + ' (seuil haut)', level: 'critical' })
+      } else if (pct > 0.8) {
+        alarms.value.unshift({ time: timeStr, msg: getSensorName(s) + ' = ' + floatVal + ' (attention)', level: 'warning' })
+      }
+      if (alarms.value.length > 20) alarms.value.pop()
     })
 
     chartSeries.value = currentSeries
 
     let payload = JSON.stringify(payloadObj)
-    if (config.protocol === 'modbus') {
-      addLog(`>> BUS_REGS_UPDATE : ${Object.values(payloadObj).join('|')}`, 'data')
-    } else {
-      addLog(`MQTT >> ${payload}`, 'data')
-    }
+    addLog(config.protocol.toUpperCase() + ' >> ' + payload, 'data')
 
   }, parseInt(config.interval) * 1000)
 }
@@ -609,30 +701,66 @@ watch(config, () => { if (isRunning.value) stopSimulation() }, { deep: true })
 .back-btn-alt { background: transparent; border: 1px solid var(--gray-300); font-weight: 800; color: var(--gray-600); border-radius: 8px; padding: 0.8rem 1.5rem; cursor: pointer;}
 .back-btn-alt:hover { background: var(--gray-100); }
 
-/* DASHBOARD (NEW) */
-.run-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;}
+/* DASHBOARD HEADER */
+.run-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;}
+.run-header-left { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;}
 .run-header h3 { font-size: 2rem; font-weight: 900;}
-.launch-btn { display: flex; align-items: center; gap: 0.5rem; background: #10b981; color: var(--white); border: none; padding: 1rem 2rem; border-radius: 8px; font-weight: 900; font-size: 1rem; cursor: pointer; }
-.stop-btn { display: flex; align-items: center; gap: 0.5rem; background: #ef4444; color: var(--white); border: none; padding: 1rem 2rem; border-radius: 8px; font-weight: 900; font-size: 1rem; cursor: pointer; }
+.dash-tabs { display: flex; gap: 0.5rem; }
+.dash-tabs button { background: var(--white); border: 1px solid var(--gray-200); padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s; color: var(--gray-500);}
+.dash-tabs button.active { background: var(--black); color: var(--white); border-color: var(--black);}
+.run-actions { display: flex; gap: 1rem; }
+.launch-btn { display: flex; align-items: center; gap: 0.5rem; background: #10b981; color: var(--white); border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 900; cursor: pointer; }
+.stop-btn { display: flex; align-items: center; gap: 0.5rem; background: #ef4444; color: var(--white); border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 900; cursor: pointer; }
 
-.dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap: 2rem; }
-.dash-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.02);}
+/* SCADA */
+.scada-gauges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;}
+.gauge-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03);}
+.gauge-svg { width: 120px; height: 120px; }
+.gauge-arc { transition: stroke-dasharray 0.6s ease; }
+.gauge-val { font-size: 16px; font-weight: 900; fill: #1e293b; }
+.gauge-label { font-size: 8px; fill: #94a3b8; font-weight: 600; }
+.gauge-status { font-size: 0.75rem; font-weight: 800; padding: 0.3rem 0.8rem; border-radius: 20px; }
+.gauge-status.ok { background: #f0fdf4; color: #10b981; }
+.gauge-status.warn { background: #fef2f2; color: #ef4444; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0.5; } }
+
+.scada-bottom { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+.scada-chart-box { background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden; }
+.scada-alarms { background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden; max-height: 380px; display: flex; flex-direction: column;}
+.alarm-list { flex: 1; overflow-y: auto; padding: 0.5rem; }
+.alarm-empty { padding: 1rem; color: var(--gray-400); font-style: italic; text-align: center; }
+.alarm-row { display: flex; gap: 1rem; padding: 0.6rem 1rem; font-size: 0.8rem; border-radius: 6px; margin-bottom: 0.3rem;}
+.alarm-row.warning { background: #fffbeb; color: #b45309; }
+.alarm-row.critical { background: #fef2f2; color: #dc2626; font-weight: 700; }
+.a-time { font-family: monospace; white-space: nowrap; }
+
 .dash-card-header { padding: 1rem 1.5rem; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); font-size: 0.9rem; color: var(--gray-600); }
+.chart-wrapper { padding: 1rem; }
 
-.dash-chart { grid-column: 1 / 2; grid-row: 1 / 2; height: 350px;}
-.chart-wrapper { padding: 1rem; flex-grow: 1; }
+/* WEBAPP */
+.webapp-frame { background: #1a1a2e; border-radius: 16px; overflow: hidden; border: 1px solid #334155; box-shadow: 0 20px 40px rgba(0,0,0,0.15);}
+.webapp-topbar { height: 40px; background: #0f172a; display: flex; align-items: center; gap: 1rem; padding: 0 1rem;}
+.webapp-dots { display: flex; gap: 6px; }
+.webapp-dots span { width: 10px; height: 10px; border-radius: 50%; background: #475569; }
+.webapp-dots span:first-child { background: #ef4444; }
+.webapp-dots span:nth-child(2) { background: #f59e0b; }
+.webapp-dots span:last-child { background: #10b981; }
+.webapp-url { flex: 1; background: #1e293b; padding: 0.3rem 1rem; border-radius: 4px; font-size: 0.8rem; color: #94a3b8; font-family: monospace; }
+.webapp-body { display: flex; min-height: 500px; }
+.webapp-sidebar-fake { width: 200px; background: #16213e; padding: 1.5rem 0; border-right: 1px solid #1e3a5f; }
+.wsf-logo { padding: 0 1.5rem 1.5rem; font-weight: 900; font-size: 1rem; color: #38bdf8; border-bottom: 1px solid #1e3a5f; margin-bottom: 1rem; }
+.wsf-item { padding: 0.7rem 1.5rem; color: #64748b; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+.wsf-item.active { color: white; background: rgba(56,189,248,0.15); border-left: 3px solid #38bdf8; }
+.webapp-main { flex: 1; padding: 2rem; }
+.webapp-main h4 { color: #f1f5f9; font-size: 1.3rem; font-weight: 800; margin-bottom: 1.5rem; }
+.webapp-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.webapp-kpi { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 1rem; text-align: center;}
+.kpi-label { display: block; font-size: 0.7rem; color: #64748b; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase;}
+.kpi-value { font-size: 1.6rem; font-weight: 900; color: #38bdf8; font-family: monospace; }
 
-.dash-info { grid-column: 2 / 3; grid-row: 1 / 3; }
-.info-content { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;}
-.info-content p { font-size: 0.95rem; font-weight: 800;}
-.info-content span { color: var(--gray-400); display: block; font-size: 0.8rem; font-weight: normal; margin-bottom: 0.2rem;}
-.dash-info hr { border: none; border-top: 1px solid var(--gray-200); margin: 0;}
-.live-values { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;}
-.live-val-box { background: var(--gray-50); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;}
-.l-key { font-weight: 700; color: var(--gray-500); font-size: 0.85rem;}
-.l-val { font-weight: 900; font-size: 1.2rem; color: var(--black); font-family: monospace;}
-
-.dash-terminal { grid-column: 1 / 2; grid-row: 2 / 3; height: 300px; background: #0f172a;}
+/* TERMINAL */
+.terminal-panel { }
+.dash-terminal-full { background: #0f172a; border-radius: 16px; overflow: hidden; height: 550px; display: flex; flex-direction: column; }
 .terminal-header { height: 40px; background: #1e293b; display: flex; align-items: center; justify-content: space-between; padding: 0 1rem; color: #94a3b8; font-size: 0.8rem; font-family: monospace;}
 .window-actions { display: flex; gap: 0.5rem; }
 .window-dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -640,18 +768,21 @@ watch(config, () => { if (isRunning.value) stopSimulation() }, { deep: true })
 .window-dot.yellow { background: #f59e0b; }
 .window-dot.green { background: #10b981; }
 .terminal-body { flex-grow: 1; padding: 1rem; overflow-y: auto; font-family: 'Consolas', monospace; font-size: 0.9rem; color: #f8fafc; }
+.terminal-placeholder { color: #475569; font-style: italic; }
 .log-line { margin-bottom: 0.4rem; }
 .log-time { color: #64748b; margin-right: 0.8rem; }
 .log-payload.sys { color: #e2e8f0; font-weight: bold; }
 .log-payload.data { color: #facc15; }
+.log-payload.error { color: #f87171; font-weight: bold; }
 
 .bottom-padding { height: 100px; }
 
 @media (max-width: 1024px) {
   .header-steps { display: none; }
   .config-layout { grid-template-columns: 1fr; }
-  .dashboard-grid { grid-template-columns: 1fr; }
-  .dash-chart, .dash-info, .dash-terminal { grid-column: 1 / 2; }
-  .dash-info { grid-row: auto; }
+  .scada-bottom { grid-template-columns: 1fr; }
+  .scada-gauges { grid-template-columns: repeat(2, 1fr); }
+  .webapp-body { flex-direction: column; }
+  .webapp-sidebar-fake { width: 100%; }
 }
 </style>
