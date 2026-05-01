@@ -8,10 +8,10 @@
         <span class="section-label">Vision & Expertise</span>
         <h2 class="section-title">Mesurer et optimiser la performance énergétique</h2>
         <p>
-          Mon expérience dans la gestion de maintenance d’équipements énergivores m’a permis de mieux appréhender les enjeux réels de la consommation énergétique.
+          Passionné par l'intersection entre l'énergie et l'intelligence artificielle, je me spécialise en <strong>Machine Learning Engineering</strong> et <strong>Data Science</strong>. Mon expertise réside dans la valorisation des données industrielles massives pour optimiser les infrastructures énergétiques.
         </p>
         <p>
-          En tant que <strong>Chargé d’étude IoT & Efficacité Énergétique</strong>, je souhaite aujourd’hui contribuer à rendre ces consommations <strong>mesurables, exploitables et optimisables</strong> grâce aux solutions numériques et à l'intelligence des données.
+          Mon approche combine une compréhension profonde des systèmes industriels avec la maîtrise des algorithmes prédictifs, du <strong>Deep Learning</strong> et du déploiement de modèles à grande échelle via des pipelines <strong>MLOps</strong>.
         </p>
         
         <div class="about-key-stats">

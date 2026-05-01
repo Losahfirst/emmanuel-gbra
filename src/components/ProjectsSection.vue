@@ -6,6 +6,11 @@
       <p class="section-subtitle">Solutions technologiques pour les défis énergétiques de demain.</p>
     </div>
     
+    <div class="projects-decorations">
+      <img src="/images/decorations/predictive-iot.png" class="deco-item deco-1" alt="Deco 1" />
+      <img src="/images/decorations/maintenance-strategy.jpg" class="deco-item deco-2" alt="Deco 2" />
+    </div>
+
     <div class="projects-grid">
       <div class="project-card reveal" v-for="(project, index) in projects" 
            :key="project.id" 
@@ -62,39 +67,39 @@ const selectedProject = ref(null)
 const projects = [
   {
     id: 1,
-    title: 'Supervision VRIDI II',
-    shortDescription: 'Maquette de supervision SCADA pour turbines industrielles.',
-    fullDescription: 'Conception de maquette d\'écran de supervision (SCADA) pour la maintenance proactive du site CIPREL. Interface HMI optimisée pour le suivi des turbines.',
-    image: '/images/projects/motor-analytics.jpg',
-    tags: ['Maquette UI/UX', 'SCADA Design', 'Industrie 4.0'],
+    title: 'Energy Load Forecasting',
+    shortDescription: 'Algorithmes de régression pour la prédiction de charge réseau.',
+    fullDescription: 'Développement de modèles de régression linéaire et polynomiale pour anticiper la demande énergétique nationale. Analyse de séries temporelles intégrant des variables météorologiques et socio-économiques.',
+    image: '/images/projects/load-forecasting.png',
+    tags: ['Machine Learning', 'Regression', 'Data Science'],
     link: null
   },
   {
     id: 2,
-    title: 'Maintenance Prédictive IoT',
-    shortDescription: 'Maquette d\'application web de monitoring énergétique en temps réel.',
-    fullDescription: 'Maquette de conception d\'application web pour le suivi temps réel des installations énergétiques. Architecture orientée monitoring cloud.',
-    image: '/images/projects/web-monitoring.png',
-    tags: ['Design App', 'IoT Dashboard', 'Prototype'],
+    title: 'Industrial Data Pipeline',
+    shortDescription: 'Architecture ETL pour le monitoring en temps réel.',
+    fullDescription: 'Mise en place de pipelines de données robustes utilisant Apache Kafka et FastAPI pour l\'acquisition et le traitement de données provenant de milliers de capteurs IoT industriels.',
+    image: '/images/projects/data-pipeline.png',
+    tags: ['Data Engineering', 'FastAPI', 'MLOps'],
     link: null
   },
   {
     id: 3,
-    title: 'Dashboard KANARI',
-    shortDescription: 'Maquette analytique du mix énergétique et de la charge du réseau.',
-    fullDescription: 'Maquette analytique visualisant la charge du réseau électrique ivoirien et le mix énergétique pour la transition vers des énergies propres.',
-    image: '/images/projects/kanari-dashboard.png',
-    tags: ['Data Viz', 'Energy Mix', 'Concept'],
-    link: 'https://kanari.energy'
+    title: 'Supervision VRIDI II',
+    shortDescription: 'Maquette de supervision SCADA pour turbines industrielles.',
+    fullDescription: 'Conception de maquette d\'écran de supervision (SCADA) pour la maintenance proactive du site CIPREL. Interface HMI optimisée pour le suivi des turbines.',
+    image: '/images/projects/motor-analytics.jpg',
+    tags: ['Supervision', 'SCADA', 'Industrie 4.0'],
+    link: null
   },
   {
     id: 4,
-    title: 'Systèmes Embarqués',
-    shortDescription: 'Maquette de carte électronique et d\'un système d\'acquisition de données.',
-    fullDescription: 'Conception de maquette de carte électronique et système électronique embarqué sur mesure pour l’acquisition de données IoT.',
-    image: '/images/projects/pcb-design.jpg',
-    tags: ['Electronic Design', 'Hardware Maquette', 'PCB'],
-    link: null
+    title: 'Dashboard KANARI',
+    shortDescription: 'Analytique du mix énergétique et de la charge du réseau.',
+    fullDescription: 'Maquette analytique visualisant la charge du réseau électrique ivoirien et le mix énergétique pour la transition vers des énergies propres.',
+    image: '/images/projects/kanari-dashboard.png',
+    tags: ['Data Viz', 'Energy Mix', 'Analytics'],
+    link: 'https://kanari.energy'
   }
 ]
 
@@ -123,6 +128,46 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.projects {
+  position: relative;
+  overflow: hidden;
+}
+
+.projects-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.deco-item {
+  position: absolute;
+  opacity: 0.1;
+  filter: grayscale(1);
+  border-radius: 50%;
+  transition: all 1s ease;
+}
+
+.deco-1 {
+  width: 300px;
+  top: 10%;
+  left: -100px;
+  animation: float-slow 15s ease-in-out infinite;
+}
+
+.deco-2 {
+  width: 400px;
+  bottom: 10%;
+  right: -150px;
+  animation: float-slow 20s ease-in-out infinite reverse;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, 50px) rotate(5deg); }
+  66% { transform: translate(-20px, 30px) rotate(-5deg); }
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

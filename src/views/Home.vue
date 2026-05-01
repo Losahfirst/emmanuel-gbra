@@ -13,6 +13,7 @@
     <ExperienceSection />
     <SkillsSection />
     <AwardsSection />
+    <CertificationsSection />
     <ProjectsSection />
     <ArticlesSection />
     <ContactSection />
@@ -26,6 +27,7 @@ import AboutSection from '../components/AboutSection.vue'
 import ExperienceSection from '../components/ExperienceSection.vue'
 import SkillsSection from '../components/SkillsSection.vue'
 import AwardsSection from '../components/AwardsSection.vue'
+import CertificationsSection from '../components/CertificationsSection.vue'
 import ProjectsSection from '../components/ProjectsSection.vue'
 import ArticlesSection from '../components/ArticlesSection.vue'
 import ContactSection from '../components/ContactSection.vue'

@@ -3,7 +3,11 @@
     <div class="section-header reveal">
       <span class="section-label">Matrice de Compétences</span>
       <h2 class="section-title">Domaines d'Expertise</h2>
-      <p class="section-subtitle">Une approche multidisciplinaire alliant ingénierie thermique et digital. </p>
+      <p class="section-subtitle">Expertise pointue en Data Science et Machine Learning appliquée aux infrastructures énergétiques. </p>
+    </div>
+
+    <div class="skills-intro-decoration reveal">
+      <img src="/images/decorations/ai-viz.png" alt="AI Visualization" />
     </div>
     
     <div class="skills-grid">
@@ -29,24 +33,29 @@ import { onMounted } from 'vue'
 
 const skillCategories = [
   {
-    title: 'Supervision & GTB/GTC',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>',
-    items: ['Vijeo Citect / AVEVA', 'OPC UA / DA', 'MODBUS / PROFINET / BACNET', 'Siemens TIA Portal', 'Régulation Industrielle (PID)']
+    title: 'Fullstack Web Development',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l-4 4 4 4M17 8l4 4-4 4M14 4l-4 16"/></svg>',
+    items: ['React.js & Vue.js', 'FastAPI & Django', 'Modern Dashboard Design', 'State Management (Pinia/Redux)', 'Tailwind CSS & Framer Motion']
   },
   {
-    title: 'IoT & Monitoring',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M12 8v4l3 3"/></svg>',
-    items: ['ThingsBoard & Grafana', 'Apache Kafka / Node-RED', 'InfluxDB', 'MQTT / LoRaWAN', 'Thermographie Ti450', 'Capteurs Analogiques (4-20mA)']
+    title: 'Machine Learning Engineering',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+    items: ['MLOps & Pipeline Deployment', 'Deep Learning (PyTorch/TF)', 'Algorithmes de Régression', 'NLP & LLM Integration', 'FastAPI & Microservices']
   },
   {
-    title: 'Analyse & Performance',
+    title: 'Data Science & Analytics',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
-    items: ['Python (Pandas, Numpy)', 'Power BI', 'SQL / ETL Pipelines', 'Maintenance Prédictive', 'Pareto & Ishikawa', 'KPI Énergétiques']
+    items: ['Analyse de Séries Temporelles', 'Statistiques Avancées', 'Python (Scikit-Learn, Pandas)', 'Power BI & Data Viz', 'SQL / NoSQL (InfluxDB)']
   },
   {
-    title: 'Génie Énergétique & CVC',
-    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',
-    items: ['AutoCAD / Revit (BIM)', 'Carrier HAP / TRACE', 'Norme ISO 50001', 'Groupes à eau glacée / VRV', 'Bilan Carbone', 'Diagrammes Psychrométriques']
+    title: 'Data Engineering & IoT',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M12 8v4l3 3"/></svg>',
+    items: ['Apache Kafka / MQTT', 'ETL Pipelines (Airflow)', 'Monitoring Cloud (ThingsBoard)', 'Data Acquisition (SCADA)', 'Edge Computing']
+  },
+  {
+    title: 'Supervision Industrielle',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>',
+    items: ['AVEVA System Platform', 'Vijeo Citect', 'OPC UA / Modbus', 'Siemens TIA Portal', 'KPI Performance Industrielle']
   }
 ]
 
@@ -65,6 +74,27 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.skills-intro-decoration {
+  max-width: 600px;
+  margin: -2rem auto 4rem;
+  text-align: center;
+  opacity: 0.6;
+}
+
+.skills-intro-decoration img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  filter: grayscale(1) brightness(1.2);
+  transition: all 0.5s ease;
+}
+
+.skills-intro-decoration:hover img {
+  filter: grayscale(0) brightness(1);
+  opacity: 1;
+  transform: scale(1.02);
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

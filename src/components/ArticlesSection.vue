@@ -19,10 +19,12 @@
       <article v-for="(article, index) in filteredArticles" 
                :key="article.id" 
                class="article-card reveal"
-               :style="{ transitionDelay: (index * 100) + 'ms' }">
+               :style="{ transitionDelay: (index * 100) + 'ms' }"
+               @click="article.isPdf ? openPdf(article.url) : null">
         <div class="article-image-wrapper">
           <img :src="article.image" :alt="article.title" class="article-image" />
           <span class="article-category">{{ article.category }}</span>
+          <div v-if="article.isPdf" class="pdf-badge">PDF</div>
         </div>
         
         <div class="article-body">
@@ -32,8 +34,11 @@
           </div>
           <h3 class="article-card-title">{{ article.title }}</h3>
           <p class="article-excerpt">{{ article.excerpt }}</p>
-          <a :href="article.url" target="_blank" class="article-read-more">
-            Lire l'article
+          <a :href="article.url" 
+             :target="article.isPdf ? '_self' : '_blank'" 
+             class="article-read-more"
+             @click.prevent="article.isPdf ? openPdf(article.url) : window.open(article.url, '_blank')">
+            {{ article.isPdf ? 'Lire le document' : 'Lire l\'article' }}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -41,6 +46,16 @@
         </div>
       </article>
     </div>
+
+    <!-- PDF Viewer Modal -->
+    <Teleport to="body">
+      <div v-if="showPdfModal" class="pdf-modal-overlay" @click="closePdf">
+        <div class="pdf-modal-content" @click.stop>
+          <button class="pdf-modal-close" @click="closePdf">✕</button>
+          <iframe :src="currentPdfUrl" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+      </div>
+    </Teleport>
 
     <div class="articles-footer reveal">
       <p>Envie d'en savoir plus ? Retrouvez toutes mes publications sur mes blogs.</p>
@@ -62,9 +77,46 @@
 import { ref, computed } from 'vue'
 
 const activeFilter = ref('Tout')
-const filters = ['Tout', 'Data Science', 'Énergie', 'IoT', 'Innovation']
+const filters = ['Tout', 'Maintenance Prédictive', 'Data Science', 'Énergie', 'IoT']
+
+const showPdfModal = ref(false)
+const currentPdfUrl = ref('')
+
+const openPdf = (url) => {
+  currentPdfUrl.value = url
+  showPdfModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closePdf = () => {
+  showPdfModal.value = false
+  currentPdfUrl.value = ''
+  document.body.style.overflow = ''
+}
 
 const articles = [
+  {
+    id: 4,
+    title: 'Maintenance Prédictive KPI - Thèse Doctorat',
+    excerpt: 'Travaux de recherche approfondis sur les indicateurs de performance clés pour la maintenance prédictive industrielle.',
+    url: '/pdf/maintenance-predictive-kpi.pdf',
+    category: 'Maintenance Prédictive',
+    date: 'Avril 2026',
+    readTime: 'Thèse',
+    image: '/images/articles/maintenanvr.jpg',
+    isPdf: true
+  },
+  {
+    id: 5,
+    title: 'Outils d\'analyse KPI - Épisode 2',
+    excerpt: 'Guide pratique sur les outils d\'analyse et les métriques essentielles pour le suivi de performance énergétique.',
+    url: '/pdf/outils-analyse-kpi.pdf',
+    category: 'Maintenance Prédictive',
+    date: 'Mars 2026',
+    readTime: 'Document',
+    image: '/images/articles/maintenanvr.jpg',
+    isPdf: true
+  },
   {
     id: 1,
     title: 'Machine Learning et Production d\'Électricité',
@@ -315,9 +367,77 @@ const filteredArticles = computed(() => {
   color: var(--black);
 }
 
+.pdf-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--accent);
+  color: var(--white);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 2px;
+}
+
+/* PDF Modal Styles */
+.pdf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.pdf-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.pdf-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.pdf-modal-close:hover {
+  background: var(--accent);
+  color: white;
+  transform: rotate(90deg);
+}
+
 @media (max-width: 768px) {
   .articles-grid {
     grid-template-columns: 1fr;
+  }
+  .pdf-modal-overlay {
+    padding: 0;
+  }
+  .pdf-modal-content {
+    height: 100vh;
+    border-radius: 0;
   }
 }
 </style>

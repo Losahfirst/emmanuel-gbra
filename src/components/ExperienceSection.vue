@@ -31,7 +31,8 @@
           <span class="edu-date">{{ edu.period }}</span>
           <div class="edu-content">
             <h4>{{ edu.degree }}</h4>
-            <p>{{ edu.school }}</p>
+            <p class="edu-school">{{ edu.school }}</p>
+            <p v-if="edu.details" class="edu-details">{{ edu.details }}</p>
           </div>
         </div>
       </div>
@@ -50,43 +51,58 @@ const experiences = [
     type: 'Temps plein',
     location: 'Abidjan · Hybride',
     period: 'Déc 2025 – Aujourd\'hui',
-    description: 'Première plateforme open data dédiée au secteur énergétique en Afrique de l’Ouest. Analyse et prévision des ressources énergétiques pour la prise de décision stratégique.',
-    techs: ['Open Data', 'Energy Analysis', 'Strategic Decision']
+    description: 'Plateforme open data et analytique pour le secteur énergétique. Implémentation de modèles de prédiction de charge et analyse des mix énergétiques régionaux via des pipelines de données automatisés.',
+    techs: ['Data Science', 'Energy Analytics', 'ML Pipelines']
   },
   {
     id: 2,
-    title: 'Stage d’alternance en exploitation conduite',
-    company: 'CIPREL (Compagnie Ivoirienne de Production d\'Electricité)',
+    title: 'Machine Learning & IoT Specialist (Intern)',
+    company: 'CIPREL',
     type: 'Alternance',
     location: 'Abidjan',
     period: 'Août 2025 – Déc 2025',
-    description: 'Conception d’une solution IoT pour le suivi prédictif des moteurs de refroidissement (TAG 06) et mise en place d\'analyses dynamiques des arrêts turbines.',
-    techs: ['IoT', 'Predictive Maintenance', 'Turbine Analytics']
+    description: 'Développement de modèles de Machine Learning pour le monitoring prédictif des actifs industriels. Analyse avancée des données de turbines pour l\'optimisation opérationnelle.',
+    techs: ['ML Engineering', 'Time Series', 'Industrial IoT']
   },
   {
     id: 3,
-    title: 'Chef de Projet Maintenance CVC et Énergie',
+    title: 'Chef de Projet Performance Énergétique',
     company: 'Inovatec Côte d\'Ivoire',
     type: 'CDI',
     location: 'Abidjan',
     period: 'Sept 2021 – Avr 2025',
-    description: 'Pilotage de la maintenance multi-technique (CVC, Onduleurs, Groupes Électrogènes) pour MTN Abidjan, Playce Marcory et Onomo Aéroport.',
-    techs: ['Maintenance Management', 'HVAC/CVC', 'Project Leadership']
+    description: 'Gestion de la performance opérationnelle et analytique des infrastructures critiques. Optimisation de la consommation énergétique via le monitoring et l\'analyse de données.',
+    techs: ['Data Management', 'Energy Efficiency', 'Project Leadership']
   }
 ]
 
 const education = [
   {
     id: 1,
-    degree: 'Licence Energétique et génie climatique option IoT',
-    school: 'Eranove Academy',
-    period: '2024 – 2026',
+    degree: 'Master of Science, Artificial Intelligence',
+    school: 'DataCamp / Isheero Benin 🇧🇯',
+    period: '2025 – 2027',
+    details: 'Bourse d’étude Isheero Benin. Spécialisation en Machine Learning Engineering et Programmation Python avancée.'
   },
   {
     id: 2,
+    degree: 'MBA Big Data & Intelligence Artificielle',
+    school: 'Studi',
+    period: '2026 – Présent',
+    details: 'Stratégie d’innovation digitale, gestion de projets d’innovation et management d’équipes projet.'
+  },
+  {
+    id: 3,
+    degree: 'Licence Énergétique et Génie Climatique option IoT',
+    school: 'CNAM / Eranove Academy',
+    period: '2024 – 2026',
+    details: 'Mention Très Bien. Focus sur la régulation énergétique, GTB/GTC et l’analyse de données IoT pour l’optimisation de performance.'
+  },
+  {
+    id: 4,
     degree: 'Bachelor Electronics for Embedded Systems',
     school: 'Université Tertiaire et Technologique',
-    period: '2020 – 2021',
+    period: '2020 – 2021'
   }
 ]
 
@@ -223,11 +239,20 @@ onMounted(() => {
 .edu-content h4 {
   font-size: 1.1rem;
   font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.edu-school {
+  color: var(--black);
+  font-weight: 600;
+  font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
-.edu-content p {
+.edu-details {
+  font-size: 0.85rem;
   color: var(--gray-500);
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
