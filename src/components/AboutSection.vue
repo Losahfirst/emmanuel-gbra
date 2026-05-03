@@ -1,27 +1,39 @@
 <template>
-  <section class="section about" id="about">
-    <div class="about-grid">
-      <div class="about-image-wrapper reveal-left">
-        <img src="/images/site/emmanuel-portrait.jpg" alt="Emmanuel Gbra - Portrait Professionnel" />
-      </div>
-      <div class="about-text reveal">
-        <span class="section-label">Vision & Expertise</span>
-        <h2 class="section-title">Mesurer et optimiser la performance énergétique</h2>
-        <p>
-          Passionné par l'intersection entre l'énergie et l'intelligence artificielle, je me spécialise en <strong>Machine Learning Engineering</strong> et <strong>Data Science</strong>. Mon expertise réside dans la valorisation des données industrielles massives pour optimiser les infrastructures énergétiques.
-        </p>
-        <p>
-          Mon approche combine une compréhension profonde des systèmes industriels avec la maîtrise des algorithmes prédictifs, du <strong>Deep Learning</strong> et du déploiement de modèles à grande échelle via des pipelines <strong>MLOps</strong>.
-        </p>
-        
-        <div class="about-key-stats">
-          <div class="stat-item">
-            <span class="stat-num">2500+</span>
-            <span class="stat-label">Abonnés LinkedIn</span>
+  <section class="about section bg-grid-light" id="about">
+    <div class="about-container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <h2 class="expertise-title">Déploiement d'applications IA.</h2>
+          <p class="expertise-desc">
+            Expert en ML Engineering & Data Science. Je conçois et déploie des systèmes d'IA sur mesure pour relever les défis industriels les plus complexes.
+          </p>
+          
+          <div class="expertise-checklist">
+            <div class="check-item">
+              <span>Workflows agentiques</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div class="check-item">
+              <span>Observabilité end-to-end</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div class="check-item">
+              <span>Maintenance prédictive & RAG</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
           </div>
-          <div class="stat-item">
-            <span class="stat-num">1er</span>
-            <span class="stat-label">Prix GS2E 2025</span>
+          
+          <div class="about-actions">
+            <a href="#experience" class="btn-black">
+              Découvrir mon expertise
+              <span class="arrow">›</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="about-visual reveal">
+          <div class="visual-wrapper">
+             <img src="/images/decorations/expertise_visual.png" alt="Expertise Visual" />
           </div>
         </div>
       </div>
@@ -33,7 +45,7 @@
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  const reveals = document.querySelectorAll('.reveal, .reveal-left')
+  const reveals = document.querySelectorAll('.reveal')
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -47,74 +59,125 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.about {
+  padding: 6rem 0; /* Reduced padding */
+  overflow: hidden;
+  background-color: var(--white);
+}
+
+.bg-grid-light {
+  background-image: radial-gradient(var(--gray-200) 1px, transparent 1px);
+  background-size: 30px 30px; /* Smaller grid */
+}
+
+.about-container {
+  max-width: 1400px; /* Unified width */
+  margin: 0 auto;
+  padding: 0 6%;
+}
+
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 5rem;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: 5rem; /* Reduced gap */
 }
 
-.about-image-wrapper {
-  position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+.expertise-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem); /* Reduced size */
+  font-weight: 850;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  color: var(--black);
+  letter-spacing: -1px;
 }
 
-.about-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.about-image-wrapper:hover img {
-  transform: scale(1.05);
-}
-
-.about-text p {
-  font-size: 1.2rem;
+.expertise-desc {
+  font-size: 1.1rem; /* Reduced size */
+  line-height: 1.5;
   color: var(--gray-600);
-  margin-bottom: 2rem;
-  line-height: 1.8;
+  margin-bottom: 3rem;
+  max-width: 500px;
 }
 
-.about-key-stats {
-  display: flex;
-  gap: 4rem;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--gray-200);
-}
-
-.stat-item {
+.expertise-checklist {
   display: flex;
   flex-direction: column;
+  gap: 1rem; /* Tighter gap */
+  margin-bottom: 3rem;
 }
 
-.stat-num {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 950;
-  color: var(--accent);
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 0.85rem;
+.check-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FFF9E6;
+  padding: 0.9rem 1.4rem; /* More compact */
+  border-radius: 4px;
+  width: fit-content;
+  min-width: 300px;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: var(--gray-400);
-  text-transform: uppercase;
-  margin-top: 0.5rem;
-  letter-spacing: 1px;
+  color: #131313;
+}
+
+.check-item svg {
+  width: 18px;
+  height: 18px;
+  color: #F45B20;
+}
+
+.btn-black {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  background-color: #131313;
+  color: var(--white);
+  padding: 1rem 2rem; /* More compact */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-black:hover {
+  background-color: #000;
+}
+
+.btn-black .arrow {
+  color: #F45B20;
+  font-size: 1.3rem;
+  margin-top: -1px;
+}
+
+.about-visual {
+  position: relative;
+  max-width: 500px; /* Limit image size */
+  margin-left: auto;
+}
+
+.visual-wrapper {
+  position: relative;
+  z-index: 2;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.visual-wrapper img {
+  width: 100%;
+  display: block;
 }
 
 @media (max-width: 1024px) {
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 5rem;
+  }
+  .check-item { width: 100%; }
+  .about-visual {
+    display: none;
   }
 }
 </style>

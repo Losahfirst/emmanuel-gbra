@@ -17,7 +17,10 @@
            :style="{ transitionDelay: (index * 100) + 'ms' }"
            @click="openModal(project)">
         <div class="project-image-wrapper">
-          <img :src="project.image" :alt="project.title" />
+          <img v-if="project.image" :src="project.image" :alt="project.title" />
+          <div v-else class="project-placeholder-bg" :class="getColor(index)">
+             <div class="pixel-box-large"></div>
+          </div>
           <div class="project-info-overlay">
             <span class="project-category">{{ project.tags[0] }}</span>
             <h3 class="project-title">{{ project.title }}</h3>
@@ -36,7 +39,10 @@
           
           <div class="modal-grid">
             <div class="modal-image-side">
-              <img :src="selectedProject.image" :alt="selectedProject.title" />
+              <img v-if="selectedProject.image" :src="selectedProject.image" :alt="selectedProject.title" />
+              <div v-else class="project-placeholder-bg large" :class="getColor(projects.indexOf(selectedProject))">
+                <div class="pixel-box-huge"></div>
+              </div>
             </div>
             <div class="modal-info-side">
               <span class="modal-label">Projet</span>
@@ -64,25 +70,12 @@ import { ref, onMounted } from 'vue'
 
 const selectedProject = ref(null)
 
+const getColor = (index) => {
+  const colors = ['orange', 'blue', 'yellow', 'red']
+  return colors[index % colors.length]
+}
+
 const projects = [
-  {
-    id: 1,
-    title: 'Energy Load Forecasting',
-    shortDescription: 'Algorithmes de régression pour la prédiction de charge réseau.',
-    fullDescription: 'Développement de modèles de régression linéaire et polynomiale pour anticiper la demande énergétique nationale. Analyse de séries temporelles intégrant des variables météorologiques et socio-économiques.',
-    image: '/images/projects/load-forecasting.png',
-    tags: ['Machine Learning', 'Regression', 'Data Science'],
-    link: null
-  },
-  {
-    id: 2,
-    title: 'Industrial Data Pipeline',
-    shortDescription: 'Architecture ETL pour le monitoring en temps réel.',
-    fullDescription: 'Mise en place de pipelines de données robustes utilisant Apache Kafka et FastAPI pour l\'acquisition et le traitement de données provenant de milliers de capteurs IoT industriels.',
-    image: '/images/projects/data-pipeline.png',
-    tags: ['Data Engineering', 'FastAPI', 'MLOps'],
-    link: null
-  },
   {
     id: 3,
     title: 'Supervision VRIDI II',
@@ -320,6 +313,53 @@ onMounted(() => {
   padding: 0.5rem 1rem;
   text-transform: uppercase;
 }
+
+.project-placeholder-bg {
+  width: 100%;
+  height: 100%;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-placeholder-bg.large {
+  min-height: 400px;
+}
+
+.pixel-box-large {
+  width: 100px;
+  height: 100px;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.pixel-box-huge {
+  width: 200px;
+  height: 200px;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.project-placeholder-bg.orange { background-color: #FEECE5; }
+.project-placeholder-bg.blue { background-color: #E6F0FF; }
+.project-placeholder-bg.yellow { background-color: #FFF9E6; }
+.project-placeholder-bg.red { background-color: #FFE6E6; }
+
+.project-placeholder-bg.orange .pixel-box-large, 
+.project-placeholder-bg.orange .pixel-box-huge { border-color: #F45B20; background: rgba(244, 91, 32, 0.1); }
+
+.project-placeholder-bg.blue .pixel-box-large,
+.project-placeholder-bg.blue .pixel-box-huge { border-color: #0047FF; background: rgba(0, 71, 255, 0.1); }
+
+.project-placeholder-bg.yellow .pixel-box-large,
+.project-placeholder-bg.yellow .pixel-box-huge { border-color: #FFB800; background: rgba(255, 184, 0, 0.1); }
+
+.project-placeholder-bg.red .pixel-box-large,
+.project-placeholder-bg.red .pixel-box-huge { border-color: #E31B23; background: rgba(227, 27, 35, 0.1); }
 
 @media (max-width: 768px) {
   .projects-grid { grid-template-columns: 1fr; }
