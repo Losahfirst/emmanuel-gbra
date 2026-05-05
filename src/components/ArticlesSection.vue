@@ -9,12 +9,39 @@
         </div>
 
         <div class="carousel-controls reveal">
-          <button @click="scroll('prev')" class="control-btn" aria-label="Précédent">
-            <span class="arrow">‹</span>
-          </button>
-          <button @click="scroll('next')" class="control-btn" aria-label="Suivant">
-            <span class="arrow">›</span>
-          </button>
+          <!-- Search and Filters (Optional) -->
+          <div v-if="showFilters" class="articles-filters">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input 
+                type="text" 
+                v-model="searchQuery" 
+                placeholder="Rechercher un article..."
+                class="search-input"
+              >
+            </div>
+            <div class="category-chips">
+              <button 
+                v-for="cat in categories" 
+                :key="cat"
+                @click="selectedCategory = cat"
+                :class="['filter-chip', { active: selectedCategory === cat }]"
+              >
+                {{ cat === 'All' ? 'Tous' : cat }}
+              </button>
+            </div>
+          </div>
+
+          <div class="nav-buttons">
+            <button @click="scroll('prev')" class="control-btn" aria-label="Précédent">
+              <span class="arrow">‹</span>
+            </button>
+            <button @click="scroll('next')" class="control-btn" aria-label="Suivant">
+              <span class="arrow">›</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -23,7 +50,7 @@
         <div class="horizontal-trunk"></div>
         
         <div class="nodes-horizontal" ref="scrollContainer">
-          <div v-for="(article, index) in articles" 
+          <div v-for="(article, index) in filteredArticles" 
                :key="article.id" 
                class="node-card-wrapper"
                @click="article.isPdf ? openPdf(article.url) : window.open(article.url, '_blank')">
@@ -79,11 +106,22 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, defineProps } from 'vue'
+
+const props = defineProps({
+  showFilters: {
+    type: Boolean,
+    default: false
+  }
+})
 
 const scrollContainer = ref(null)
 const showPdfModal = ref(false)
 const currentPdfUrl = ref('')
+const searchQuery = ref('')
+const selectedCategory = ref('All')
+
+const categories = ['All', 'MAINTENANCE', 'DATA SCIENCE', 'IOT', 'EFFICACITÉ']
 
 const scroll = (direction) => {
   if (!scrollContainer.value) return
@@ -108,10 +146,19 @@ const closePdf = () => {
 
 const articles = [
   {
+    id: 7,
+    title: 'Outils d\'analyse KPI - Épisode 4',
+    excerpt: 'Nouvelles méthodologies et outils avancés pour le pilotage de la performance industrielle et opérationnelle.',
+    url: '/pdf/outils-analyse-kpi-ep4.pdf',
+    category: 'MAINTENANCE',
+    date: 'Mai 2026',
+    isPdf: true
+  },
+  {
     id: 4,
     title: 'Outils d\'analyse KPI - Épisode 3',
     excerpt: 'Travaux de recherche approfondis sur les indicateurs de performance clés pour la maintenance prédictive industrielle.',
-    url: '/pdf/maintenance-predictive-kpi.pdf',
+    url: '/pdf/outils-analyse-kpi.pdf',
     category: 'MAINTENANCE',
     date: 'Avril 2026',
     isPdf: true
@@ -120,7 +167,7 @@ const articles = [
     id: 5,
     title: 'Outils d\'analyse KPI - Épisode 2',
     excerpt: 'Guide pratique sur les outils d\'analyse et les métriques essentielles pour le suivi de performance énergétique.',
-    url: '/pdf/outils-analyse-kpi.pdf',
+    url: '/pdf/maintenance-predictive-kpi.pdf',
     category: 'MAINTENANCE',
     date: 'Avril 2026',
     isPdf: true
@@ -150,6 +197,15 @@ const articles = [
     date: 'Déc 2025'
   }
 ]
+
+const filteredArticles = computed(() => {
+  return articles.filter(article => {
+    const matchesSearch = article.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+                        article.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const matchesCategory = selectedCategory.value === 'All' || article.category === selectedCategory.value
+    return matchesSearch && matchesCategory
+  })
+})
 
 const getColor = (index) => {
   const colors = ['yellow', 'orange', 'red', 'blue']
@@ -183,9 +239,172 @@ const getColor = (index) => {
 
 .carousel-controls {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
+
+.nav-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.articles-filters {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  width: 300px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--gray-400);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 3rem;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--black);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: var(--black);
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.category-chips {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.filter-chip {
+  padding: 0.5rem 1.2rem;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gray-500);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.filter-chip:hover {
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.filter-chip.active {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+@media (max-width: 1024px) {
+  .articles-top-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 0 6%;
+  }
+  
+  .carousel-controls {
+    width: 100%;
+    align-items: flex-start;
+  }
+  
+  .articles-filters {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 1rem;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  .category-chips {
+    overflow-x: auto;
+    width: 100vw;
+    margin: 0 -6%;
+    padding: 0 6% 0.5rem;
+    scrollbar-width: none;
+  }
+  
+  .category-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-buttons {
+    display: none; /* Hide carousel buttons on tablet/mobile as we have native scroll */
+  }
+}
+
+@media (max-width: 768px) {
+  .articles {
+    padding: 5rem 0;
+  }
+
+  .articles-top-nav {
+    margin-bottom: 3rem;
+  }
+
+  .node-card-wrapper {
+    flex: 0 0 85vw; /* Almost full width on mobile */
+    gap: 1rem;
+  }
+
+  .node-content-card {
+    padding: 1.5rem;
+  }
+
+  .node-title {
+    font-size: 1.2rem;
+  }
+
+  .node-excerpt {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pdf-modal-overlay {
+    padding: 0;
+  }
+
+  .pdf-modal-content {
+    height: 100vh;
+    max-width: 100%;
+  }
+
+  .pdf-modal-close {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 35px;
+    height: 35px;
+  }
+}
+
+
+
 
 .control-btn {
   width: 50px;
@@ -374,11 +593,7 @@ const getColor = (index) => {
   border-color: var(--accent);
 }
 
-@media (max-width: 768px) {
-  .node-card-wrapper {
-    flex: 0 0 320px;
-  }
-}
+
 
 /* PDF Modal Styles */
 .pdf-modal-overlay {

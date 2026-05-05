@@ -14,7 +14,7 @@
       </div>
     </section>
     
-    <ArticlesSection />
+    <ArticlesSection :show-filters="true" />
   </div>
 </template>
 

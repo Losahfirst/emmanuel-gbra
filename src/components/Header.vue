@@ -1,5 +1,5 @@
 <template>
-  <header class="header" :class="{ scrolled: isScrolled }">
+  <header class="header" :class="headerClass">
     <div class="header-container">
       <div class="header-left">
         <router-link to="/" class="logo">
@@ -45,10 +45,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
+const route = useRoute()
+
+// Force scrolled state (dark text) for specific internal pages that have light backgrounds
+const isForceScrolled = computed(() => {
+  const lightPaths = ['/outils/', '/articles', '/representative-works']
+  // We want to force it if it matches these paths BUT isn't exactly the Home or Tools list (which have dark heroes)
+  // Actually, simplified: if it's any tool page or subpage.
+  const currentPath = route.path
+  
+  // Specific pages that DON'T need force (because they have dark heroes)
+  const darkHeroPages = ['/', '/outils', '/articles']
+  
+  if (darkHeroPages.includes(currentPath)) return false
+  
+  return lightPaths.some(path => currentPath.startsWith(path))
+})
+
+const headerClass = computed(() => {
+  return {
+    scrolled: isScrolled.value || isForceScrolled.value
+  }
+})
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50
