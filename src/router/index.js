@@ -53,6 +53,11 @@ const routes = [
     path: '/outils/iot',
     name: 'IotSimulator',
     component: () => import('../views/IotSimulatorPage.vue')
+  },
+  {
+    path: '/outils/losah',
+    name: 'LosahDocs',
+    component: () => import('../views/LosahDocsPage.vue')
   }
 ]
 

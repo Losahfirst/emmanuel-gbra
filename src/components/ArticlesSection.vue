@@ -33,15 +33,6 @@
               </button>
             </div>
           </div>
-
-          <div class="nav-buttons">
-            <button @click="scroll('prev')" class="control-btn" aria-label="Précédent">
-              <span class="arrow">‹</span>
-            </button>
-            <button @click="scroll('next')" class="control-btn" aria-label="Suivant">
-              <span class="arrow">›</span>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -123,14 +114,6 @@ const selectedCategory = ref('All')
 
 const categories = ['All', 'MAINTENANCE', 'DATA SCIENCE', 'IOT', 'EFFICACITÉ']
 
-const scroll = (direction) => {
-  if (!scrollContainer.value) return
-  const scrollAmount = 430
-  scrollContainer.value.scrollBy({
-    left: direction === 'next' ? scrollAmount : -scrollAmount,
-    behavior: 'smooth'
-  })
-}
 
 const openPdf = (url) => {
   currentPdfUrl.value = url
@@ -244,10 +227,6 @@ const getColor = (index) => {
   flex-wrap: wrap;
 }
 
-.nav-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
 
 .articles-filters {
   display: flex;
@@ -406,27 +385,6 @@ const getColor = (index) => {
 
 
 
-.control-btn {
-  width: 50px;
-  height: 50px;
-  background: var(--black);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.control-btn:hover {
-  background: var(--accent);
-}
-
-.control-btn .arrow {
-  color: var(--white);
-  font-size: 1.8rem;
-  font-weight: 300;
-}
 
 .text-accent {
   color: var(--accent);

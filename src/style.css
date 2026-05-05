@@ -37,6 +37,44 @@
     --grid-size: 50px;
 }
 
+@keyframes flame-wave {
+    0%, 100% { 
+        transform: rotate(-1deg) skewX(-1deg) scaleY(1); 
+        filter: brightness(1);
+    }
+    15% { 
+        transform: rotate(2deg) skewX(2deg) scaleY(1.04); 
+        filter: brightness(1.1);
+    }
+    30% { 
+        transform: rotate(-2deg) skewX(-4deg) scaleY(1.1); 
+        filter: brightness(0.9);
+    }
+    45% { 
+        transform: rotate(4deg) skewX(4deg) scaleY(1.06); 
+        filter: brightness(1.2);
+    }
+    60% { 
+        transform: rotate(-1deg) skewX(-2deg) scaleY(1.15); 
+        filter: brightness(1);
+    }
+    75% { 
+        transform: rotate(3deg) skewX(3deg) scaleY(1.08); 
+        filter: brightness(1.3);
+    }
+    85% { 
+        transform: rotate(-2deg) skewX(-3deg) scaleY(1.12); 
+        filter: brightness(1.1);
+    }
+}
+
+.brand-svg {
+    transform-origin: bottom center;
+    animation: flame-wave 2.5s infinite alternate ease-in-out;
+    display: inline-block;
+    will-change: transform;
+}
+
 html {
     scroll-behavior: smooth;
     font-size: 16px;

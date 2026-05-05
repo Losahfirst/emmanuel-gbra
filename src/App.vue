@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <WelcomeModal />
     <Header v-if="!isKanariPage" />
     <router-view />
     <Footer v-if="!isKanariPage" />
@@ -11,6 +12,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import WelcomeModal from './components/WelcomeModal.vue'
 
 const route = useRoute()
 const isKanariPage = computed(() => route.path.startsWith('/kanari-energy'))
