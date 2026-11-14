@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-    <WelcomeModal />
-    <Header v-if="!isKanariPage" />
+    <BengioHeader v-if="!isKanariPage" />
     <router-view />
-    <Footer v-if="!isKanariPage" />
+    <BengioFooter v-if="!isKanariPage" />
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
-import WelcomeModal from './components/WelcomeModal.vue'
+import BengioHeader from './components/BengioHeader.vue'
+import BengioFooter from './components/BengioFooter.vue'
 
 const route = useRoute()
 const isKanariPage = computed(() => route.path.startsWith('/kanari-energy'))

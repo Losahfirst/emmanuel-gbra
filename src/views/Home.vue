@@ -1,32 +1,35 @@
 <template>
-  <div class="home-wrapper">
-    <HeroSection />
-    <AboutSection />
-    <ExperienceSection />
-    <SkillsSection />
-    <AwardsSection />
-    <CertificationsSection />
-    <ProjectsSection />
-    <ArticlesSection />
-    <ContactSection />
+  <div class="bengio-home-wrapper">
+    <!-- Hero with Bengio's signature circular portrait and refined Serif headline -->
+    <BengioHeroSection />
+
+    <!-- Bio / Description Section with signature top vertical line -->
+    <BengioBioSection />
+
+    <!-- NOUVELLES: Carousel card with photo, serif title, summary & arrow -->
+    <BengioNewsSection />
+
+    <!-- ARTICLES RÉCENTS DU BLOG: Framed box with green border & metadata -->
+    <BengioBlogSection />
+
+    <!-- CONTACT: 3-column table grid with fine green borders -->
+    <BengioContactSection />
   </div>
 </template>
 
 <script setup>
-import HeroSection from '../components/HeroSection.vue'
-import AboutSection from '../components/AboutSection.vue'
-import ExperienceSection from '../components/ExperienceSection.vue'
-import SkillsSection from '../components/SkillsSection.vue'
-import AwardsSection from '../components/AwardsSection.vue'
-import CertificationsSection from '../components/CertificationsSection.vue'
-import ProjectsSection from '../components/ProjectsSection.vue'
-import ArticlesSection from '../components/ArticlesSection.vue'
-import ContactSection from '../components/ContactSection.vue'
+import BengioHeroSection from '../components/BengioHeroSection.vue'
+import BengioBioSection from '../components/BengioBioSection.vue'
+import BengioNewsSection from '../components/BengioNewsSection.vue'
+import BengioBlogSection from '../components/BengioBlogSection.vue'
+import BengioContactSection from '../components/BengioContactSection.vue'
 </script>
 
 <style scoped>
-.home-wrapper {
+.bengio-home-wrapper {
   position: relative;
+  background-color: var(--bg-bengio);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
-
 </style>

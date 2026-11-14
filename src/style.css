@@ -5,6 +5,46 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+@font-face {
+    font-family: "FlechaBronzeaM";
+    src: url("/fonts/FlechaBronzeaM-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Funnel Sans";
+    src: url("/fonts/FunnelSans-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Funnel Sans";
+    src: url("/fonts/FunnelSans-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Funnel Sans";
+    src: url("/fonts/FunnelSans-SemiBold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Funnel Sans";
+    src: url("/fonts/FunnelSans-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* ─── Reset ─── */
 *, *::before, *::after {
     margin: 0;
@@ -14,22 +54,32 @@
 
 /* ─── Design Tokens ─── */
 :root {
-    --black: #131313;
+    --black: #111111;
     --white: #ffffff;
-    --cream: #FDFCF7; /* Mistral Background */
-    --gray-50: #fcfcfc;
-    --gray-100: #f8f8f8;
-    --gray-200: #E5E0D8; /* Mistral Grid/Border */
-    --gray-300: #dddddd;
-    --gray-400: #999999;
-    --gray-500: #666666;
-    --gray-600: #444444;
-    --accent: #F45B20; /* Mistral Orange */
-    --accent-dark: #D44410;
-    --accent-light: #FFF9E6; /* Mistral Yellow-Cream */
+    --cream: #e6e7e2; /* Exact Bengio Background #e6e7e2 */
+    --bg-bengio: #e6e7e2;
+    --bengio-teal: #003c37; /* Exact Bengio Headline Deep Teal #003c37 */
+    --bengio-circle: #70afbe; /* Exact Bengio Circle Cyan/Blue #70afbe */
+    --bengio-glow-cyan: #97dddf; /* Exact Bengio Upper Glow #97dddf */
+    --bengio-glow-lime: #b4eab0; /* Exact Bengio Lower Glow #b4eab0 */
+    --bengio-border: #7EA3A3;
+    --bengio-border-light: rgba(126, 163, 163, 0.45);
+    --bengio-card-bg: #FFFFFF;
 
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-display: 'Inter', sans-serif;
+    --gray-50: #faf9f6;
+    --gray-100: #f4f2ec;
+    --gray-200: #E2DDD5;
+    --gray-300: #c9c4b8;
+    --gray-400: #8c897f;
+    --gray-500: #575550;
+    --gray-600: #2c2b29;
+    --accent: #114B56;
+    --accent-dark: #092e35;
+    --accent-light: #E4F1F1;
+
+    --font-primary: "Funnel Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: "Funnel Sans", sans-serif;
+    --font-serif: "FlechaBronzeaM", 'Cormorant Garamond', Georgia, serif;
 
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);

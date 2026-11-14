@@ -30,6 +30,30 @@ const routes = [
     component: () => import('../views/ArticlesPage.vue')
   },
   {
+    path: '/blog-maintenance-predictive',
+    name: 'MaintenancePredictiveBlog',
+    component: () => import('../views/MaintenancePredictiveBlog.vue')
+  },
+  {
+    path: '/article/:id',
+    name: 'BengioPostView',
+    component: () => import('../views/BengioPostView.vue'),
+    props: true
+  },
+  {
+    path: '/blog/:id',
+    redirect: to => `/article/${to.params.id}`
+  },
+  {
+    path: '/admin',
+    name: 'AdminPage',
+    component: () => import('../views/AdminPage.vue')
+  },
+  {
+    path: '/connexion',
+    redirect: '/admin'
+  },
+  {
     path: '/outils',
     name: 'Tools',
     component: () => import('../views/ToolsPage.vue')
